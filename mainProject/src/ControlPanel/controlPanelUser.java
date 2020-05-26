@@ -1,6 +1,7 @@
 package ControlPanel;
 
-public class controlPanelUser {
+public class
+controlPanelUser {
     String test;
     int userID;
     int sessionToken;
