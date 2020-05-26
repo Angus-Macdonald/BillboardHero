@@ -1,10 +1,16 @@
-package ControlPanel;
+package ControlPanel.Login;
+import ControlPanel.MainGUI.controlPanelGUI;
+
+import ControlPanel.Utility.controlPanelExitAlert;
+import ControlPanel.Utility.controlPanelUser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
 
 public class controlPanelLogin extends controlPanelUser {
 
@@ -12,7 +18,42 @@ public class controlPanelLogin extends controlPanelUser {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
-    public static void controlPanelLogin(){
+    public static void loginRequest(String user, byte[] pass){
+        //Convert user and pass to data types needed for request
+        //Make the request and receive the id and token
+        //setUserID(id);
+        //setSessionToken(token);
+    }
+
+    public void getPermissions(String user, String token){
+
+        //This function will add data from server to an array, then place the data within the controlPanelUser object
+
+        //boolean[] permissions = new boolean[4];
+
+        //getCreateBBPermissionFromServer(user, token).add(permission[0]);
+        //getEditBBPermissionFromServer(user, token).add(permission[1]);
+        //getScheduleBBPermissionFromServer(user, token).add(permission[2]);
+        //getEditUsersPermissionFromServer(user, token).add(permission[3]);
+
+        //setCreateBBPermission(permission[0]);
+        //setEditBBPermission(permission[1]);
+        //setScheduleBBPermission(permission[2]);
+        //setEditUsersPermission(permission[3]);
+    }
+
+    public static void controlPanelLogin() throws NoSuchAlgorithmException {
+
+
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(salt);
+
+
+
+
         JFrame frame = new JFrame("Login Page");
         JPanel panel1 = new JPanel();
         JPanel panel2= new JPanel();
@@ -67,6 +108,16 @@ public class controlPanelLogin extends controlPanelUser {
             public void actionPerformed(ActionEvent e) {
                 String inputUser = inputUsername.getText();
                 char[] inputPass = inputPassword.getPassword();
+
+                String pass = "";
+                for (char i :inputPass) {
+                    pass += i;
+                }
+
+                byte[] hashedPassword = md.digest(pass.getBytes(StandardCharsets.UTF_8));
+
+                loginRequest(inputUser, hashedPassword);
+
                 frame.dispose();
                 controlPanelGUI.displayGUI();
 

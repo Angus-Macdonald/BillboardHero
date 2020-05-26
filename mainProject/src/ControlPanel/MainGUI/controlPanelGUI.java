@@ -1,4 +1,8 @@
-package ControlPanel;
+package ControlPanel.MainGUI;
+
+import ControlPanel.UserManagement.userManagementGUI;
+import ControlPanel.Utility.controlPanelExitAlert;
+import ControlPanel.Utility.controlPanelUser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -74,6 +78,15 @@ public class controlPanelGUI extends controlPanelUser {
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
+
+        userManagement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userManagementGUI.userManagementGUI();
+                frame.dispose();
+            }
+        });
+
         frame.pack();
         frame.setVisible(true);
     }

@@ -1,15 +1,11 @@
 
-import ControlPanel.*;
+import ControlPanel.Login.controlPanelLogin;
+import ControlPanel.UserManagement.userManagementGUI;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.*;
+import java.security.NoSuchAlgorithmException;
 
 class main{
-    public static void main(String[] args) {
-
-
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         controlPanelLogin.controlPanelLogin();
 
 

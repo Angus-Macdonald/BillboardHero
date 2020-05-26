@@ -1,4 +1,4 @@
-package ControlPanel;
+package ControlPanel.Utility;
 
 import javax.swing.*;
 import java.awt.*;
