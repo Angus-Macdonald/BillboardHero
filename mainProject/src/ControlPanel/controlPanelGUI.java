@@ -12,12 +12,11 @@ import java.util.*;
 
 public class controlPanelGUI extends controlPanelUser {
 
-    public controlPanelGUI(String test, int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsers) {
-        super(test, userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsers);
+    public controlPanelGUI(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+        super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
     public static void displayGUI(){
-        String test = controlPanelUser.getTest();
         Map<String, Boolean> userPermissionFromServer = new HashMap<String, Boolean>();
         userPermissionFromServer.put("createBillboards", true);
         userPermissionFromServer.put("editAllBillboards", true);
@@ -50,9 +49,9 @@ public class controlPanelGUI extends controlPanelUser {
         frame.setLayout(new GridLayout(3,1));
 
 
-        JLabel controlPanelHead = new JLabel(test);
-        controlPanelHead.setFont(new Font("Serif", Font.BOLD, 48));
-        controlPanelHead.setBorder(new EmptyBorder(0,10,0,10));
+        JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
+        controlPanelHead.setFont(new Font("Serif", Font.BOLD, 35));
+        controlPanelHead.setBorder(new EmptyBorder(10,10,0,10));
         JButton createBillboard = new JButton("Create New Billboard");
         JButton editBillboard = new JButton("Edit A Billboard");
         JButton scheduleBillboard = new JButton("Schedule A Billboard");

@@ -8,12 +8,8 @@ import java.awt.event.ActionListener;
 
 public class controlPanelLogin extends controlPanelUser {
 
-    public controlPanelLogin(String test, int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsers) {
-        super(test, userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsers);
-    }
-
-    public static void submitUsernameAndPassword(String user){
-        controlPanelUser.setTest(user);
+    public controlPanelLogin(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+        super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
     public static void controlPanelLogin(){
@@ -70,8 +66,7 @@ public class controlPanelLogin extends controlPanelUser {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String inputUser = inputUsername.getText();
-                //char[] inputPass = inputPassword.getPassword();
-                submitUsernameAndPassword(inputUser);
+                char[] inputPass = inputPassword.getPassword();
                 frame.dispose();
                 controlPanelGUI.displayGUI();
 
