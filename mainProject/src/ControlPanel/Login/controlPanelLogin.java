@@ -113,7 +113,6 @@ public class controlPanelLogin extends controlPanelUser {
                 for (char i :inputPass) {
                     pass += i;
                 }
-
                 byte[] hashedPassword = md.digest(pass.getBytes(StandardCharsets.UTF_8));
 
                 loginRequest(inputUser, hashedPassword);

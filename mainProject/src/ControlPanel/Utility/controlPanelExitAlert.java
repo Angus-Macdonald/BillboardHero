@@ -5,7 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class controlPanelExitAlert {
+public class controlPanelExitAlert extends controlPanelUser {
+
+    public controlPanelExitAlert(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+        super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
+    }
+
     public static void alterWindow(){
 
         JFrame frame = new JFrame("Alert");
