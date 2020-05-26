@@ -3,6 +3,8 @@ package ControlPanel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 
@@ -15,10 +17,11 @@ public class controlPanelGUI extends controlPanelUser {
     }
 
     public static void displayGUI(){
+        String test = controlPanelUser.getTest();
         Map<String, Boolean> userPermissionFromServer = new HashMap<String, Boolean>();
-        userPermissionFromServer.put("createBillboards", false);
-        userPermissionFromServer.put("editAllBillboards", false);
-        userPermissionFromServer.put("scheduleBillboards", false);
+        userPermissionFromServer.put("createBillboards", true);
+        userPermissionFromServer.put("editAllBillboards", true);
+        userPermissionFromServer.put("scheduleBillboards", true);
         userPermissionFromServer.put("editUsers", true);
 
         JFrame frame = new JFrame("Control Panel GUI");
@@ -26,10 +29,20 @@ public class controlPanelGUI extends controlPanelUser {
         JPanel panel2 = new JPanel();
         JPanel panel3 = new JPanel();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
+        frame.setLocation(dim.width/3, dim.height/3);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
-        JMenuItem item = new JMenuItem("Open");
+        JMenuItem item = new JMenuItem("Exit");
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlPanelExitAlert.alterWindow();
+            }
+        });
 
         menuBar.add(menu);
         menu.add(item);
@@ -37,7 +50,7 @@ public class controlPanelGUI extends controlPanelUser {
         frame.setLayout(new GridLayout(3,1));
 
 
-        JLabel controlPanelHead = new JLabel();
+        JLabel controlPanelHead = new JLabel(test);
         controlPanelHead.setFont(new Font("Serif", Font.BOLD, 48));
         controlPanelHead.setBorder(new EmptyBorder(0,10,0,10));
         JButton createBillboard = new JButton("Create New Billboard");
