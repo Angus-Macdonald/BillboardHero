@@ -1,13 +1,13 @@
 package ControlPanel;
 
 public class controlPanelUser {
-    String test;
-    int userID;
-    int sessionToken;
-    boolean createBBPermission;
-    boolean editBBPermission;
-    boolean scheduleBBPermission;
-    boolean editUsers;
+    private static String test;
+    private static int userID;
+    private static int sessionToken;
+    private static boolean createBBPermission;
+    private boolean editBBPermission;
+    private boolean scheduleBBPermission;
+    private boolean editUsers;
 
     public controlPanelUser(String test,
                             int userID,
@@ -26,11 +26,11 @@ public class controlPanelUser {
         this.editUsers = editUsers;
     }
 
-    public void setTest(){
-        test = "Test success";
+    public static void setTest(String value){
+        test = value;
     }
 
-    public String getTest(){
+    public static String getTest(){
         return test;
     }
 
