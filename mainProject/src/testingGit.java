@@ -1,4 +1,4 @@
 public class testingGit {
 
-    //Changed Text
+    //Merged Both
 }
