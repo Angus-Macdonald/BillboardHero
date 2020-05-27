@@ -13,8 +13,8 @@ public class Users {
                            boolean editAllBB,
                            boolean scheduleBB,
                            boolean editUsers) throws SQLException {
-        Connection connection = DBConnection.getInstance();
-        PreparedStatement statement = connection.prepareStatement(" INSERT INTO mpdb.Users (" +
+        Connection createUserStatementConnection = DBConnection.getInstance();
+        PreparedStatement Statement = createUserStatementConnection.prepareStatement(" INSERT INTO mpdb.Users (" +
                 "UserID," +
                 "Password," +
                 "Admin," +
@@ -23,17 +23,18 @@ public class Users {
                 "ScheduleBB," +
                 "EditUsers) " +
                 "Values(?,?,?,?,?,?,?)");
-        statement.clearParameters();
-        statement.setInt(1,userID);
-        statement.setString(2,password);
-        statement.setBoolean(3,admin);
-        statement.setBoolean(4,createBB);
-        statement.setBoolean(5,editAllBB);
-        statement.setBoolean(6,scheduleBB);
-        statement.setBoolean(7,editUsers);
-        statement.executeUpdate();
-        statement.close();
-        connection.close();
+        Statement.clearParameters();
+        Statement.setInt(1,userID);
+        Statement.setString(2,password);
+        Statement.setBoolean(3,admin);
+        Statement.setBoolean(4,createBB);
+        Statement.setBoolean(5,editAllBB);
+        Statement.setBoolean(6,scheduleBB);
+        Statement.setBoolean(7,editUsers);
+        Statement.executeUpdate();
+
+        Statement.close();
+        createUserStatementConnection.close();
     };
     public void deleteUser(int userID) throws SQLException {
         Connection connection = DBConnection.getInstance();

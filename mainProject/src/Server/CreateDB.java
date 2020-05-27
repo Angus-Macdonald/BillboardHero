@@ -4,17 +4,15 @@ import java.io.IOException;
 import java.sql.*;
 
 public class CreateDB {
-    public static void main(String args[]) throws SQLException, IOException {
-        Connection connection = DBConnection.getInstance();
-        Statement statement = connection.createStatement();
+    public static void createDB() throws SQLException, IOException {
+        Connection createDBConnection = DBConnection.getInstance();
+        Statement Statement = createDBConnection.createStatement();
 
         //statement.execute("DROP TABLES Users");
         //statement.execute("DROP TABLES Billboards");
         //statement.execute("DROP TABLES Schedule");
 
-        //statement.execute("CREATE DATABASE IF NOT EXISTS mpdb");
-        //statement.execute("use mpdb");
-        statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
+        Statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
                 "Password varchar(255) NOT NULL," +
                 "Admin bool NOT NULL," +
                 "CreateBB bool NOT NULL," +
@@ -23,12 +21,12 @@ public class CreateDB {
                 "EditUsers bool NOT NULL," +
                 "PRIMARY KEY (UserID))");
 
-        statement.execute("CREATE TABLE IF NOT EXISTS Billboards (BBName varchar(255)," +
+        Statement.execute("CREATE TABLE IF NOT EXISTS Billboards (BBName varchar(255)," +
                 "Creator int NOT NULL," +
                 "Billboard longblob NOT NULL," +
                 "PRIMARY KEY (BBName))");
 
-        statement.execute("CREATE TABLE IF NOT EXISTS Schedule (ScheduleID int," +
+        Statement.execute("CREATE TABLE IF NOT EXISTS Schedule (ScheduleID int," +
                 "Date DATE," +
                 "Time TIME," +
                 "ReDay INT," +
@@ -36,7 +34,7 @@ public class CreateDB {
                 "ReMin INT," +
                 "PRIMARY KEY (ScheduleID))");
 
-        statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
+        Statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
                 "UserID int NOT NULL," +
                 "PRIMARY KEY (Token))");
 
@@ -45,9 +43,9 @@ public class CreateDB {
         //Users dlu = new Users();
         //dlu.deleteUser(0);
 
-        logIO flu = new logIO();
-        int tokenuser = flu.login(1,"root");
-        System.out.println(tokenuser);
+        //logIO flu = new logIO();
+        //int tokenuser = flu.login(1,"root");
+        //System.out.println(tokenuser);
 
         //logIO flus = new logIO();
         //flus.logout(1);
@@ -72,8 +70,8 @@ public class CreateDB {
 
 
 
-        statement.close();
-        connection.close();
+        Statement.close();
+        //createDBConnection.close();
 
     }
 }
