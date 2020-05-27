@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.sql.SQLException;
 
+import static Server.logIO.login;
+
 public class controlPanelLogin extends controlPanelUser {
 
     public controlPanelLogin(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
@@ -120,15 +122,12 @@ public class controlPanelLogin extends controlPanelUser {
             int userID = parseUserID(inputUser);
             String password1 = new String(hashedPassword);
 
-//                int serverResponse = 0;
-//
-//                try {
-//                    serverResponse = Server.logIO.login(userID, password);
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                }
-//
-//                System.out.println(serverResponse);
+            int serverResponse = 0;
+            try {
+                serverResponse = login(userID, password1);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
 
             frame.dispose();
             controlPanelGUI.displayGUI();
