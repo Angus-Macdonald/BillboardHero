@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.sql.SQLException;
 
 public class controlPanelLogin extends controlPanelUser {
 
@@ -42,17 +43,25 @@ public class controlPanelLogin extends controlPanelUser {
         //setEditUsersPermission(permission[3]);
     }
 
+    public static int parseUserID(String user){
+        int foo;
+        try{
+            foo = Integer.parseInt(user);
+        }
+        catch (NumberFormatException e)
+        {
+            foo = 0;
+        }
+
+        return foo;
+    }
+
     public static void controlPanelLogin() throws NoSuchAlgorithmException {
-
-
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(salt);
-
-
-
 
         JFrame frame = new JFrame("Login Page");
         JPanel panel1 = new JPanel();
@@ -96,35 +105,39 @@ public class controlPanelLogin extends controlPanelUser {
         frame.getContentPane().add(panel3);
         frame.getContentPane().add(panel4);
 
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controlPanelExitAlert.alterWindow();
-        }
-        });
+        item.addActionListener(e -> controlPanelExitAlert.alterWindow());
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String inputUser = inputUsername.getText();
-                char[] inputPass = inputPassword.getPassword();
+        loginButton.addActionListener(e -> {
+            String inputUser = inputUsername.getText();
+            char[] inputPass = inputPassword.getPassword();
 
-                String pass = "";
-                for (char i :inputPass) {
-                    pass += i;
-                }
-
-                byte[] hashedPassword = md.digest(pass.getBytes(StandardCharsets.UTF_8));
-
-                loginRequest(inputUser, hashedPassword);
-
-                frame.dispose();
-                controlPanelGUI.displayGUI();
-
+            StringBuilder pass = new StringBuilder();
+            for (char i :inputPass) {
+                pass.append(i);
             }
+            byte[] hashedPassword = md.digest(pass.toString().getBytes(StandardCharsets.UTF_8));
+
+            int userID = parseUserID(inputUser);
+            String password1 = new String(hashedPassword);
+
+//                int serverResponse = 0;
+//
+//                try {
+//                    serverResponse = Server.logIO.login(userID, password);
+//                } catch (SQLException ex) {
+//                    ex.printStackTrace();
+//                }
+//
+//                System.out.println(serverResponse);
+
+            frame.dispose();
+            controlPanelGUI.displayGUI();
+
         });
 
         frame.pack();
         frame.setVisible(true);
     }
 }
+
+//Testing Global GIT Author Commit

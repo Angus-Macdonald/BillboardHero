@@ -4,7 +4,7 @@ import java.sql.*;
 import java.lang.Math;
 class loginException extends Exception{}
 public class logIO {
-    public int login(int userID, String password) throws SQLException {
+    public static int login(int userID, String password) throws SQLException {
         Connection connection = DBConnection.getInstance();
         //create a token
         int token = 0;
@@ -29,7 +29,7 @@ public class logIO {
         }
         catch(loginException notFound){
             System.out.println("Error: UserID or password was incorrect");
-        };
+        }
         //insert data into session table within the database
         PreparedStatement statement2 = connection.prepareStatement("INSERT INTO session Values(?,?)");
         statement2.setInt(1, token);
@@ -38,7 +38,7 @@ public class logIO {
         statement2.close();
         connection.close();
         return token;
-    };
+    }
     public void logout(int userID) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statementLogout = connection.prepareStatement(" DELETE FROM Session WHERE UserID=?");
@@ -47,5 +47,5 @@ public class logIO {
         statementLogout.executeUpdate();
         statementLogout.close();
         connection.close();
-    };
+    }
 }

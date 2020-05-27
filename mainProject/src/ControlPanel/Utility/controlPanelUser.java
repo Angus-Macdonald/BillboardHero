@@ -1,6 +1,7 @@
 package ControlPanel.Utility;
 
 public class controlPanelUser {
+
     private static int userID;
     private static int sessionToken;
     private static boolean createBBPermission;
@@ -24,6 +25,7 @@ public class controlPanelUser {
         this.scheduleBBPermission = scheduleBBPermission;
         this.editUsersPermission = editUsersPermission;
     }
+
     public static void setUserID(int value){userID = value;}
     public static int getUserID(){return userID; }
 
