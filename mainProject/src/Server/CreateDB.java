@@ -45,9 +45,9 @@ public class CreateDB {
         //Users dlu = new Users();
         //dlu.deleteUser(0);
 
-        //logIO flu = new logIO();
-        //int tokenuser = flu.login(1,"rootg");
-        //System.out.println(tokenuser);
+        logIO flu = new logIO();
+        int tokenuser = flu.login(1,"root");
+        System.out.println(tokenuser);
 
         //logIO flus = new logIO();
         //flus.logout(1);
@@ -67,8 +67,8 @@ public class CreateDB {
 //        flu.createBB("mm",2,myobj);
 
 
-        Users flu = new Users();
-        flu.setPassword("newpassed",3);
+        //Users flu = new Users();
+        //flu.setPassword("newpassed",3);
 
 
 
