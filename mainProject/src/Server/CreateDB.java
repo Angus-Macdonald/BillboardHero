@@ -12,8 +12,8 @@ public class CreateDB {
         //statement.execute("DROP TABLES Billboards");
         //statement.execute("DROP TABLES Schedule");
 
-        statement.execute("CREATE DATABASE IF NOT EXISTS mpdb");
-        statement.execute("use mpdb");
+        //statement.execute("CREATE DATABASE IF NOT EXISTS mpdb");
+        //statement.execute("use mpdb");
         statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
                 "Password varchar(255) NOT NULL," +
                 "Admin bool NOT NULL," +
