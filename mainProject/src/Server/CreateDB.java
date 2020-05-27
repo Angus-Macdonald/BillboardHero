@@ -67,7 +67,7 @@ public class CreateDB {
 
 
         Users flu = new Users();
-        flu.setPassword("newpasse",3);
+        flu.setPassword("newpassed",3);
 
 
 

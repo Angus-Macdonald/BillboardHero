@@ -22,7 +22,7 @@ public class DBConnection {
         Properties props = new Properties();
         FileInputStream in = null;
         try {
-            in = new FileInputStream("D:\\UniImportant\\OneDrive - Queensland University of Technology\\CAB302\\gitMajorProject\\mainProject\\src./db.props");
+            in = new FileInputStream("./db.props");
             props.load(in);
             in.close();
 
