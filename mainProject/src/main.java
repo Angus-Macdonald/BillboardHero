@@ -9,8 +9,5 @@ import java.sql.Connection;
 class main{
     public static void main(String[] args) throws NoSuchAlgorithmException {
         controlPanelLogin.controlPanelLogin();
-
-
-
     }
 }
