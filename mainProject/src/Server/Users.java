@@ -1,9 +1,8 @@
 package Server;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Users {
     public void createUser(int userID,
@@ -45,7 +44,19 @@ public class Users {
         statement.close();
         connection.close();
     };
-    public void listUsers(){};
+    public ArrayList<Integer> listUsers() throws SQLException {
+        ArrayList<Integer> userslist = new ArrayList<Integer>();
+        Connection connection = DBConnection.getInstance();
+        PreparedStatement statement = connection.prepareStatement("SElECT UserID FROM users");
+        statement.clearParameters();
+        ResultSet rs = statement.executeQuery();
+        while(rs.next()) {
+            int listUser = rs.getInt("UserID");
+            userslist.add(listUser);
+        }
+        statement.close();
+        return(userslist);
+    };
     public void setPassword(String password, int userID ) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("update users set password=? where UserID=?");
@@ -53,5 +64,6 @@ public class Users {
         statement.setString(1,password);
         statement.setInt(2,userID);
         statement.executeUpdate();
+        statement.close();
     };
 }

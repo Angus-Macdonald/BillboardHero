@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ServerBillboard {
@@ -36,6 +37,19 @@ public class ServerBillboard {
         statement.close();
         connection.close();
     };
-    public void getBBInfo(){}
-    public void currentBB(){};
+    public String getBBInfo(String bbName) throws SQLException {
+        Connection connection = DBConnection.getInstance();
+        PreparedStatement statement = connection.prepareStatement("SElECT Billboard FROM billboards WHERE BBName=? ");
+        statement.clearParameters();
+        statement.setString(1, bbName);
+        ResultSet rs = statement.executeQuery();
+        String bbInfo = null;
+        while(rs.next()) {
+            bbInfo = rs.getNString("Billboard");
+        }
+        statement.close();
+        connection.close();
+        return bbInfo;
+    }
+
 }
