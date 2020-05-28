@@ -22,14 +22,11 @@ public class controlPanelBillboard {
     private static String billboardName;
     private static String filePath;
 
+    //creates a new XML file to the file path with only a billboard tag with no attributes
     public controlPanelBillboard(String billboardName) {
         this.billboardName = billboardName;
+        filePath = "./" + billboardName + ".xml";
 
-        createXML();
-    }
-
-    public static void createXML() {
-        filePath = "./" + billboardName;
         try {
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
@@ -38,36 +35,6 @@ public class controlPanelBillboard {
             //root element (billboard tag)
             Element billboard = document.createElement("billboard");
             document.appendChild(billboard);
-            //attribute for root element (background color)
-            Attr bgColor = document.createAttribute("background");
-            bgColor.setValue("");
-            billboard.setAttributeNode(bgColor);
-
-//            //message element
-//            Element message = document.createElement("message");
-//            billboard.appendChild(message);
-//            //attribute for message element (message color)
-//            Attr msgColor = document.createAttribute("color");
-//            msgColor.setValue("");
-//            message.setAttributeNode(msgColor);
-//
-//            //image element
-//            Element img = document.createElement("picture");
-//            billboard.appendChild(img);
-//            //attribute for img element (img url/data)
-//            Attr imgURL = document.createAttribute("url");
-//            Attr imgData = document.createAttribute("data");
-//            imgURL.setValue("");
-//            imgData.setValue("");
-//            img.setAttributeNode(imgURL);
-//
-//            //information element
-//            Element info = document.createElement("information");
-//            billboard.appendChild(info);
-//            //attribute for infomation element (info color)
-//            Attr infoColor = document.createAttribute("color");
-//            infoColor.setValue("");
-//            info.setAttributeNode(infoColor);
 
             //create the xml file
             //transform the DOM Object to an XML File
@@ -87,7 +54,8 @@ public class controlPanelBillboard {
         }
     }
 
-    public static void addMsg(String input) {
+    //opens the existing XML file at the file path and adds a new message tag along with the input as the message
+    public static void addMsg(String msg) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -97,9 +65,9 @@ public class controlPanelBillboard {
             Node billboard = document.getElementsByTagName("billboard").item(0);
 
             //Add msg text
-            Element msg = document.createElement("message");
-            msg.appendChild(document.createTextNode(input));
-            billboard.appendChild(msg);
+            Element msgTag = document.createElement("message");
+            msgTag.appendChild(document.createTextNode(msg));
+            billboard.appendChild(msgTag);
 
             // write the DOM object to the file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -108,7 +76,7 @@ public class controlPanelBillboard {
             StreamResult streamResult = new StreamResult(new File(filePath));
             transformer.transform(domSource, streamResult);
 
-            System.out.println("The XML File was changed");
+            System.out.println("Added (" + msg + ") as a message to the XML file.");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -121,6 +89,7 @@ public class controlPanelBillboard {
         }
     }
 
+    //opens the existing XML file at the file path and adds a picture tag along with the source
     public static void addImage(String source, String input) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -141,6 +110,10 @@ public class controlPanelBillboard {
                 Attr imgData = document.createAttribute("data");
                 imgData.setValue(input);
                 img.setAttributeNode(imgData);
+            } else {
+                Attr imgURL = document.createAttribute("error");
+                imgURL.setValue("true");
+                img.setAttributeNode(imgURL);
             }
 
             // write the DOM object to the file
@@ -150,7 +123,7 @@ public class controlPanelBillboard {
             StreamResult streamResult = new StreamResult(new File(filePath));
             transformer.transform(domSource, streamResult);
 
-            System.out.println("The XML File was ");
+            System.out.println("Added (" + input + ") as the image source to the XML file.");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -163,7 +136,8 @@ public class controlPanelBillboard {
         }
     }
 
-    public static void addInfo(String input) {
+    //opens the existing XML file at the file path and adds an information tag along with the input
+    public static void addInfo(String info) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -173,9 +147,9 @@ public class controlPanelBillboard {
             Node billboard = document.getElementsByTagName("billboard").item(0);
 
             //Add info text
-            Element info = document.createElement("information");
-            info.appendChild(document.createTextNode(input));
-            billboard.appendChild(info);
+            Element infoTag = document.createElement("information");
+            infoTag.appendChild(document.createTextNode(info));
+            billboard.appendChild(infoTag);
 
             // write the DOM object to the file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -184,7 +158,7 @@ public class controlPanelBillboard {
             StreamResult streamResult = new StreamResult(new File(filePath));
             transformer.transform(domSource, streamResult);
 
-            System.out.println("The XML File was changed");
+            System.out.println("Added (" + info + ") as information to the XML file.");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
@@ -197,7 +171,9 @@ public class controlPanelBillboard {
         }
     }
 
-    public static void addColor(String changeColorOf, String input) {
+    //opens the existing XML file at the file path and searches for the
+    //specific tag then adds a color attribute along with the color
+    public static void addColor(String changeColorOf, String color) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -206,30 +182,19 @@ public class controlPanelBillboard {
             //Target existing root element
             Node billboard = document.getElementsByTagName("billboard").item(0);
             NodeList elements = billboard.getChildNodes();
-
             for (int i = 0; i < elements.getLength(); i++) {
                 Node element = elements.item(i);
                 if (changeColorOf.equals(element.getNodeName())) {
-                    Attr imgURL = document.createAttribute("url");
-                    imgURL.setValue(input);
-                    break;
-                } else if (changeColorOf.equals(element.getNodeName())) {
-                    break;
-                } else if (changeColorOf.equals(element.getNodeName())) {
+                    //removes existing tag
+                    billboard.removeChild(element);
+                    //creates a new replacement with color attribute
+                    Element replace = document.createElement(changeColorOf);
+                    billboard.appendChild(replace);
+                    Attr colorAttribute = document.createAttribute("color");
+                    colorAttribute.setValue(color);
+                    replace.setAttributeNode(colorAttribute);
                     break;
                 }
-            }
-
-            //Add img source
-            if (changeColorOf == "background") {
-                Attr color = document.createAttribute("color");
-                color.setValue(input);
-            } else if (changeColorOf == "message") {
-                Attr imgURL = document.createAttribute("url");
-                imgURL.setValue(input);
-            } else if (changeColorOf == "information") {
-                Attr imgData = document.createAttribute("data");
-                imgData.setValue(input);
             }
 
             // write the DOM object to the file
@@ -239,7 +204,7 @@ public class controlPanelBillboard {
             StreamResult streamResult = new StreamResult(new File(filePath));
             transformer.transform(domSource, streamResult);
 
-            System.out.println("The XML File was ");
+            System.out.println("Added (" + color + ") as the color of (" + changeColorOf + ") to the XML file.");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
