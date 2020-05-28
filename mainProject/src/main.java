@@ -10,8 +10,7 @@ class main{
     public static void main(String[] args) {
 
 
-        controlPanelGUI.displayGUI();
-
+        controlPanelBillboard test = new controlPanelBillboard("testName1");
 
 
     }
