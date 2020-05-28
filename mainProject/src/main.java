@@ -33,6 +33,17 @@ class main{
         //int tokenuser = flu.login(1,"root");
         //System.out.println(tokenuser);
 
+//        Object myobj= "diquans new billboard";
+//        ServerBillboard flu = new ServerBillboard();
+//        flu.createBB("diquan",2,myobj);
+
+        //ServerBillboard flu = new ServerBillboard();
+        //flu.ListBillboards();
+
+        //CheckPermission testuser = new CheckPermission();
+        //ArrayList<Boolean> arr = testuser.ChkPerms(2);
+        //System.out.println(arr);
+
         //controlPanelLogin.controlPanelLogin();
     }
 }
