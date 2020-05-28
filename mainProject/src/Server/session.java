@@ -29,7 +29,7 @@ public class session {
         catch(SessionException notFound){
             System.out.println("Error: UserID or password was incorrect");
         };
-        connection.close();
+        //connection.close();
         return sessionExists;
     };
 }

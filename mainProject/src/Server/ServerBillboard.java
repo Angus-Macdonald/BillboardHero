@@ -48,7 +48,7 @@ public class ServerBillboard {
 
             insertStatement.executeUpdate();
             insertStatement.close();
-            connection.close();
+            //connection.close();
         }
     };
 
@@ -60,7 +60,7 @@ public class ServerBillboard {
         statement.setString(1,BBname);
         statement.executeUpdate();
         statement.close();
-        connection.close();
+        //connection.close();
     };
     public String getBBInfo(String bbName) throws SQLException {
         Connection connection = DBConnection.getInstance();
@@ -73,7 +73,7 @@ public class ServerBillboard {
             bbInfo = rs.getNString("Billboard");
         }
         statement.close();
-        connection.close();
+        //connection.close();
         return bbInfo;
     }
     public ArrayList ListBillboards() throws SQLException {
@@ -88,7 +88,7 @@ public class ServerBillboard {
             billboardList.add(listname);
             billboardList.add(listCreator);
         }
-        System.out.println(billboardList);
+        statement.close();
         return billboardList;
     }
 

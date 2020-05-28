@@ -36,7 +36,7 @@ public class logIO {
         statement2.setInt(2, userID);
         statement2.executeUpdate();
         statement2.close();
-        connection.close();
+        //connection.close();
         return token;
     }
     public void logout(int userID) throws SQLException {
@@ -46,6 +46,6 @@ public class logIO {
         statementLogout.setInt(1,userID);
         statementLogout.executeUpdate();
         statementLogout.close();
-        connection.close();
+        //connection.close();
     }
 }
