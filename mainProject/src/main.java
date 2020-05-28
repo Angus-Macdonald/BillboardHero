@@ -37,8 +37,12 @@ class main{
 //        ServerBillboard flu = new ServerBillboard();
 //        flu.createBB("diquan",2,myobj);
 
-        ServerBillboard flu = new ServerBillboard();
-        flu.ListBillboards();
+        //ServerBillboard flu = new ServerBillboard();
+        //flu.ListBillboards();
+
+        //CheckPermission testuser = new CheckPermission();
+        //ArrayList<Boolean> arr = testuser.ChkPerms(2);
+        //System.out.println(arr);
 
         //controlPanelLogin.controlPanelLogin();
     }
