@@ -2,6 +2,7 @@
 import ControlPanel.Login.controlPanelLogin;
 import ControlPanel.UserManagement.userManagementGUI;
 import Server.*;
+import ControlPanel.Utility.billboard;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -11,39 +12,13 @@ import java.util.ArrayList;
 
 class main{
     public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException {
-        //creates the tables in the database if they do not exist (can be run everytime)
-        CreateDB database = new CreateDB();
-        database.createDB();
+        billboard billboard1 = new billboard("billboard1");
+        billboard1.addMsg("testing first msg");
+        billboard1.addInfo("some random info");
+        billboard1.addInfo("a second msg");
 
-        //creates a user with all permissions
-        //Users testuser = new Users();
-        //testuser.createUser(4,"root",true,true,true,true,true);
-
-        //test list return
-        //ArrayList<Integer> arr = testuser.listUsers();
-        //System.out.println(arr);
-
-        //return billboard info test
-        //ServerBillboard thisbb = new ServerBillboard();
-        //String bbinfos = thisbb.getBBInfo("flupe");
-        //System.out.println(bbinfos);
-
-        //login test
-        //logIO flu = new logIO();
-        //int tokenuser = flu.login(1,"root");
-        //System.out.println(tokenuser);
-
-//        Object myobj= "diquans new billboard";
-//        ServerBillboard flu = new ServerBillboard();
-//        flu.createBB("diquan",2,myobj);
-
-        //ServerBillboard flu = new ServerBillboard();
-        //flu.ListBillboards();
-
-        //CheckPermission testuser = new CheckPermission();
-        //ArrayList<Boolean> arr = testuser.ChkPerms(2);
-        //System.out.println(arr);
-
-        //controlPanelLogin.controlPanelLogin();
+        billboard billboard2 = new billboard("billboard2");
+        billboard2.addMsg("billboard2 msg");
+        billboard2.addInfo("info for bill2");
     }
 }
