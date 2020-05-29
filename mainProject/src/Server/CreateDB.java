@@ -10,7 +10,7 @@ public class CreateDB {
 
         //statement.execute("DROP TABLES Users");
         //statement.execute("DROP TABLES Billboards");
-        //statement.execute("DROP TABLES Schedule");
+        Statement.execute("DROP TABLES Schedule");
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
                 "Password varchar(255) NOT NULL," +
@@ -26,13 +26,12 @@ public class CreateDB {
                 "Billboard longblob NOT NULL," +
                 "PRIMARY KEY (BBName))");
 
-        Statement.execute("CREATE TABLE IF NOT EXISTS Schedule (ScheduleID int," +
-                "Date DATE," +
-                "Time TIME," +
-                "ReDay INT," +
-                "ReHour INT," +
-                "ReMin INT," +
-                "PRIMARY KEY (ScheduleID))");
+        Statement.execute("CREATE TABLE IF NOT EXISTS Schedule (BBName varchar(255)," +
+                "Creator int NOT NULL," +
+                "Date varchar(255) NOT NULL," +
+                "STime int NOT NULL," +
+                "ETime int NOT NULL," +
+                "PRIMARY KEY (BBName))");
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
                 "UserID int NOT NULL," +
