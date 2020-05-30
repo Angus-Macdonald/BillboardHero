@@ -63,14 +63,21 @@ public class billboard {
             //Target existing root element
             Node billboard = document.getElementsByTagName("billboard").item(0);
 
-            //Checks if there's an existing message element
-            NodeList elements = billboard.getChildNodes();
-            for (int i = 0; i < elements.getLength(); i++) {
-                Node element = elements.item(i);
+            //Checks if there's an existing message element and edits that if there is
+            NodeList elementList = billboard.getChildNodes();
+            for (int i = 0; i < elementList.getLength(); i++) {
+                Node element = elementList.item(i);
                 if ("message".equals(element.getNodeName())) {
-                    //removes existing tag
-                    billboard.removeChild(element);
-                    break;
+                    element.setTextContent(msg);
+
+                    transformerFactory = TransformerFactory.newInstance();
+                    transformer = transformerFactory.newTransformer();
+                    domSource = new DOMSource(document);
+                    streamResult = new StreamResult(new File(filePath));
+                    transformer.transform(domSource, streamResult);
+
+                    System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
+                    return;
                 }
             }
 
@@ -84,7 +91,6 @@ public class billboard {
             transformer = transformerFactory.newTransformer();
             domSource = new DOMSource(document);
             streamResult = new StreamResult(new File(filePath));
-
             transformer.transform(domSource, streamResult);
 
             System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
@@ -101,6 +107,46 @@ public class billboard {
 
             //Target existing root element
             Node billboard = document.getElementsByTagName("billboard").item(0);
+
+            //Checks if there's an existing message element and edits that if there is
+            NodeList elementList = billboard.getChildNodes();
+            for (int i = 0; i < elementList.getLength(); i++) {
+                Node node = elementList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    if ("picture".equals(element.getNodeName())) {
+                        if (element.getAttributes() != null) {
+                            //remove all existing attributes in picture element
+                            element.removeAttribute("url");
+                            element.removeAttribute("data");
+                            element.removeAttribute("error");
+                            //adds the correct attribute specified by the user
+                            if (source.equals("url")) {
+                                Attr imgURL = document.createAttribute("url");
+                                imgURL.setValue(input);
+                                element.setAttributeNode(imgURL);
+                            } else if (source.equals("data")) {
+                                Attr imgData = document.createAttribute("data");
+                                imgData.setValue(input);
+                                element.setAttributeNode(imgData);
+                            } else {
+                                Attr imgURL = document.createAttribute("error");
+                                imgURL.setValue("true");
+                                element.setAttributeNode(imgURL);
+                            }
+                        }
+
+                        transformerFactory = TransformerFactory.newInstance();
+                        transformer = transformerFactory.newTransformer();
+                        domSource = new DOMSource(document);
+                        streamResult = new StreamResult(new File(filePath));
+                        transformer.transform(domSource, streamResult);
+
+                        System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
+                        return;
+                    }
+                }
+            }
 
             //Add img source
             Element img = document.createElement("picture");
@@ -141,14 +187,21 @@ public class billboard {
             //Target existing root element
             Node billboard = document.getElementsByTagName("billboard").item(0);
 
-            //Checks if there's an existing information element
+            //Checks if there's an existing message element and edits that if there is
             NodeList elements = billboard.getChildNodes();
             for (int i = 0; i < elements.getLength(); i++) {
                 Node element = elements.item(i);
                 if ("information".equals(element.getNodeName())) {
-                    //removes existing tag
-                    billboard.removeChild(element);
-                    break;
+                    element.setTextContent(info);
+
+                    transformerFactory = TransformerFactory.newInstance();
+                    transformer = transformerFactory.newTransformer();
+                    domSource = new DOMSource(document);
+                    streamResult = new StreamResult(new File(filePath));
+                    transformer.transform(domSource, streamResult);
+
+                    System.out.println("Added (" + info + ") as a message to the XML file at (" + filePath + ")");
+                    return;
                 }
             }
 
