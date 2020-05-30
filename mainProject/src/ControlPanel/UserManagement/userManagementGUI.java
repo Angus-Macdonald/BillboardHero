@@ -45,7 +45,7 @@ public class userManagementGUI extends controlPanelGUI {
         list.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
         panel2.add(userList);
 
-
+//
         userList.setPreferredSize(new Dimension(dim.width/5, dim.height/5));
 
         JButton editUser = new JButton("Edit User");
