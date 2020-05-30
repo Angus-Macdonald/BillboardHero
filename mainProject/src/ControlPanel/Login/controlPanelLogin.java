@@ -122,15 +122,19 @@ public class controlPanelLogin extends controlPanelUser {
             int userID = parseUserID(inputUser);
             String password1 = new String(hashedPassword);
 
-            int serverResponse = 0;
-            try {
-                serverResponse = login(userID, password1);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            System.out.println(password1);
 
-            frame.dispose();
-            controlPanelGUI.displayGUI();
+//            int serverResponse = 0;
+//
+//            try {
+//                serverResponse = login(userID, password1);
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
+//
+//            frame.dispose();
+//            controlPanelGUI.displayGUI();
+
 
         });
 
