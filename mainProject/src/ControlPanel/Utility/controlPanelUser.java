@@ -1,7 +1,6 @@
 package ControlPanel.Utility;
 
 public class controlPanelUser {
-
     private static int userID;
     private static int sessionToken;
     private static boolean createBBPermission;
