@@ -1,6 +1,5 @@
-package ControlPanel.MainGUI;
+package ControlPanel.Home.GUI;
 
-import ControlPanel.UserManagement.userManagementGUI;
 import ControlPanel.Utility.controlPanelExitAlert;
 import ControlPanel.Utility.controlPanelUser;
 
@@ -59,7 +58,7 @@ public class controlPanelGUI extends controlPanelUser {
         JButton createBillboard = new JButton("Create New Billboard");
         JButton editBillboard = new JButton("Edit A Billboard");
         JButton scheduleBillboard = new JButton("Schedule A Billboard");
-        JButton userManagement = new JButton("User Management");
+        JButton userManagement = new JButton("Account Management");
 
         panel1.add(controlPanelHead);
 
@@ -72,9 +71,9 @@ public class controlPanelGUI extends controlPanelUser {
         if(userPermissionFromServer.get("scheduleBillboards")) {
             panel3.add(scheduleBillboard);
         }
-        if(userPermissionFromServer.get("editUsers")) {
-            panel3.add(userManagement);
-        }
+
+        panel3.add(userManagement);
+
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
@@ -82,7 +81,7 @@ public class controlPanelGUI extends controlPanelUser {
         userManagement.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                userManagementGUI.userManagementGUI();
+                ControlPanel.Home.GUI.UserManagement.userManagement.userManagementGUI();
                 frame.dispose();
             }
         });

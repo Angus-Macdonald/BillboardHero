@@ -1,5 +1,5 @@
-package ControlPanel.Login;
-import ControlPanel.MainGUI.controlPanelGUI;
+package ControlPanel.Login.GUI;
+import ControlPanel.Home.GUI.controlPanelGUI;
 
 import ControlPanel.Utility.controlPanelExitAlert;
 import ControlPanel.Utility.controlPanelUser;
@@ -7,17 +7,12 @@ import ControlPanel.Utility.controlPanelUser;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.sql.SQLException;
 
-import static Server.logIO.login;
+public class loginScreen extends controlPanelUser {
 
-public class controlPanelLogin extends controlPanelUser {
-
-    public controlPanelLogin(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+    public loginScreen(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
@@ -122,15 +117,19 @@ public class controlPanelLogin extends controlPanelUser {
             int userID = parseUserID(inputUser);
             String password1 = new String(hashedPassword);
 
-            int serverResponse = 0;
-            try {
-                serverResponse = login(userID, password1);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
+            System.out.println(password1);
 
+//            int serverResponse = 0;
+//
+//            try {
+//                serverResponse = login(userID, password1);
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//            }
+//
             frame.dispose();
             controlPanelGUI.displayGUI();
+
 
         });
 
