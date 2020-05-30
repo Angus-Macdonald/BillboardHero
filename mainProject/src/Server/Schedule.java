@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Schedule {
-    public void scheduleBB() throws ParseException {
+    public void scheduleBB(String bbName,int creator, long dateStart,int startTime,int duration,int repD,int repH,int repM) throws ParseException {
 
 //        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 //        Date d = (Date) df.parse(bbDate);

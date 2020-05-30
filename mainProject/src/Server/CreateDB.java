@@ -10,7 +10,7 @@ public class CreateDB {
 
         //statement.execute("DROP TABLES Users");
         //statement.execute("DROP TABLES Billboards");
-        Statement.execute("DROP TABLES Schedule");
+        //Statement.execute("DROP TABLES Schedule");
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
                 "Password varchar(255) NOT NULL," +
