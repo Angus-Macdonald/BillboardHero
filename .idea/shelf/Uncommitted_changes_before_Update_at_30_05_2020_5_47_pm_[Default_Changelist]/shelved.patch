@@ -1,0 +1,53 @@
+Index: mainProject/database/mariadb-10.5.3-winx64/data/DESKTOP-14OEH0Q.err
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mainProject/database/mariadb-10.5.3-winx64/data/DESKTOP-14OEH0Q.err	(date 1590813374675)
++++ mainProject/database/mariadb-10.5.3-winx64/data/DESKTOP-14OEH0Q.err	(date 1590813374675)
+@@ -0,0 +1,25 @@
++InnoDB: using atomic writes.
++2020-05-30 14:36:14 0 [Note] InnoDB: The first innodb_system data file 'ibdata1' did not exist. A new tablespace will be created!
++2020-05-30 14:36:14 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
++2020-05-30 14:36:14 0 [Note] InnoDB: Uses event mutexes
++2020-05-30 14:36:14 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
++2020-05-30 14:36:14 0 [Note] InnoDB: Number of pools: 1
++2020-05-30 14:36:14 0 [Note] InnoDB: Using SSE2 crc32 instructions
++2020-05-30 14:36:14 0 [Note] InnoDB: Initializing buffer pool, total size = 134217728, chunk size = 134217728
++2020-05-30 14:36:14 0 [Note] InnoDB: Completed initialization of buffer pool
++2020-05-30 14:36:14 0 [Note] InnoDB: Setting file '.\ibdata1' size to 12 MB. Physically writing the file full; Please wait ...
++2020-05-30 14:36:14 0 [Note] InnoDB: File '.\ibdata1' size is now 12 MB.
++2020-05-30 14:36:14 0 [Note] InnoDB: Setting log file .\ib_logfile101 size to 100663296 bytes
++2020-05-30 14:36:14 0 [Note] InnoDB: Renaming log file .\ib_logfile101 to .\ib_logfile0
++2020-05-30 14:36:14 0 [Note] InnoDB: New log file created, LSN=10312
++2020-05-30 14:36:14 0 [Note] InnoDB: Doublewrite buffer not found: creating new
++2020-05-30 14:36:14 0 [Note] InnoDB: Doublewrite buffer created
++2020-05-30 14:36:14 0 [Note] InnoDB: 128 rollback segments are active.
++2020-05-30 14:36:14 0 [Note] InnoDB: Creating foreign key constraint system tables.
++2020-05-30 14:36:14 0 [Note] InnoDB: Creating tablespace and datafile system tables.
++2020-05-30 14:36:14 0 [Note] InnoDB: Creating sys_virtual system tables.
++2020-05-30 14:36:14 0 [Note] InnoDB: Creating shared tablespace for temporary tables
++2020-05-30 14:36:14 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
++2020-05-30 14:36:14 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
++2020-05-30 14:36:14 0 [Note] InnoDB: 10.5.3 started; log sequence number 0; transaction id 7
++2020-05-30 14:36:14 0 [Note] Plugin 'FEEDBACK' is disabled.
+Index: billboard1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- billboard1.xml	(date 1590815162052)
++++ billboard1.xml	(date 1590815162052)
+@@ -0,0 +1,1 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?><billboard><message>dvv</message><picture error="true"/><information>fdvfdv</information></billboard>
+\ No newline at end of file
+Index: billboard2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- billboard2.xml	(date 1590815052304)
++++ billboard2.xml	(date 1590815052304)
+@@ -0,0 +1,1 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?><billboard><message>billboard2 msg</message><information>info for bill2</information></billboard>
+\ No newline at end of file
