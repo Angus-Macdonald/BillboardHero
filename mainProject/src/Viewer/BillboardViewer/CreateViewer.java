@@ -3,8 +3,10 @@ package Viewer.BillboardViewer;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class CreateViewer extends JFrame implements KeyListener {
+public class CreateViewer extends JFrame implements KeyListener, MouseListener {
     JLabel escListener = new JLabel("");
 
     /**
@@ -19,15 +21,15 @@ public class CreateViewer extends JFrame implements KeyListener {
     }
 
     public CreateViewer() {
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setUndecorated(true);
         escListener.addKeyListener(this);
         escListener.setFocusable(true);
-
-        add(escListener);
-        pack();
-        setVisible(true);
+        this.addMouseListener(this);
+        this.add(escListener);
+        this.pack();
+        this.setVisible(true);
     }
 
     public void keyTyped(KeyEvent input) {
@@ -68,4 +70,29 @@ public class CreateViewer extends JFrame implements KeyListener {
     }
 
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int clicked = e.getClickCount();
+        if (clicked == 1) System.exit(0);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
