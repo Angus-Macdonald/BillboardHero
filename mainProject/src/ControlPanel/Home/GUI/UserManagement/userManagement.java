@@ -1,6 +1,6 @@
-package ControlPanel.UserManagement;
+package ControlPanel.Home.GUI.UserManagement;
 
-import ControlPanel.MainGUI.controlPanelGUI;
+import ControlPanel.Home.GUI.controlPanelGUI;
 import ControlPanel.Utility.controlPanelExitAlert;
 
 import javax.swing.*;
@@ -11,21 +11,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class userManagementGUI extends controlPanelGUI {
+public class userManagement extends controlPanelGUI {
 
-    public userManagementGUI(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+    public userManagement(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
     public static void userManagementGUI() {
-        JFrame frame = new JFrame("User Management");
+
+        boolean admin = getEditUsersPermission();
+
+        JFrame frame = new JFrame("Account Management");
         JPanel panel1 = new JPanel();
         JPanel panel2 = new JPanel();
         JPanel panel3 = new JPanel();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width/2, dim.height/2));
-
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
@@ -36,23 +38,25 @@ public class userManagementGUI extends controlPanelGUI {
 
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
 
-        JLabel header = new JLabel("User Management");
+        JLabel header = new JLabel("Account Management");
         panel1.setPreferredSize(new Dimension(dim.width/2, dim.height/10));
         panel1.add(header);
 
         JList list = new JList(userArray);
         JScrollPane userList = new JScrollPane(list);
         list.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-        panel2.add(userList);
+        if(admin){
+            panel2.add(userList);
+        }
 
-//
         userList.setPreferredSize(new Dimension(dim.width/5, dim.height/5));
 
         JButton editUser = new JButton("Edit User");
-        panel3.add(editUser, BorderLayout.NORTH);
         JButton deleteUser = new JButton("Delete User");
-        panel3.add(deleteUser, BorderLayout.SOUTH);
-
+        if(admin) {
+            panel3.add(editUser, BorderLayout.NORTH);
+            panel3.add(deleteUser, BorderLayout.SOUTH);
+        }
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -74,7 +78,6 @@ public class userManagementGUI extends controlPanelGUI {
             public void actionPerformed(ActionEvent e) {
                 //Are you sure pop up
                 //model.remove(listIndex[0]);
-
             }
         });
 
