@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 class main{
     public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException {
+        //this creates the database if it does not exit otherwise it does nothing
+        CreateDB init = new CreateDB();
+        init.createDB();
+
         billboard billboard1 = new billboard("billboard1");
         billboard1.addMsg("testing first msg");
         billboard1.addInfo("some random info");
