@@ -1,14 +1,9 @@
 
-import ControlPanel.Login.controlPanelLogin;
-import ControlPanel.UserManagement.userManagementGUI;
-import Server.*;
-import ControlPanel.Utility.billboard;
+import ControlPanel.Login.GUI.loginScreen;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 class main{
     public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException {
@@ -16,7 +11,7 @@ class main{
 
 //        CreateDB init = new CreateDB();
 //        init.createDB();
-        controlPanelLogin.controlPanelLogin();
+        loginScreen.controlPanelLogin();
 //
 //        billboard billboard1 = new billboard("billboard1");
 //        billboard1.addMsg("testing first msg");
