@@ -18,9 +18,8 @@ public class billboardCreateGUI {
         JLabel msgLabel = new JLabel("Message (required to pick a color): ");
         JTextField msgBox = new JTextField();
         JButton msgColorPicker = new JButton("Message Color");
-        JLabel typePicLabel = new JLabel("Picture Source Type: ");
-        JComboBox typePicBox = new JComboBox(new String[]{"None", "url", "data"});
         JLabel sourcePicLabel = new JLabel("Picture Source: ");
+        JComboBox typePicBox = new JComboBox(new String[]{"None", "url", "data"});
         JTextField sourcePicBox = new JTextField();
         JLabel infoLabel = new JLabel("Information (required to pick a color): ");
         JTextField infoBox = new JTextField();
@@ -33,9 +32,8 @@ public class billboardCreateGUI {
         frame.add(msgLabel);
         frame.add(msgBox);
         frame.add(msgColorPicker);
-        frame.add(typePicLabel);
-        frame.add(typePicBox);
         frame.add(sourcePicLabel);
+        frame.add(typePicBox);
         frame.add(sourcePicBox);
         frame.add(infoLabel);
         frame.add(infoBox);
@@ -44,31 +42,38 @@ public class billboardCreateGUI {
         bgColorPicker.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
-                bgColorPicker.setBackground(bgColor);
+                if (!nameBox.getText().isEmpty()) {
+                    Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.white);
+                    bgColorPicker.setBackground(bgColor);
+                }
             }
         });
         msgColorPicker.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
-                msgBox.setForeground(msgColor);
-                msgColorPicker.setBackground(msgColor);
+                if (!msgBox.getText().isEmpty()) {
+                    Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
+                    msgBox.setForeground(msgColor);
+                    msgColorPicker.setBackground(msgColor);
+                }
             }
         });
         infoColorPicker.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Color infoColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
-                infoBox.setForeground(infoColor);
-                infoColorPicker.setBackground(infoColor);
+                if (!infoBox.getText().isEmpty()) {
+                    Color infoColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
+                    infoBox.setForeground(infoColor);
+                    infoColorPicker.setBackground(infoColor);
+                }
             }
         });
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!nameBox.getText().isEmpty()) {
-                    billboard newBillboard = new billboard(nameBox.getText());
+                    billboard newBillboard = new billboard();
+                    newBillboard.createXML(nameBox.getText());
                     newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
                         bgColorPicker.getBackground().getRed(),
                         bgColorPicker.getBackground().getGreen(),
