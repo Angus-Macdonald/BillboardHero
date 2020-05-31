@@ -2,9 +2,7 @@ package Server;
 
 import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Schedule {
     public void scheduleBB(String bbName, int creator, Timestamp dateStart, int duration, int repD, int repH, int repM) throws ParseException, SQLException {
@@ -72,9 +70,25 @@ public class Schedule {
         statement.executeUpdate();
         statement.close();
     };
-    public void currentBB() throws SQLException {
+    public Object currentBB(Timestamp currentStamp) throws SQLException {
+        String currentBB = null;
         Connection connection = DBConnection.getInstance();
-        PreparedStatement statement = connection.prepareStatement("SElECT BBname FROM schedule");
+        PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime FROM schedule");
         ResultSet rs = statement.executeQuery();
+        while(rs.next()) {
+            String billboardName = rs.getNString("BBname");
+            Timestamp startTime = rs.getTimestamp("STime");
+            Timestamp endTime = rs.getTimestamp("ETime");
+            int result1 = currentStamp.compareTo(startTime);
+            int result2 = currentStamp.compareTo(endTime);
+            if((result1>0)&&(result2<0)){
+                System.out.println(billboardName+" is in range");
+                currentBB=billboardName;
+            }
+
+        }
+        ServerBillboard getBB = new ServerBillboard();
+        return getBB.getBBInfo(currentBB);
+
     };
 }
