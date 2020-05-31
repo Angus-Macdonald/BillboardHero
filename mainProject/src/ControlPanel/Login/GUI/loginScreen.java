@@ -10,6 +10,9 @@ import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 
+import static ControlPanel.Utility.hashPassword.hashPassword;
+import static ControlPanel.Utility.hashPassword.inputPassHashCheck;
+
 public class loginScreen extends controlPanelUser {
 
     public loginScreen(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
@@ -22,6 +25,8 @@ public class loginScreen extends controlPanelUser {
         //setUserID(id);
         //setSessionToken(token);
     }
+
+
 
     public void getPermissions(String user, String token){
 
@@ -101,23 +106,31 @@ public class loginScreen extends controlPanelUser {
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
         frame.getContentPane().add(panel4);
-
         item.addActionListener(e -> controlPanelExitAlert.alterWindow());
 
         loginButton.addActionListener(e -> {
             String inputUser = inputUsername.getText();
             char[] inputPass = inputPassword.getPassword();
 
-            StringBuilder pass = new StringBuilder();
-            for (char i :inputPass) {
-                pass.append(i);
-            }
-            byte[] hashedPassword = md.digest(pass.toString().getBytes(StandardCharsets.UTF_8));
-
             int userID = parseUserID(inputUser);
-            String password1 = new String(hashedPassword);
 
-            System.out.println(password1);
+            String pass = null;
+            for(char i: inputPass){
+                pass += i;
+            }
+
+            String password2 = null;
+            try {
+                password2 = new String(hashPassword(pass));
+            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+                noSuchAlgorithmException.printStackTrace();
+            }
+
+            if(inputPassHashCheck(pass, password2)){
+                System.out.println(password2);
+            }
+
+
 
 //            int serverResponse = 0;
 //
@@ -126,9 +139,9 @@ public class loginScreen extends controlPanelUser {
 //            } catch (SQLException ex) {
 //                ex.printStackTrace();
 //            }
-//
-            frame.dispose();
-            controlPanelGUI.displayGUI();
+
+//            frame.dispose();
+//            controlPanelGUI.displayGUI();
 
 
         });
@@ -137,5 +150,3 @@ public class loginScreen extends controlPanelUser {
         frame.setVisible(true);
     }
 }
-
-//Testing Global GIT Author Commit
