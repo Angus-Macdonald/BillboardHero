@@ -17,8 +17,48 @@ public class userManagement extends controlPanelGUI {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    public static void createUser(){
+        //EDIT USER PERMISSION
+        //Code to create user
+    }
+
+    public static void editUser(){
+        //EDIT USER PERMISSION
+        //Code to edit user
+    }
+
+    public static void deleteUser(){
+        //EDIT USER PERMISSION
+        //CANNOT DELETE OWN PROFILE
+        //Code to delete user
+    }
+
+    public static void changePassword(){
+        //Code to change a users password
+        //If EDIT user permission, can change any password
+        //Else, can only change their own user password
+
+        //Enter UserID - Check edit user permission:
+        //                      if false, check own UserID, if inputID and userID == false, return error
+        //                      if true, continue;
+
+        //Enter Your Password - Check edit user permission:
+        //                      if false: check inputPassword == databasePassword for userID, if false return error
+        //                      if true: check inputPassword == getUserID.dbPassword, if false return error
+
+        //Enter New Password:
+        //                  Check new password != old password
+        //                  Check new password == int data type
+        //                  Check new password has been hashed, use inputPassHashCheck Function(inputPW, hashPW), return true if they aren't equal
+    }
+
+    public static void main(String[] args){
+        userManagementGUI();
+    }
+
     public static void userManagementGUI() {
 
+        setEditUsersPermission(true);
         boolean admin = getEditUsersPermission();
 
         JFrame frame = new JFrame("Account Management");
