@@ -1,9 +1,11 @@
 package ControlPanel.Utility;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -120,20 +122,21 @@ public class billboard {
                             element.removeAttribute("url");
                             element.removeAttribute("data");
                             element.removeAttribute("error");
-                            //adds the correct attribute specified by the user
-                            if (source.equals("url")) {
-                                Attr imgURL = document.createAttribute("url");
-                                imgURL.setValue(input);
-                                element.setAttributeNode(imgURL);
-                            } else if (source.equals("data")) {
-                                Attr imgData = document.createAttribute("data");
-                                imgData.setValue(input);
-                                element.setAttributeNode(imgData);
-                            } else {
-                                Attr imgURL = document.createAttribute("error");
-                                imgURL.setValue("true");
-                                element.setAttributeNode(imgURL);
-                            }
+                        }
+
+                        //adds the correct attribute specified by the user
+                        if (source.equals("url")) {
+                            Attr imgURL = document.createAttribute("url");
+                            imgURL.setValue(input);
+                            element.setAttributeNode(imgURL);
+                        } else if (source.equals("data")) {
+                            Attr imgData = document.createAttribute("data");
+                            imgData.setValue(input);
+                            element.setAttributeNode(imgData);
+                        } else {
+                            Attr imgURL = document.createAttribute("error");
+                            imgURL.setValue("true");
+                            element.setAttributeNode(imgURL);
                         }
 
                         transformerFactory = TransformerFactory.newInstance();
@@ -232,19 +235,53 @@ public class billboard {
 
             //Target existing root element
             Node billboard = document.getElementsByTagName("billboard").item(0);
-            NodeList elements = billboard.getChildNodes();
-            for (int i = 0; i < elements.getLength(); i++) {
-                Node element = elements.item(i);
-                if (changeColorOf.equals(element.getNodeName())) {
-                    //removes existing tag
-                    billboard.removeChild(element);
-                    //creates a new replacement with color attribute
-                    Element replace = document.createElement(changeColorOf);
-                    billboard.appendChild(replace);
-                    Attr colorAttribute = document.createAttribute("color");
-                    colorAttribute.setValue(color);
-                    replace.setAttributeNode(colorAttribute);
-                    break;
+            if (changeColorOf == "billboard") {
+                Element element = (Element) billboard;
+                if (element.getAttributes() != null) {
+                    element.removeAttribute("color");
+                }
+
+                //adds the correct attribute specified by the user
+                Attr colorTag = document.createAttribute("color");
+                colorTag.setValue(color);
+                element.setAttributeNode(colorTag);
+
+                transformerFactory = TransformerFactory.newInstance();
+                transformer = transformerFactory.newTransformer();
+                domSource = new DOMSource(document);
+                streamResult = new StreamResult(new File(filePath));
+                transformer.transform(domSource, streamResult);
+
+                System.out.println("Added (" + color + ") as the color of (" + changeColorOf + ") to the XML file at (" + filePath + ")");
+                return;
+            }
+
+            //Checks if there's an existing message element and edits that if there is
+            NodeList elementList = billboard.getChildNodes();
+            for (int i = 0; i < elementList.getLength(); i++) {
+                Node node = elementList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    if (changeColorOf.equals(element.getNodeName())) {
+                        if (element.getAttributes() != null) {
+                            //remove all existing attributes in picture element
+                            element.removeAttribute("color");
+                        }
+
+                        //adds the correct attribute specified by the user
+                        Attr colorTag = document.createAttribute("color");
+                        colorTag.setValue(color);
+                        element.setAttributeNode(colorTag);
+
+                        transformerFactory = TransformerFactory.newInstance();
+                        transformer = transformerFactory.newTransformer();
+                        domSource = new DOMSource(document);
+                        streamResult = new StreamResult(new File(filePath));
+                        transformer.transform(domSource, streamResult);
+
+                        System.out.println("Added (" + color + ") as the color of (" + changeColorOf + ") to the XML file at (" + filePath + ")");
+                        return;
+                    }
                 }
             }
 
@@ -259,6 +296,23 @@ public class billboard {
 
         } catch (TransformerException | IOException | SAXException tfe) {
             tfe.printStackTrace();
+        }
+    }
+
+    public static String xmlToString() {
+        try {
+            StringWriter writer = new StringWriter();
+            transformerFactory = TransformerFactory.newInstance();
+            transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.transform(new DOMSource(document), new StreamResult(writer));
+            return writer.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error converting to String", ex);
         }
     }
 
