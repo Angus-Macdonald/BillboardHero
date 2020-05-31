@@ -1,15 +1,18 @@
 package Server;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import java.text.ParseException;
+import java.util.Calendar;
 
 public class CreateDB {
     public static void createDB() throws SQLException, IOException {
         Connection createDBConnection = DBConnection.getInstance();
         Statement Statement = createDBConnection.createStatement();
 
-        //statement.execute("DROP TABLES Users");
-        //statement.execute("DROP TABLES Billboards");
+        //Statement.execute("DROP TABLES Users");
+        //Statement.execute("DROP TABLES Billboards");
         //Statement.execute("DROP TABLES Schedule");
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
@@ -28,9 +31,12 @@ public class CreateDB {
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Schedule (BBName varchar(255)," +
                 "Creator int NOT NULL," +
-                "Date varchar(255) NOT NULL," +
-                "STime int NOT NULL," +
-                "ETime int NOT NULL," +
+                "STime TIMESTAMP NOT NULL," +
+                "ETime TIMESTAMP NOT NULL," +
+                "duration int NOT NULL," +
+                "repeatDay int," +
+                "repeatHour int," +
+                "repeatMin int," +
                 "PRIMARY KEY (BBName))");
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
@@ -71,6 +77,35 @@ public class CreateDB {
 
         Statement.close();
         //createDBConnection.close();
+
+    }
+    public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException, ParseException {
+        //this creates the database if it does not exit otherwise it does nothing
+        CreateDB init = new CreateDB();
+        init.createDB();
+
+
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date now = calendar.getTime();
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+        System.out.println("Current time: "+currentTimestamp);
+
+
+        //timestamp
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 10:0:10.0");
+
+        Schedule first = new Schedule();
+        //first.viewSchedule();
+        //first.rmvFromSch("this4",timestamp);
+
+        Object testOb = "this is an string of whatever whatever dsgsergsfdhghf ";
+        ServerBillboard test = new ServerBillboard();
+        test.createBB("test",5,testOb);
+
+
+
+
+
 
     }
 }

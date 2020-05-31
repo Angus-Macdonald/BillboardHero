@@ -42,7 +42,7 @@ public class Users {
         statement.setInt(1,userID);
         statement.executeUpdate();
         statement.close();
-        connection.close();
+        //connection.close();
     };
     public ArrayList<Integer> listUsers() throws SQLException {
         ArrayList<Integer> userslist = new ArrayList<Integer>();
