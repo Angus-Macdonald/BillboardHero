@@ -5,6 +5,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
@@ -16,7 +18,7 @@ public class billboardCreateGUI {
     public static void main(String[] args) {
 //    public billboardCreateGUI() {
         JFrame frame = new JFrame("Create a New Billboard");
-        JLabel nameLabel = new JLabel("Name: ");
+        JLabel nameLabel = new JLabel("Name:* ");
         JTextField nameBox = new JTextField();
         JButton bgColorPicker = new JButton("Background Color");
         JLabel msgLabel = new JLabel("Message (required to pick a color): ");
@@ -34,12 +36,14 @@ public class billboardCreateGUI {
         frame.add(nameBox);
         frame.add(bgColorPicker);
         frame.add(msgLabel);
+        msgBox.setToolTipText("Max 50 characters.");
         frame.add(msgBox);
         frame.add(msgColorPicker);
         frame.add(sourcePicLabel);
         frame.add(typePicBox);
         frame.add(sourcePicBox);
         frame.add(infoLabel);
+        infoBox.setToolTipText("Max 200 characters.");
         frame.add(infoBox);
         frame.add(infoColorPicker);
         frame.add(button);
@@ -75,7 +79,7 @@ public class billboardCreateGUI {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!nameBox.getText().isEmpty()) {
+                if (!nameBox.getText().isEmpty() && (!msgBox.getText().isEmpty() && !infoBox.getText().isEmpty() && !sourcePicBox.getText().isEmpty())) {
                     billboard newBillboard = new billboard();
                     newBillboard.createXML(nameBox.getText());
                     newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
@@ -83,25 +87,30 @@ public class billboardCreateGUI {
                             bgColorPicker.getBackground().getGreen(),
                             bgColorPicker.getBackground().getBlue())
                     );
-                    if (!msgBox.getText().isEmpty()) {
+                    if (!msgBox.getText().isEmpty() && msgBox.getText().length() <= 50) {
                         newBillboard.addMsg(msgBox.getText());
                         newBillboard.addColor("message", String.format("#%02X%02X%02X",
                                 msgColorPicker.getBackground().getRed(),
                                 msgColorPicker.getBackground().getGreen(),
                                 msgColorPicker.getBackground().getBlue())
                         );
+                    } else if (!msgBox.getText().isEmpty() && msgBox.getText().length() > 50) {
+                        return;
                     }
                     if (!typePicBox.getSelectedItem().toString().equals("None") && !sourcePicBox.getText().isEmpty()) {
                         newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
                     }
-                    if (!infoBox.getText().isEmpty()) {
+                    if (!infoBox.getText().isEmpty() && infoBox.getText().length() <= 200) {
                         newBillboard.addInfo(infoBox.getText());
                         newBillboard.addColor("information", String.format("#%02X%02X%02X",
                                 infoColorPicker.getBackground().getRed(),
                                 infoColorPicker.getBackground().getGreen(),
                                 infoColorPicker.getBackground().getBlue())
                         );
+                    } else if (!infoBox.getText().isEmpty() && infoBox.getText().length() > 200) {
+                        return;
                     }
+                    System.out.println(msgBox.getText().length());
                     System.out.println(newBillboard);
                     //upload the created XML file to the server
                     ServerBillboard serverConn = new ServerBillboard();
@@ -119,5 +128,6 @@ public class billboardCreateGUI {
         frame.setSize(400, 400);
         frame.setLayout(new GridLayout(14, 1));
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 }

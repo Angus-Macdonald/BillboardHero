@@ -62,9 +62,9 @@ public class billboard {
         }
     }
 
-    public static void importXML(Object xmlFile, String fileOrServer) {
+    public static void importXML(File xmlFile, String xmlString, String fileOrServer) {
         if (fileOrServer == "file") {
-            file = (File) xmlFile;
+            file = xmlFile;
             filePath = file.getAbsolutePath();
             try {
                 DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
@@ -75,7 +75,7 @@ public class billboard {
             }
         } else if (fileOrServer == "server") {
             filePath = "./";
-            stringToXml((String) xmlFile);
+            stringToXml(xmlString);
         }
 
         System.out.println("Done importing (" + xmlFile + ").");
