@@ -58,6 +58,7 @@ public class Schedule {
             schList.add(repeatM);
         }
         statement.close();
+        rs.close();
 
         return(schList);
     };
@@ -87,8 +88,63 @@ public class Schedule {
 
         }
         statement.close();
+        rs.close();
         ServerBillboard getBB = new ServerBillboard();
         return getBB.getBBInfo(currentBB);
     };
+    public void editRepeats(Timestamp curTime) throws SQLException {
+        Connection connection = DBConnection.getInstance();
+        PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime, repeatDay, repeatHour, repeatMin createNum FROM schedule");
+        ResultSet rs = statement.executeQuery();
+
+        while(rs.next()) {
+            String billboardName = rs.getNString("BBname");
+            Timestamp startTime = rs.getTimestamp("STime");
+            Timestamp endTime = rs.getTimestamp("ETime");
+            int reD = rs.getInt("repeatDay");
+            int reH = rs.getInt("repeatHour");
+            int reM = rs.getInt("repeatMin");
+            long crtNum = rs.getLong("createNum");
+            int ispass = curTime.compareTo(endTime);
+            if(ispass>0){
+                System.out.println(crtNum+" has passed the current time");
+                System.out.println("repeats per day "+reD);
+                System.out.println("repeats per hour "+reH);
+                System.out.println("repeats per Minutes "+reM);
+                System.out.println("start time was "+startTime);
+                System.out.println("end time was "+endTime);
+                long currentStMS=startTime.getTime();
+                long currentEtMS=endTime.getTime();
+                if(reD>0){
+                    long reDay=reD*24*60*60*1000;
+                    startTime = new java.sql.Timestamp(currentStMS+reDay);
+                    System.out.println("start time now is "+startTime);
+                    endTime = new java.sql.Timestamp(currentEtMS+reDay);
+                    System.out.println("start time now is "+endTime);
+
+                }
+                if(reH>0){
+                    long reHour=reH*60*60*1000;
+                    startTime = new java.sql.Timestamp(currentStMS+reHour);
+                    System.out.println("start time now is "+startTime);
+                    endTime = new java.sql.Timestamp(currentEtMS+reHour);
+                    System.out.println("start time now is "+endTime);
+                }
+                if(reM>0){
+                    long reMin=reH*60*1000;
+                    startTime = new java.sql.Timestamp(currentStMS+reMin);
+                    System.out.println("start time now is "+startTime);
+                    endTime = new java.sql.Timestamp(currentEtMS+reMin);
+                    System.out.println("start time now is "+endTime);
+
+                }
+                System.out.println();
+
+
+            }
+
+        }
+
+    }
 
 }
