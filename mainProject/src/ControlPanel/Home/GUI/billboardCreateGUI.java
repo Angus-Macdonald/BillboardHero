@@ -104,13 +104,13 @@ public class billboardCreateGUI {
                     }
                     System.out.println(newBillboard);
                     //upload the created XML file to the server
-//                    ServerBillboard serverConn = new ServerBillboard();
-//                    try {
-//                        serverConn.createBB(nameBox.getText(), 1, newBillboard.xmlToString());
-//                        System.out.println(serverConn.getBBInfo("test2"));
-//                    } catch (SQLException | IOException throwables) {
-//                        throwables.printStackTrace();
-//                    }
+                    ServerBillboard serverConn = new ServerBillboard();
+                    try {
+                        serverConn.createBB(nameBox.getText(), 1, newBillboard.xmlToString());
+                        System.out.println(serverConn.getBBInfo(nameBox.getText()));
+                    } catch (SQLException | IOException throwables) {
+                        throwables.printStackTrace();
+                    }
                     frame.dispose();
                 }
             }

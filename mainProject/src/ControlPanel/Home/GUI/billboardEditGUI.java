@@ -24,10 +24,12 @@ public class billboardEditGUI {
         fileChooser.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML file", "xml");
         fileChooser.addChoosableFileFilter(xmlFilter);
+        JTextField xmlName = new JTextField();
         JButton fromServer = new JButton("Import billboard from the server.");
 
         frame.add(title);
         frame.add(fromFile);
+        frame.add(xmlName);
         frame.add(fromServer);
 
         fromFile.addActionListener(new ActionListener() {
@@ -45,8 +47,11 @@ public class billboardEditGUI {
         fromServer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-//                editFromServer();
+                try {
+                    editFromServer(xmlName.getText());
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
