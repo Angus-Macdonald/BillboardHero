@@ -73,22 +73,23 @@ public class Schedule {
     public Object currentBB(Timestamp currentStamp) throws SQLException {
         String currentBB = null;
         Connection connection = DBConnection.getInstance();
-        PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime FROM schedule");
+        PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime, createNum FROM schedule");
         ResultSet rs = statement.executeQuery();
         while(rs.next()) {
             String billboardName = rs.getNString("BBname");
             Timestamp startTime = rs.getTimestamp("STime");
             Timestamp endTime = rs.getTimestamp("ETime");
+            long createNumber = rs.getLong("createNum");
             int result1 = currentStamp.compareTo(startTime);
             int result2 = currentStamp.compareTo(endTime);
             if((result1>0)&&(result2<0)){
-                System.out.println(billboardName+" is in range");
                 currentBB=billboardName;
             }
 
         }
+        statement.close();
         ServerBillboard getBB = new ServerBillboard();
         return getBB.getBBInfo(currentBB);
-
     };
+
 }
