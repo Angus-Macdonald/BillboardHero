@@ -1,6 +1,7 @@
 package ControlPanel.Home.GUI;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,14 +19,17 @@ public class billboardEditGUI {
     public static void main(String[] args) {
 //    public billboardEditGUI() {
         JFrame frame = new JFrame("Edit an Existing Billboard");
-        JLabel title = new JLabel("Pick an option.", SwingConstants.CENTER);
-        JButton fromFile = new JButton("Import billboard from a file.");
+        JPanel top = new JPanel();
+        JLabel title = new JLabel("Where would you like to edit from", SwingConstants.CENTER);
+        JPanel mid = new JPanel();
+        JButton fromFile = new JButton("Computer");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("XML file", "xml");
         fileChooser.addChoosableFileFilter(xmlFilter);
+        JPanel bot = new JPanel();
         JTextField xmlName = new JTextField();
-        JButton fromServer = new JButton("Import billboard from the server.");
+        JButton fromServer = new JButton("Server");
 
         frame.add(title);
         frame.add(fromFile);
@@ -56,7 +60,8 @@ public class billboardEditGUI {
         });
 
         frame.setSize(400, 400);
-        frame.setLayout(new GridLayout(3, 1));
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setLayout(new GridLayout(4, 1));
         frame.setVisible(true);
     }
 
@@ -76,7 +81,7 @@ public class billboardEditGUI {
         JButton button = new JButton("Save and Exit");
         billboard newBillboard = new billboard();
 
-        newBillboard.importXML(xmlFile, "file");
+        newBillboard.importXML(xmlFile, null, "file");
         msgBox.setText(newBillboard.getMsg());
         msgBox.setForeground(Color.decode(newBillboard.getColor("message")));
         msgColorPicker.setBackground(Color.decode(newBillboard.getColor("message")));
@@ -190,7 +195,7 @@ public class billboardEditGUI {
         JButton button = new JButton("Save and Exit");
         billboard newBillboard = new billboard();
 
-        newBillboard.importXML(billboard, "server");
+        newBillboard.importXML(null, billboard, "server");
         msgBox.setText(newBillboard.getMsg());
         msgBox.setForeground(Color.decode(newBillboard.getColor("message")));
         msgColorPicker.setBackground(Color.decode(newBillboard.getColor("message")));
