@@ -38,6 +38,7 @@ public class logIO {
         statement2.executeUpdate();
         statement2.close();
         //connection.close();
+
         return token;
     }
     public void logout(int userID) throws SQLException {

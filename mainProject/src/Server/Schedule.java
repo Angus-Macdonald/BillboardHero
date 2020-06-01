@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class Schedule {
         statement.executeUpdate();
         statement.close();
     };
-    public Object currentBB(Timestamp currentStamp) throws SQLException {
+    public Object currentBB(Timestamp currentStamp) throws SQLException, IOException, ClassNotFoundException {
         Schedule updateTB = new Schedule();
         updateTB.editRepeats(currentStamp);
         String currentBB = null;
@@ -112,8 +113,8 @@ public class Schedule {
             if(ispass>0){
                 long currentStMS=startTime.getTime();
                 long currentEtMS=endTime.getTime();
-                PreparedStatement statementUpdateBB = connection.prepareStatement("UPDATE schedule SET STime=?, ETime=? WHERE createNum=?");
-                statementUpdateBB.clearParameters();
+                PreparedStatement statementUpdateTime = connection.prepareStatement("UPDATE schedule SET STime=?, ETime=? WHERE createNum=?");
+                statementUpdateTime.clearParameters();
                 if(reD>0){
                     long reDay=reD*24*60*60*1000;
                     startTime = new java.sql.Timestamp(currentStMS+reDay);
@@ -131,10 +132,10 @@ public class Schedule {
                     endTime = new java.sql.Timestamp(currentEtMS+reMin);
 
                 }
-                statementUpdateBB.setTimestamp(1,startTime);
-                statementUpdateBB.setTimestamp(2,endTime);
-                statementUpdateBB.setLong(3,crtNum);
-                statementUpdateBB.executeUpdate();
+                statementUpdateTime.setTimestamp(1,startTime);
+                statementUpdateTime.setTimestamp(2,endTime);
+                statementUpdateTime.setLong(3,crtNum);
+                statementUpdateTime.executeUpdate();
 
 
             }

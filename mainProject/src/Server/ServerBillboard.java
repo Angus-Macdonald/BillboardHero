@@ -1,9 +1,6 @@
 package Server;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,6 +34,7 @@ public class ServerBillboard {
             statementUpdateBB.setBinaryStream(1, new ByteArrayInputStream(bbData), bbData.length);
             statementUpdateBB.setString(2,BBname);
             statementUpdateBB.executeUpdate();
+            statementUpdateBB.close();
         }
         //insert into billboards
         else {
@@ -48,7 +46,6 @@ public class ServerBillboard {
 
             insertStatement.executeUpdate();
             insertStatement.close();
-            //connection.close();
         }
     };
 
@@ -60,9 +57,8 @@ public class ServerBillboard {
         statement.setString(1,BBname);
         statement.executeUpdate();
         statement.close();
-        //connection.close();
     };
-    public String getBBInfo(String bbName) throws SQLException {
+    public String getBBInfo(String bbName) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("SElECT Billboard FROM billboards WHERE BBName=? ");
         statement.clearParameters();
@@ -70,8 +66,13 @@ public class ServerBillboard {
         ResultSet rs = statement.executeQuery();
         String bbInfo = null;
         while(rs.next()) {
-            bbInfo = rs.getNString("Billboard");
+            byte[] data = rs.getBytes("billboard");
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+            Object objectBB = ois.readObject();
+            bbInfo = objectBB.toString();
         }
+
+
         statement.close();
         //connection.close();
         return bbInfo;

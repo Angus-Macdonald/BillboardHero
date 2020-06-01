@@ -15,7 +15,6 @@ public class Permission {
             perm = rs.getBoolean("Admin");
         }
         statement.close();
-        //connection.close();
         return perm;
     }
     boolean chkCreateBB(int userID)throws SQLException {
@@ -29,7 +28,6 @@ public class Permission {
             perm = rs.getBoolean("CreateBB");
         }
         statement.close();
-        //connection.close();
         return perm;
     }
     boolean chkEditAllBB(int userID)throws SQLException {
@@ -43,7 +41,6 @@ public class Permission {
             perm = rs.getBoolean("EditAllBB");
         }
         statement.close();
-        //connection.close();
         return perm;
     }
     boolean chkScheduleBB(int userID)throws SQLException {
@@ -57,7 +54,6 @@ public class Permission {
             perm = rs.getBoolean("ScheduleBB");
         }
         statement.close();
-        //connection.close();
         return perm;
     }
     boolean chkEditUsers(int userID)throws SQLException {
@@ -90,21 +86,22 @@ public class Permission {
                               boolean setScheduleBB,
                               boolean editUsers) throws SQLException {
         Connection connection = DBConnection.getInstance();
-        PreparedStatement statementUpdateBB = connection.prepareStatement("UPDATE users " +
+        PreparedStatement statement = connection.prepareStatement("UPDATE users " +
                 "SET Admin=?, " +
                 "CreateBB=?, " +
                 "EditAllBB=?, " +
                 "ScheduleBB=?, " +
                 "EditUsers=? WHERE UserID=?");
-        statementUpdateBB.clearParameters();
+        statement.clearParameters();
 
-        statementUpdateBB.setBoolean(1,setAdmin);
-        statementUpdateBB.setBoolean(2,setCreateBB);
-        statementUpdateBB.setBoolean(3,setEditAllBB);
-        statementUpdateBB.setBoolean(4,setScheduleBB);
-        statementUpdateBB.setBoolean(5,editUsers);
-        statementUpdateBB.setInt(6,userID);
-        statementUpdateBB.executeUpdate();
+        statement.setBoolean(1,setAdmin);
+        statement.setBoolean(2,setCreateBB);
+        statement.setBoolean(3,setEditAllBB);
+        statement.setBoolean(4,setScheduleBB);
+        statement.setBoolean(5,editUsers);
+        statement.setInt(6,userID);
+        statement.executeUpdate();
+        statement.close();
 
 
     }

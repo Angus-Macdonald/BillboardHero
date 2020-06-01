@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CreateDB {
@@ -39,64 +40,87 @@ public class CreateDB {
         Statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
                 "UserID int NOT NULL," +
                 "PRIMARY KEY (Token))");
+
         Statement.close();
-        //createDBConnection.close();
 
     }
-    public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException, ParseException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException, ParseException, ClassNotFoundException {
         //this creates the database if it does not exit otherwise it does nothing
         CreateDB init = new CreateDB();
         init.createDB();
 
         Users user = new Users();
         logIO log = new logIO();
-        Schedule first = new Schedule();
+        Schedule schedule = new Schedule();
         session session = new session();
         Permission permission = new Permission();
+        ServerBillboard billboard = new ServerBillboard();
 
-        ////create user//////
-        //user.createUser(9,"passpass",true,true,true,true,true);
+        /////create user//////
+        //user.createUser(10,"passpass",true,true,true,true,true);
+
+        /////delete user//////
+        //user.deleteUser(10);
+
+        /////get list of users//////
+        //ArrayList al = user.listUsers();
+        //System.out.println(al);
+
+        /////set password////
+        //user.setPassword("newsetpassword",9);
 
         ////login/////
-        log.login(1,"pass");
+        //log.login(3,"passpass");
+
+        ////logout//////
+        //log.logout(3);
+
+        ////check permissions/////
+        //ArrayList all = permission.ChkPerms(1);
+        //System.out.println(all);
 
         /////change permission//////
-//        permission.setPermission(1,false,false,false,false,false);
+        //permission.setPermission(5,false,false,false,false,false);
 
-        //////check if in session
-//        boolean token = session.sessionCheck(1970027197,1);
-//        System.out.println(token);
+        //////schedule billboard//////
+        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:00:0.0");
+        //schedule.scheduleBB("2020",100,timestamp,60,0,0,25);
+
+        ////view schedule//////
+        //ArrayList sch = schedule.viewSchedule();
+        //System.out.println(sch);
+
+        ////remove from schedule/////
+        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:00:0.0");
+        //schedule.rmvFromSch("2020",timestamp);
+
+        /////current billboard///
+        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1996-1-03 3:00:0.0");
+        //Object ans =schedule.currentBB(timestamp); System.out.println(ans);
+
+        //////check if in session///
+        //boolean token = session.sessionCheck(172286850,1);
+        //System.out.println(token);
+
+        /////create Billboard////////
+        //Object ojBB = "this is the stuff for 44";
+        //billboard.createBB("the44",44,ojBB);
+
+        ////delete Billboard /////////
+        //billboard.deleteBB("the44");
+
+        ////get billboard information/////
+        //String bbinfo = billboard.getBBInfo("test");
+        //System.out.println(bbinfo);
+
+        ////list billboards//////
+        //ArrayList lBB = billboard.ListBillboards();
+        //System.out.println(lBB);
 
         ///////get current time and date///////
-//        Calendar calendar = Calendar.getInstance();
-//        java.util.Date now = calendar.getTime();
-//        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
-//        //System.out.println("Current time: "+currentTimestamp);
-
-
-        //////timestamp/////////
-        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 2:30:0.0");
-
-        ////
-
-        /////create bb////////
-//        ServerBillboard bb = new ServerBillboard();
-//        Object ojBB = "teef teef";
-//        bb.createBB("teef",22,ojBB);
-
-
-        //////schedule BB//////
-        //first.scheduleBB("mincheck",22,timestamp,60,0,0,25);
-
-        /////get current bill board and print//////
-        //Object ans =first.currentBB(timestamp); System.out.println(ans);
-
-        //// check what billboards have passed current time ////
-        //first.editRepeats(timestamp);
-
-
-
-
-
+        //Calendar calendar = Calendar.getInstance();
+        //java.util.Date now = calendar.getTime();
+        //java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+        //System.out.println("Current time: "+currentTimestamp);
     }
 }
