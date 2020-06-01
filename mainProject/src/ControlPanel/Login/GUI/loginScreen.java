@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.sql.SQLException;
 
 import static ControlPanel.Utility.hashPassword.hashPassword;
 import static ControlPanel.Utility.hashPassword.inputPassHashCheck;
@@ -56,6 +57,12 @@ public class loginScreen extends controlPanelUser {
         }
 
         return foo;
+    }
+
+
+
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        controlPanelLogin();
     }
 
     public static void controlPanelLogin() throws NoSuchAlgorithmException {
@@ -125,23 +132,23 @@ public class loginScreen extends controlPanelUser {
             } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
                 noSuchAlgorithmException.printStackTrace();
             }
-
+            int serverResponse = 0;
             if(inputPassHashCheck(pass, password2)){
-                System.out.println(password2);
+                try {
+                    serverResponse = Server.logIO.login(userID, password2);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
+                frame.dispose();
+                controlPanelGUI.displayGUI();
+
             }
 
 
 
-//            int serverResponse = 0;
-//
-//            try {
-//                serverResponse = login(userID, password1);
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
 
-//            frame.dispose();
-//            controlPanelGUI.displayGUI();
+
 
 
         });

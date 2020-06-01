@@ -8,15 +8,21 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-
+import static ControlPanel.Login.GUI.loginScreen.controlPanelLogin;
+import static ControlPanel.Utility.logOut.clearControlPanelUser;
 
 
 public class controlPanelGUI extends controlPanelUser {
 
     public controlPanelGUI(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
+    }
+
+    public static void main(String[] args){
+        displayGUI();
     }
 
     public static void displayGUI(){
@@ -60,6 +66,8 @@ public class controlPanelGUI extends controlPanelUser {
         JButton scheduleBillboard = new JButton("Schedule A Billboard");
         JButton userManagement = new JButton("Account Management");
 
+        JButton logOut = new JButton("Log Out");
+
         panel1.add(controlPanelHead);
 
         if(userPermissionFromServer.get("createBillboards")) {
@@ -73,17 +81,25 @@ public class controlPanelGUI extends controlPanelUser {
         }
 
         panel3.add(userManagement);
+        panel3.add(logOut);
 
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
 
-        userManagement.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ControlPanel.Home.GUI.UserManagement.userManagement.userManagementGUI();
-                frame.dispose();
+        logOut.addActionListener(e -> {
+            clearControlPanelUser();
+            frame.dispose();
+            try {
+                controlPanelLogin();
+            } catch (NoSuchAlgorithmException ex) {
+                ex.printStackTrace();
             }
+        });
+
+        userManagement.addActionListener(e -> {
+            ControlPanel.Home.GUI.UserManagement.userManagement.userManagementGUI();
+            frame.dispose();
         });
 
         frame.pack();

@@ -1,5 +1,7 @@
 package ControlPanel.Utility;
 
+import javax.swing.*;
+
 public class controlPanelUser {
     private static int userID;
     private static int sessionToken;

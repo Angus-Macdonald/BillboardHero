@@ -55,10 +55,9 @@ public class userManagement extends controlPanelGUI {
     public static void main(String[] args){
         userManagementGUI();
     }
-
     public static void userManagementGUI() {
 
-        setEditUsersPermission(true);
+        setEditUsersPermission(false);
         boolean admin = getEditUsersPermission();
 
         JFrame frame = new JFrame("Account Management");
@@ -68,15 +67,19 @@ public class userManagement extends controlPanelGUI {
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setPreferredSize(new Dimension(dim.width/2, dim.height/2));
-
+        if(admin) {
+            frame.setPreferredSize(new Dimension(dim.width / 2, dim.height / 2));
+        }
+        else {
+            frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 4));
+        }
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
         JMenuItem item = new JMenuItem("Exit");
         menuBar.add(menu);
         menu.add(item);
         frame.setJMenuBar(menuBar);
-        frame.setLayout(new GridLayout(2, 2));
+        frame.setLayout(new GridLayout(3, 3));
 
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
 
@@ -89,21 +92,21 @@ public class userManagement extends controlPanelGUI {
         JScrollPane userList = new JScrollPane(list);
         list.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
         if(admin){
-            panel3.add(userList, BorderLayout.LINE_START);
+            panel2.add(userList);
         }
 
-        userList.setPreferredSize(new Dimension(dim.width/5, dim.height/5));
+        userList.setPreferredSize(new Dimension(dim.width/5, dim.height/5/2));
 
         JButton editUser = new JButton("Edit User");
         JButton deleteUser = new JButton("Delete User");
         JButton changePassword = new JButton("Change Password");
 
-//        if(admin) {
-//            panel4.add(editUser, BorderLayout.LINE_END);
-//            panel4.add(deleteUser, BorderLayout.LINE_END);
-//            panel4.add(changePassword, BorderLayout.LINE_END);
-//        }
+        if(admin) {
+            panel2.add(editUser);
+            panel2.add(deleteUser);
 
+        }
+        panel2.add(changePassword);
         item.addActionListener(e -> controlPanelExitAlert.alterWindow());
 
         final int[] listIndex = new int[1];
@@ -115,8 +118,6 @@ public class userManagement extends controlPanelGUI {
 
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
-        frame.getContentPane().add(panel3);
-//        frame.getContentPane().add(panel4);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
