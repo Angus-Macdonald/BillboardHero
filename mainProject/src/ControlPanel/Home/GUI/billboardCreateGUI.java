@@ -5,12 +5,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 import ControlPanel.Utility.billboard;
+import Server.ServerBillboard;
 
 public class billboardCreateGUI {
     public static void main(String[] args) {
+//    public billboardCreateGUI() {
         JFrame frame = new JFrame("Create a New Billboard");
         JLabel nameLabel = new JLabel("Name: ");
         JTextField nameBox = new JTextField();
@@ -75,16 +79,16 @@ public class billboardCreateGUI {
                     billboard newBillboard = new billboard();
                     newBillboard.createXML(nameBox.getText());
                     newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
-                        bgColorPicker.getBackground().getRed(),
-                        bgColorPicker.getBackground().getGreen(),
-                        bgColorPicker.getBackground().getBlue())
+                            bgColorPicker.getBackground().getRed(),
+                            bgColorPicker.getBackground().getGreen(),
+                            bgColorPicker.getBackground().getBlue())
                     );
                     if (!msgBox.getText().isEmpty()) {
                         newBillboard.addMsg(msgBox.getText());
                         newBillboard.addColor("message", String.format("#%02X%02X%02X",
-                            msgColorPicker.getBackground().getRed(),
-                            msgColorPicker.getBackground().getGreen(),
-                            msgColorPicker.getBackground().getBlue())
+                                msgColorPicker.getBackground().getRed(),
+                                msgColorPicker.getBackground().getGreen(),
+                                msgColorPicker.getBackground().getBlue())
                         );
                     }
                     if (!typePicBox.getSelectedItem().toString().equals("None") && !sourcePicBox.getText().isEmpty()) {
@@ -93,12 +97,20 @@ public class billboardCreateGUI {
                     if (!infoBox.getText().isEmpty()) {
                         newBillboard.addInfo(infoBox.getText());
                         newBillboard.addColor("information", String.format("#%02X%02X%02X",
-                            infoColorPicker.getBackground().getRed(),
-                            infoColorPicker.getBackground().getGreen(),
-                            infoColorPicker.getBackground().getBlue())
+                                infoColorPicker.getBackground().getRed(),
+                                infoColorPicker.getBackground().getGreen(),
+                                infoColorPicker.getBackground().getBlue())
                         );
                     }
-                    System.out.println(newBillboard.xmlToString());
+                    System.out.println(newBillboard);
+                    //upload the created XML file to the server
+//                    ServerBillboard serverConn = new ServerBillboard();
+//                    try {
+//                        serverConn.createBB(nameBox.getText(), 1, newBillboard.xmlToString());
+//                        System.out.println(serverConn.getBBInfo("test2"));
+//                    } catch (SQLException | IOException throwables) {
+//                        throwables.printStackTrace();
+//                    }
                     frame.dispose();
                 }
             }
