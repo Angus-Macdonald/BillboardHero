@@ -5,6 +5,7 @@ import java.lang.Math;
 class loginException extends Exception{}
 public class logIO {
     public static int login(int userID, String password) throws SQLException {
+
         Connection connection = DBConnection.getInstance();
         //create a token
         int token = 0;

@@ -52,20 +52,26 @@ public class CreateDB {
         logIO log = new logIO();
         Schedule first = new Schedule();
         session session = new session();
+        Permission permission = new Permission();
+
         ////create user//////
-        //user.createUser(1,"pass",true,true,true,true,true);
+        //user.createUser(9,"passpass",true,true,true,true,true);
+
         ////login/////
-        //log.login(1,"pass");
+        log.login(1,"pass");
+
+        /////change permission//////
+//        permission.setPermission(1,false,false,false,false,false);
 
         //////check if in session
-        boolean token = session.sessionCheck(1970027197,1);
-        System.out.println(token);
+//        boolean token = session.sessionCheck(1970027197,1);
+//        System.out.println(token);
 
         ///////get current time and date///////
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date now = calendar.getTime();
-        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
-        //System.out.println("Current time: "+currentTimestamp);
+//        Calendar calendar = Calendar.getInstance();
+//        java.util.Date now = calendar.getTime();
+//        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+//        //System.out.println("Current time: "+currentTimestamp);
 
 
         //////timestamp/////////

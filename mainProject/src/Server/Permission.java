@@ -3,7 +3,7 @@ package Server;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CheckPermission {
+public class Permission {
     boolean chkAdmin(int userID)throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("SElECT Admin FROM users WHERE UserID=? ");
@@ -82,6 +82,31 @@ public class CheckPermission {
         permList.add(3,chkScheduleBB(userID));
         permList.add(4,chkEditUsers(userID));
         return permList;
+    }
+    public void setPermission(int userID,
+                              boolean setAdmin,
+                              boolean setCreateBB,
+                              boolean setEditAllBB,
+                              boolean setScheduleBB,
+                              boolean editUsers) throws SQLException {
+        Connection connection = DBConnection.getInstance();
+        PreparedStatement statementUpdateBB = connection.prepareStatement("UPDATE users " +
+                "SET Admin=?, " +
+                "CreateBB=?, " +
+                "EditAllBB=?, " +
+                "ScheduleBB=?, " +
+                "EditUsers=? WHERE UserID=?");
+        statementUpdateBB.clearParameters();
+
+        statementUpdateBB.setBoolean(1,setAdmin);
+        statementUpdateBB.setBoolean(2,setCreateBB);
+        statementUpdateBB.setBoolean(3,setEditAllBB);
+        statementUpdateBB.setBoolean(4,setScheduleBB);
+        statementUpdateBB.setBoolean(5,editUsers);
+        statementUpdateBB.setInt(6,userID);
+        statementUpdateBB.executeUpdate();
+
+
     }
 
 }
