@@ -72,6 +72,8 @@ public class Schedule {
         statement.close();
     };
     public Object currentBB(Timestamp currentStamp) throws SQLException {
+        Schedule updateTB = new Schedule();
+        updateTB.editRepeats(currentStamp);
         String currentBB = null;
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime, createNum FROM schedule");
@@ -94,7 +96,7 @@ public class Schedule {
     };
     public void editRepeats(Timestamp curTime) throws SQLException {
         Connection connection = DBConnection.getInstance();
-        PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime, repeatDay, repeatHour, repeatMin createNum FROM schedule");
+        PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime, repeatDay, repeatHour, repeatMin, createNum FROM schedule");
         ResultSet rs = statement.executeQuery();
 
         while(rs.next()) {
@@ -106,39 +108,33 @@ public class Schedule {
             int reM = rs.getInt("repeatMin");
             long crtNum = rs.getLong("createNum");
             int ispass = curTime.compareTo(endTime);
+
             if(ispass>0){
-                System.out.println(crtNum+" has passed the current time");
-                System.out.println("repeats per day "+reD);
-                System.out.println("repeats per hour "+reH);
-                System.out.println("repeats per Minutes "+reM);
-                System.out.println("start time was "+startTime);
-                System.out.println("end time was "+endTime);
                 long currentStMS=startTime.getTime();
                 long currentEtMS=endTime.getTime();
+                PreparedStatement statementUpdateBB = connection.prepareStatement("UPDATE schedule SET STime=?, ETime=? WHERE createNum=?");
+                statementUpdateBB.clearParameters();
                 if(reD>0){
                     long reDay=reD*24*60*60*1000;
                     startTime = new java.sql.Timestamp(currentStMS+reDay);
-                    System.out.println("start time now is "+startTime);
                     endTime = new java.sql.Timestamp(currentEtMS+reDay);
-                    System.out.println("start time now is "+endTime);
 
                 }
-                if(reH>0){
+                else if(reH>0){
                     long reHour=reH*60*60*1000;
                     startTime = new java.sql.Timestamp(currentStMS+reHour);
-                    System.out.println("start time now is "+startTime);
                     endTime = new java.sql.Timestamp(currentEtMS+reHour);
-                    System.out.println("start time now is "+endTime);
                 }
-                if(reM>0){
-                    long reMin=reH*60*1000;
+                else if(reM>0){
+                    long reMin=reM*60*1000;
                     startTime = new java.sql.Timestamp(currentStMS+reMin);
-                    System.out.println("start time now is "+startTime);
                     endTime = new java.sql.Timestamp(currentEtMS+reMin);
-                    System.out.println("start time now is "+endTime);
 
                 }
-                System.out.println();
+                statementUpdateBB.setTimestamp(1,startTime);
+                statementUpdateBB.setTimestamp(2,endTime);
+                statementUpdateBB.setLong(3,crtNum);
+                statementUpdateBB.executeUpdate();
 
 
             }

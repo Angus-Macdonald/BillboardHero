@@ -11,10 +11,6 @@ public class CreateDB {
         Connection createDBConnection = DBConnection.getInstance();
         Statement Statement = createDBConnection.createStatement();
 
-        //Statement.execute("DROP TABLES Users");
-        //Statement.execute("DROP TABLES Billboards");
-        //Statement.execute("DROP TABLES Schedule");
-
         Statement.execute("CREATE TABLE IF NOT EXISTS Users (UserID int," +
                 "Password varchar(255) NOT NULL," +
                 "Admin bool NOT NULL," +
@@ -43,39 +39,6 @@ public class CreateDB {
         Statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
                 "UserID int NOT NULL," +
                 "PRIMARY KEY (Token))");
-
-        //Users dlu = new Users();
-        //dlu.createUser(5,"falseboy",false,false,false,false,false);
-        //Users dlu = new Users();
-        //dlu.deleteUser(0);
-
-        //logIO flu = new logIO();
-        //int tokenuser = flu.login(1,"root");
-        //System.out.println(tokenuser);
-
-        //logIO flus = new logIO();
-        //flus.logout(1);
-
-//        boolean quan;
-//        session flu = new session();
-//        quan = flu.sessionCheck(1125581510,1);
-//        System.out.println(quan);
-
-//        boolean quan;
-//        CheckPermission flu = new CheckPermission();
-//        quan = flu.chkEditUsers(5);
-//        System.out.println(quan);
-
-//        Object myobj= "hello world";
-//        ServerBillboard flu = new ServerBillboard();
-//        flu.createBB("mm",2,myobj);
-
-
-        //Users flu = new Users();
-        //flu.setPassword("newpassed",3);
-
-
-
         Statement.close();
         //createDBConnection.close();
 
@@ -85,34 +48,45 @@ public class CreateDB {
         CreateDB init = new CreateDB();
         init.createDB();
 
+        Users user = new Users();
+        logIO log = new logIO();
+        Schedule first = new Schedule();
+        session session = new session();
+        ////create user//////
+        //user.createUser(1,"pass",true,true,true,true,true);
+        ////login/////
+        //log.login(1,"pass");
 
+        //////check if in session
+        boolean token = session.sessionCheck(1970027197,1);
+        System.out.println(token);
+
+        ///////get current time and date///////
         Calendar calendar = Calendar.getInstance();
         java.util.Date now = calendar.getTime();
         java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
-        System.out.println("Current time: "+currentTimestamp);
+        //System.out.println("Current time: "+currentTimestamp);
 
 
-        //timestamp
-        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 1:32:0.0");
+        //////timestamp/////////
+        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 2:30:0.0");
 
-        Schedule first = new Schedule();
-        //first.viewSchedule();
-        //first.rmvFromSch("this4",timestamp);
+        ////
 
-        //create bb
+        /////create bb////////
 //        ServerBillboard bb = new ServerBillboard();
 //        Object ojBB = "teef teef";
 //        bb.createBB("teef",22,ojBB);
 
 
         //////schedule BB//////
-        //first.scheduleBB("longdur",22,timestamp,60,0,1,0);
+        //first.scheduleBB("mincheck",22,timestamp,60,0,0,25);
 
         /////get current bill board and print//////
         //Object ans =first.currentBB(timestamp); System.out.println(ans);
 
         //// check what billboards have passed current time ////
-        first.editRepeats(timestamp);
+        //first.editRepeats(timestamp);
 
 
 

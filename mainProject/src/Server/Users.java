@@ -33,7 +33,7 @@ public class Users {
         Statement.executeUpdate();
 
         Statement.close();
-        createUserStatementConnection.close();
+        //createUserStatementConnection.close();
     };
     public void deleteUser(int userID) throws SQLException {
         Connection connection = DBConnection.getInstance();
