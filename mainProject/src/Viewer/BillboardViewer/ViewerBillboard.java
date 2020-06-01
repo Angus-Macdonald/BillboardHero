@@ -33,6 +33,51 @@ public class ViewerBillboard extends JFrame {
         information.setFont(new Font("Helvetica", Font.BOLD, informationSize));
         information.setForeground(Color.decode("#3FFFC7"));
 
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int key = e.getKeyCode();
+                if (key == 27) System.exit(0);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+        frame.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int clicked = e.getClickCount();
+                if (clicked == 1) System.exit(0);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
         frame.add(topPanel, BorderLayout.NORTH);
@@ -60,13 +105,14 @@ public class ViewerBillboard extends JFrame {
 //        new ViewerBillboard();
 
         SwingUtilities.invokeLater(() -> createBillboard());
+
         //createViewer();
     }
 
     /**
      * Simple method to resize billboard font size based on message length
      *
-     * @param input
+     * @param input the message string to be checked
      */
     public static void resizeText(String input) {
         if (input.length() >= 25) {
@@ -78,4 +124,6 @@ public class ViewerBillboard extends JFrame {
         }
         System.out.println(input.length());
     }
+
+
 }
