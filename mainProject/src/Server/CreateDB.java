@@ -93,23 +93,26 @@ public class CreateDB {
 
 
         //timestamp
-        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 3:39:9.0");
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 1:32:0.0");
 
         Schedule first = new Schedule();
         //first.viewSchedule();
         //first.rmvFromSch("this4",timestamp);
 
         //create bb
-        ServerBillboard bb = new ServerBillboard();
-        Object ojBB = "teef teef";
-        bb.createBB("teef",22,ojBB);
+//        ServerBillboard bb = new ServerBillboard();
+//        Object ojBB = "teef teef";
+//        bb.createBB("teef",22,ojBB);
 
 
         //////schedule BB//////
-        //first.scheduleBB("teef",22,timestamp,30,0,1,0);
+        //first.scheduleBB("longdur",22,timestamp,60,0,1,0);
 
         /////get current bill board and print//////
-        Object ans =first.currentBB(timestamp); System.out.println(ans);
+        //Object ans =first.currentBB(timestamp); System.out.println(ans);
+
+        //// check what billboards have passed current time ////
+        first.editRepeats(timestamp);
 
 
 
