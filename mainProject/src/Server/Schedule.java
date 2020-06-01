@@ -79,7 +79,6 @@ public class Schedule {
             String billboardName = rs.getNString("BBname");
             Timestamp startTime = rs.getTimestamp("STime");
             Timestamp endTime = rs.getTimestamp("ETime");
-            long createNumber = rs.getLong("createNum");
             int result1 = currentStamp.compareTo(startTime);
             int result2 = currentStamp.compareTo(endTime);
             if((result1>0)&&(result2<0)){
