@@ -2,18 +2,17 @@ package ControlPanel.Utility;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import org.w3c.dom.Attr;
@@ -21,6 +20,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class billboard {
+    private static File file;
     private static String filePath;
 
     private static DocumentBuilder documentBuilder;
@@ -62,23 +62,23 @@ public class billboard {
         }
     }
 
-    public static void importXML(File xmlFile, String fileOrServer) {
+    public static void importXML(Object xmlFile, String fileOrServer) {
         if (fileOrServer == "file") {
-            filePath = xmlFile.getAbsolutePath();
+            file = (File) xmlFile;
+            filePath = file.getAbsolutePath();
+            try {
+                DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+                documentBuilder = documentFactory.newDocumentBuilder();
+                document = documentBuilder.parse(file);
+            } catch (ParserConfigurationException | SAXException | IOException pce) {
+                pce.printStackTrace();
+            }
         } else if (fileOrServer == "server") {
-            filePath = xmlFile.getName();
+            filePath = "./";
+            stringToXml((String) xmlFile);
         }
 
-        try {
-            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
-            documentBuilder = documentFactory.newDocumentBuilder();
-            document = documentBuilder.parse(xmlFile);
-
-            System.out.println("Done importing (" + xmlFile + ").");
-
-        } catch (ParserConfigurationException | SAXException | IOException pce) {
-            pce.printStackTrace();
-        }
+        System.out.println("Done importing (" + xmlFile + ").");
     }
 
     //opens the existing XML file at the file path and adds a new message tag along with the input as the message
@@ -353,6 +353,7 @@ public class billboard {
                 }
             }
         }
+
         return "";
     }
 
@@ -383,6 +384,7 @@ public class billboard {
                 }
             }
         }
+
         return null;
     }
 
@@ -400,6 +402,7 @@ public class billboard {
                 return info;
             }
         }
+
         return "";
     }
 
@@ -417,6 +420,16 @@ public class billboard {
             return writer.toString();
         } catch (Exception ex) {
             throw new RuntimeException("Error converting to String", ex);
+        }
+    }
+
+    public static void stringToXml(String xmlString) {
+        try {
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+            documentBuilder = documentFactory.newDocumentBuilder();
+            document = documentBuilder.parse(new InputSource(new StringReader(xmlString)));
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
         }
     }
 

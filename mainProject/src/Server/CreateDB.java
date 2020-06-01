@@ -37,7 +37,8 @@ public class CreateDB {
                 "repeatDay int," +
                 "repeatHour int," +
                 "repeatMin int," +
-                "PRIMARY KEY (BBName))");
+                "createNum BIGINT NOT NULL AUTO_INCREMENT," +
+                "PRIMARY KEY (createNum))");
 
         Statement.execute("CREATE TABLE IF NOT EXISTS Session (Token int," +
                 "UserID int NOT NULL," +
@@ -92,24 +93,23 @@ public class CreateDB {
 
 
         //timestamp
-        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 1:32:32.0");
+        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1995-12-30 3:39:9.0");
 
         Schedule first = new Schedule();
         //first.viewSchedule();
         //first.rmvFromSch("this4",timestamp);
 
-//        Object testOb = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><billboard color=\"#EEEEEE\"><message color=\"#EEEEEE\">hes a creepy nigga</message><information color=\"#FF6666\">Beige</information></billboard>";
-//        ServerBillboard test = new ServerBillboard();
-//        test.createBB("bronyAndrew",1,testOb);
-
-//        ServerBillboard test = new ServerBillboard();
-//        Object test2 = test.getBBInfo("bronyAndrew2");
-//        System.out.println(test2);
+        //create bb
+        ServerBillboard bb = new ServerBillboard();
+        Object ojBB = "teef teef";
+        bb.createBB("teef",22,ojBB);
 
 
-        //first.scheduleBB("four",1,timestamp,60,0,1,0);
-        Object ans =first.currentBB(timestamp);
-        System.out.println(ans);
+        //////schedule BB//////
+        //first.scheduleBB("teef",22,timestamp,30,0,1,0);
+
+        /////get current bill board and print//////
+        Object ans =first.currentBB(timestamp); System.out.println(ans);
 
 
 

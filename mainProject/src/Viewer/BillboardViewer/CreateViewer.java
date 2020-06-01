@@ -1,13 +1,14 @@
 package Viewer.BillboardViewer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class CreateViewer extends JFrame implements KeyListener, MouseListener {
-    JLabel escListener = new JLabel("");
+
 
     /**
      * Taken from lecture/tutorial demos, has main operating on separate
@@ -16,18 +17,24 @@ public class CreateViewer extends JFrame implements KeyListener, MouseListener {
     public static void main(String[] args) {
         CreateViewer viewer = new CreateViewer();
 
-//        SwingUtilities.invokeLater(() -> createViewer());
+        //SwingUtilities.invokeLater(() -> createViewer());
         //createViewer();
     }
 
     public CreateViewer() {
+        JLabel defaultMessage = new JLabel("There are currently no billboards scheduled.",
+                SwingConstants.CENTER);
+        defaultMessage.setFont(new Font("Helvetica", Font.BOLD, 60));
+        defaultMessage.setForeground(Color.WHITE);
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
-        escListener.addKeyListener(this);
-        escListener.setFocusable(true);
+        defaultMessage.addKeyListener(this);
+        defaultMessage.setFocusable(true);
         this.addMouseListener(this);
-        this.add(escListener);
+        this.add(defaultMessage);
+        this.getContentPane().setBackground(Color.DARK_GRAY);
         this.pack();
         this.setVisible(true);
     }
@@ -48,26 +55,16 @@ public class CreateViewer extends JFrame implements KeyListener, MouseListener {
         // Do nothing
     }
 
-    public void createViewer() {
-        JFrame frame = new JFrame();
-
-//        KeyAdapter keyListener = new KeyAdapter() {
-//            @Override
-//            public void keyTyped(KeyEvent e) {
-//                super.keyTyped(e);
-//            }
-//        };
-
-        // on ESC key close frame
-
-
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setUndecorated(true);
-//        frame.pack();
-        frame.setVisible(true);
-
-    }
+//    private static void createViewer() {
+//        JFrame frame = new JFrame();
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        frame.setUndecorated(true);
+//        frame.getContentPane().addKeyListener(this);
+//        frame.getContentPane().setBackground(Color.YELLOW);
+//        frame.setVisible(true);
+//
+//    }
 
 
     @Override
