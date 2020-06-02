@@ -110,14 +110,13 @@ public class billboardCreateGUI {
                     } else if (!infoBox.getText().isEmpty() && infoBox.getText().length() > 200) {
                         return;
                     }
-                    System.out.println(msgBox.getText().length());
-                    System.out.println(newBillboard);
+                    System.out.println(newBillboard.xmlToString());
                     //upload the created XML file to the server
                     ServerBillboard serverConn = new ServerBillboard();
                     try {
                         serverConn.createBB(nameBox.getText(), 1, newBillboard.xmlToString());
-                        System.out.println(serverConn.getBBInfo(nameBox.getText()));
-                    } catch (SQLException | IOException throwables) {
+                        System.out.println("Billboard (" + serverConn.getBBInfo(nameBox.getText()) + ") successfully added to database.");
+                    } catch (SQLException | IOException | ClassNotFoundException throwables) {
                         throwables.printStackTrace();
                     }
                     frame.dispose();
