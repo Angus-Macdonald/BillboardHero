@@ -55,6 +55,10 @@ public class billboardEditGUI {
                     editFromServer(xmlName.getText());
                 } catch (SQLException ex) {
                     ex.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -175,7 +179,7 @@ public class billboardEditGUI {
         frame.setVisible(true);
     }
 
-    public static void editFromServer(String fileName) throws SQLException {
+    public static void editFromServer(String fileName) throws SQLException, IOException, ClassNotFoundException {
         ServerBillboard serverConn = new ServerBillboard();
         //CHECK WHAT HEPPENS WHEN AN INVALID NAMES GETS PUT IN
         String billboard = serverConn.getBBInfo(fileName);

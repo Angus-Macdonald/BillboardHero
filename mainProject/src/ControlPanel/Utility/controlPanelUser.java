@@ -1,8 +1,10 @@
 package ControlPanel.Utility;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class controlPanelUser {
+public class controlPanelUser<logoutButton> {
     private static int userID;
     private static int sessionToken;
     private static boolean createBBPermission;
@@ -45,5 +47,5 @@ public class controlPanelUser {
     public static void setEditUsersPermission(boolean value){editUsersPermission = value;}
     public static boolean getEditUsersPermission(){return editUsersPermission;}
 
-
 }
+

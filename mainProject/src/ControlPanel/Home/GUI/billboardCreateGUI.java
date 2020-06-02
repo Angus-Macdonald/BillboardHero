@@ -117,7 +117,7 @@ public class billboardCreateGUI {
                     try {
                         serverConn.createBB(nameBox.getText(), 1, newBillboard.xmlToString());
                         System.out.println(serverConn.getBBInfo(nameBox.getText()));
-                    } catch (SQLException | IOException throwables) {
+                    } catch (SQLException | IOException | ClassNotFoundException throwables) {
                         throwables.printStackTrace();
                     }
                     frame.dispose();
