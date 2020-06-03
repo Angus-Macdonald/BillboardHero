@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static ControlPanel.Home.GUI.UserManagement.changePassword.changePasswordWindow;
+
 public class userManagement extends controlPanelGUI {
 
     static String selectedUser = "";
@@ -48,7 +50,7 @@ public class userManagement extends controlPanelGUI {
     }
     public static void userManagementGUI() {
 
-        setEditUsersPermission(true);
+        setEditUsersPermission(false);
         boolean admin = getEditUsersPermission();
         JFrame frame = new JFrame("Account Management");
         JPanel panel1 = new JPanel();
@@ -105,17 +107,19 @@ public class userManagement extends controlPanelGUI {
 
         item.addActionListener(e -> controlPanelExitAlert.alterWindow());
 
-        list.addListSelectionListener(e ->
-                //This is just test for showing the actionListener can retrieve the selected user
-            selectedUser = selectUser(list)
-        );
+        //Line Below retrieves selected User from the User List and stores the value within a variable
+        list.addListSelectionListener(e -> selectedUser = selectUser(list));
 
-        deleteUser.addActionListener(e ->
-                //Code to show it can retrieve the selected User and "delete"
-                System.out.println(selectedUser)
-        );
+        //Line below is the action listener for the Edit User Button. Is a temp test to show it can retrieve the selected user
+        editUser.addActionListener(e -> System.out.println("Edit User: " + selectedUser));
 
-        panel3.setBorder(new EmptyBorder(0,0,0,70));
+        //Line below is the action listener for the Delete User Button. Is a temp test to show it can retrieve the selected user
+        deleteUser.addActionListener(e -> System.out.println("Delete User: "+ selectedUser));
+
+        //Following Code implements Changing the password
+        changePassword.addActionListener(e -> {
+            changePasswordWindow();
+        });
 
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
