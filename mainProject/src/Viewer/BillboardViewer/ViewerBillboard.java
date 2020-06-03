@@ -1,5 +1,6 @@
 package Viewer.BillboardViewer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -7,14 +8,30 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class ViewerBillboard extends JFrame {
     public static Color background = Color.decode("#6800C0");
     public static String testMessage = "This is a test message!";
     public static int messageSize;
     public static int informationSize;
+    public static URL url;
 
-    private static void createBillboard() {
+    static {
+        try {
+            url = new URL("https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Need to have something to check how many elements are in billboard
+    // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
+    private static void createBillboard() throws IOException {
+
         JFrame frame = new JFrame();
 
         JPanel topPanel = new JPanel();
@@ -25,6 +42,9 @@ public class ViewerBillboard extends JFrame {
         // 50 character max for message
         JLabel message = new JLabel(testMessage);
         JLabel information = new JLabel("Information text");
+
+        BufferedImage image = ImageIO.read(url);
+        JLabel imageInput = new JLabel(new ImageIcon(image));
 
         resizeText(testMessage);
 
@@ -80,7 +100,13 @@ public class ViewerBillboard extends JFrame {
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
+
+
+
         frame.add(topPanel, BorderLayout.NORTH);
+
+        frame.add(middlePanel, BorderLayout.CENTER);
+
         frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.getContentPane().setBackground(background);
 
@@ -91,6 +117,10 @@ public class ViewerBillboard extends JFrame {
         bottomPanel.add(information);
         bottomPanel.setBackground(background);
         bottomPanel.setBorder(new EmptyBorder(10, 10, 150, 10));
+
+        middlePanel.add(imageInput);
+        middlePanel.setBorder(new EmptyBorder(100, 10, 10, 10));
+        middlePanel.setBackground(background);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.pack();
@@ -104,7 +134,13 @@ public class ViewerBillboard extends JFrame {
     public static void main(String[] args) {
 //        new ViewerBillboard();
 
-        SwingUtilities.invokeLater(() -> createBillboard());
+        SwingUtilities.invokeLater(() -> {
+            try {
+                createBillboard();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         //createViewer();
     }

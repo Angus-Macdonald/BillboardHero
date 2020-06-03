@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import ControlPanel.Utility.billboard;
 import Server.ServerBillboard;
@@ -38,9 +39,9 @@ public class billboardEditGUI {
 
         fromFile.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {    //opens a file browser to select a file and imports it to the billboard class
                 int confirmation = fileChooser.showOpenDialog(frame);
-                if (confirmation == JFileChooser.APPROVE_OPTION && fileChooser.getSelectedFile().getName().endsWith(".xml")) {
+                if (confirmation == JFileChooser.APPROVE_OPTION) {
                     selectedFile = fileChooser.getSelectedFile();
                     System.out.println("Importing file...");
                     editFromFile(selectedFile.getAbsoluteFile());
@@ -53,7 +54,7 @@ public class billboardEditGUI {
             public void actionPerformed(ActionEvent e) {
                 try {
                     editFromServer(xmlName.getText());
-                } catch (SQLException ex) {
+                } catch (SQLException | IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -89,9 +90,9 @@ public class billboardEditGUI {
         msgBox.setText(newBillboard.getMsg());
         msgBox.setForeground(Color.decode(newBillboard.getColor("message")));
         msgColorPicker.setBackground(Color.decode(newBillboard.getColor("message")));
-        String[] imgProps = newBillboard.getImg();
-        typePicBox.setSelectedItem(imgProps[0]);
-        sourcePicBox.setText(imgProps[1]);
+        HashMap<String, String> imgProps = newBillboard.getImg();
+        typePicBox.setSelectedItem(imgProps.get("type"));
+        sourcePicBox.setText(imgProps.get("source"));
         infoBox.setText(newBillboard.getInfo());
         infoBox.setForeground(Color.decode(newBillboard.getColor("information")));
         infoColorPicker.setBackground(Color.decode(newBillboard.getColor("information")));
@@ -203,9 +204,9 @@ public class billboardEditGUI {
         msgBox.setText(newBillboard.getMsg());
         msgBox.setForeground(Color.decode(newBillboard.getColor("message")));
         msgColorPicker.setBackground(Color.decode(newBillboard.getColor("message")));
-        String[] imgProps = newBillboard.getImg();
-        typePicBox.setSelectedItem(imgProps[0]);
-        sourcePicBox.setText(imgProps[1]);
+        HashMap<String, String> imgProps = newBillboard.getImg();
+        typePicBox.setSelectedItem(imgProps.get("type"));
+        sourcePicBox.setText(imgProps.get("source"));
         infoBox.setText(newBillboard.getInfo());
         infoBox.setForeground(Color.decode(newBillboard.getColor("information")));
         infoColorPicker.setBackground(Color.decode(newBillboard.getColor("information")));
