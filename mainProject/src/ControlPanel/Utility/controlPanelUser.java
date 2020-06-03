@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class controlPanelUser<logoutButton> {
+public class controlPanelUser {
     private static int userID;
     private static int sessionToken;
     private static boolean createBBPermission;

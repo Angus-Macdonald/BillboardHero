@@ -1,10 +1,19 @@
 package ControlPanel.Home.GUI.UserManagement;
 
+import ControlPanel.Utility.controlPanelUser;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class changePassword {
+public class changePassword extends userManagement {
+    public changePassword(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+        super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
+    }
+
     public static void changePasswordWindow(){
+
+        boolean admin = getEditUsersPermission();
+
         JFrame passwordFrame = new JFrame("Change Password");
         passwordFrame.setLayout(new GridLayout(5, 1));
         passwordFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -28,6 +37,7 @@ public class changePassword {
         headingPane.add(heading);
 
         JLabel userID = new JLabel("Enter your User ID: ");
+
         JTextField userInput = new JTextField(10);
         userIdPane.add(userID);
         userIdPane.add(userInput);
@@ -50,6 +60,7 @@ public class changePassword {
             System.out.println(userInput.getText());
             System.out.println(oldInput.getPassword());
             System.out.println(newInput.getPassword());
+            passwordFrame.dispose();
 
         });
 
