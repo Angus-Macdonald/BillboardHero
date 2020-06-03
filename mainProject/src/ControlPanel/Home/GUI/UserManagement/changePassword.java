@@ -8,6 +8,8 @@ public class changePassword {
         JFrame passwordFrame = new JFrame("Change Password");
         passwordFrame.setLayout(new GridLayout(5, 1));
         passwordFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        passwordFrame.setPreferredSize(new Dimension(dim.width / 5, dim.height / 2));
 
         JPanel headingPane = new JPanel();
         JPanel userIdPane = new JPanel();
@@ -26,22 +28,30 @@ public class changePassword {
         headingPane.add(heading);
 
         JLabel userID = new JLabel("Enter your User ID: ");
-        JTextField userInput = new JTextField();
+        JTextField userInput = new JTextField(10);
         userIdPane.add(userID);
-        userIdPane.add(userID);
+        userIdPane.add(userInput);
 
         JLabel oldPassword = new JLabel("Enter your Old Password: ");
-        JTextField oldInput = new JTextField();
+        JPasswordField oldInput = new JPasswordField(10);
         oldPasswordPane.add(oldPassword);
         oldPasswordPane.add(oldInput);
 
         JLabel newPassword = new JLabel("Enter your New Password: ");
-        JTextField newInput = new JTextField();
+        JPasswordField newInput = new JPasswordField(10);
         newPasswordPane.add(newPassword);
         newPasswordPane.add(newInput);
 
         JButton submitButton = new JButton("Submit");
         submitPane.add(submitButton);
+
+        //Code Below demonstrates the submit button using the input data
+        submitButton.addActionListener(e -> {
+            System.out.println(userInput.getText());
+            System.out.println(oldInput.getPassword());
+            System.out.println(newInput.getPassword());
+
+        });
 
         passwordFrame.getContentPane().add(headingPane);
         passwordFrame.getContentPane().add(userIdPane);

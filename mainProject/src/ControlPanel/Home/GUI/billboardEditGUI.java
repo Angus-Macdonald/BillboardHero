@@ -56,10 +56,10 @@ public class billboardEditGUI {
                     editFromServer(xmlName.getText());
                 } catch (SQLException | IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                } catch (ClassNotFoundException ex) {
+//                    ex.printStackTrace();
                 }
             }
         });
