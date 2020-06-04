@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class createUser {
+public class CreateUser {
     public static void createUserWindow(){
         JFrame frame = new JFrame("Create User");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -98,7 +98,7 @@ public class createUser {
              ) {frame.getContentPane().add(j);
 
         }
-
+        frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
 

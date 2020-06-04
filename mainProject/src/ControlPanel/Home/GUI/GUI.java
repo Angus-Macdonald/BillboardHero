@@ -1,13 +1,12 @@
 package ControlPanel.Home.GUI;
 
+import ControlPanel.Home.GUI.UserManagement.UserManagement;
 import ControlPanel.Utility.User;
 import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class GUI extends User {
@@ -17,11 +16,9 @@ public class GUI extends User {
     }
 
     private static String window;
-
     public static void setWindow(String window) {
         GUI.window = window;
     }
-
     public static String getWindow() {
         return window;
     }
@@ -32,13 +29,17 @@ public class GUI extends User {
 
     public static void displayGUI(){
         JFrame frame = new JFrame("Control Panel GUI");
-        JPanel panel1 = new JPanel();
-        JPanel panel2 = new JPanel();
-        JPanel panel3 = new JPanel();
+
+        JPanel[] panel = new JPanel[3];
+
+        for(int i = 0; i < panel.length; i++){
+            panel[i] = new JPanel();
+        }
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
         frame.setLocation(dim.width/3, dim.height/3);
+        frame.setLayout(new GridLayout(3, 1));
 
         Menubar.menubar(frame);
 
@@ -50,30 +51,41 @@ public class GUI extends User {
         JButton scheduleBillboard = new JButton("Schedule A Billboard");
         JButton userManagement = new JButton("Account Management");
 
-        panel1.add(controlPanelHead);
-
-        setUserID(10);
+        panel[0].add(controlPanelHead);
 
         if(getCreateBBPermission()) {
-            panel3.add(createBillboard);
+            panel[1].add(createBillboard);
         }
         if(getEditBBPermission()) {
-            panel3.add(editBillboard);
+            panel[1].add(editBillboard);
         }
         if(getScheduleBBPermission()) {
-            panel3.add(scheduleBillboard);
+            panel[1].add(scheduleBillboard);
         }
 
-        panel3.add(userManagement);
+        panel[1].add(userManagement);
 
-        frame.getContentPane().add(panel1);
-        frame.getContentPane().add(panel2);
-        frame.getContentPane().add(panel3);
+        String[] columns = {"Name", "Date", "Author"};
+
+        //Fill Data with Billboard Data
+        Object[][] data = {{}};
+
+        JTable billboardList = new JTable(data, columns);
+        JScrollPane table = new JScrollPane(billboardList);
+        table.setPreferredSize(new Dimension(dim.width/3, dim.height/3/3));
+        table.setBorder(new EmptyBorder(0,20,30,20));
+
+
+        panel[2].add(table);
+
 
         userManagement.addActionListener(e -> {
-            ControlPanel.Home.GUI.UserManagement.userManagement.userManagementGUI();
+            UserManagement.userManagementGUI();
             frame.dispose();
         });
+        for(JPanel pan: panel){
+            frame.getContentPane().add(pan);
+        }
 
         frame.pack();
         frame.setVisible(true);

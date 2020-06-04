@@ -6,12 +6,12 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static ControlPanel.Home.GUI.UserManagement.changePassword.changePasswordWindow;
+import static ControlPanel.Home.GUI.UserManagement.ChangePassword.changePasswordWindow;
 
-public class editUser  extends userManagement {
+public class EditUser extends UserManagement {
 
 
-    public editUser(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+    public EditUser(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
@@ -26,49 +26,50 @@ public class editUser  extends userManagement {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width/5, dim.height/2));
-        frame.setLayout(new GridLayout(5, 1));
+        frame.setLayout(new GridLayout(6, 1));
 
         Menubar.menubar(frame);
 
-        JPanel panel1 = new JPanel();
+        JPanel[] panel = new JPanel[6];
+        for(int i = 0; i < panel.length; i++){
+            panel[i] = new JPanel();
+        }
+
         JLabel header = new JLabel("Edit User");
-        panel1.add(header);
-        JPanel panel2 = new JPanel();
+        panel[0].add(header);
+
         JLabel userID = new JLabel("User ID: ");
         JTextField userInput = new JTextField(getSelectedUser(), 10);
         userInput.setHorizontalAlignment(JTextField.CENTER);
-        panel2.add(userID);
-        panel2.add(userInput);
-        frame.add(panel2);
+        panel[1].add(userID);
+        panel[1].add(userInput);
+        frame.add(panel[1]);
 
         JButton changePW = new JButton("Change Password");
-        JPanel panel3 = new JPanel();
-        panel3.add(changePW);
+        panel[2].add(changePW);
         changePW.addActionListener(e -> changePasswordWindow(getSelectedUser()));
 
-        JPanel panel4 = new JPanel();
         JLabel permissions = new JLabel("User Permissions");
-        panel4.add(permissions);
-        panel4.setBorder(new EmptyBorder(50,0,0,0));
+        panel[3].add(permissions);
+        panel[3].setBorder(new EmptyBorder(50,0,0,0));
 
-        JPanel panel5 = new JPanel(new GridLayout(2, 2));
-
+        panel[4] = new JPanel(new GridLayout(2, 2));
         JCheckBox createBB = new JCheckBox("Create Billboard ");
         createBB.setSelected(permArray[0]);
-        panel5.add(createBB);
+        panel[4].add(createBB);
 
         JCheckBox editBB = new JCheckBox("Edit Billboard");
         editBB.setSelected(permArray[1]);
-        panel5.add(editBB);
+        panel[4].add(editBB);
 
         JCheckBox scheduleBB = new JCheckBox("Schedule Billboard");
         scheduleBB.setSelected(permArray[2]);
-        panel5.add(scheduleBB);
+        panel[4].add(scheduleBB);
 
         JCheckBox editUsers = new JCheckBox("Edit User");
         editUsers.setSelected(permArray[3]);
-        panel5.add(editUsers);
-        panel5.setBorder(new EmptyBorder(0, 50,50,0));
+        panel[4].add(editUsers);
+        panel[4].setBorder(new EmptyBorder(0, 50,50,0));
 
         createBB.addActionListener(e -> {
             if(!getCreateBBPermission()){
@@ -111,13 +112,17 @@ public class editUser  extends userManagement {
             System.out.println(getEditUsersPermission());
         });
 
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(e ->{
+            //Send req/data
+            frame.dispose();
+        });
 
+        panel[5].add(submitButton);
 
-        frame.getContentPane().add(panel1);
-        frame.getContentPane().add(panel2);
-        frame.getContentPane().add(panel3);
-        frame.getContentPane().add(panel4);
-        frame.getContentPane().add(panel5);
+        for(JPanel pan: panel){
+            frame.getContentPane().add(pan);
+        }
 
         frame.pack();
         frame.setLocationRelativeTo(null);
