@@ -1,8 +1,8 @@
 package ControlPanel.Login.GUI;
-import ControlPanel.Home.GUI.controlPanelGUI;
+import ControlPanel.Home.GUI.GUI;
 
 import ControlPanel.Utility.QuitAlert;
-import ControlPanel.Utility.controlPanelUser;
+import ControlPanel.Utility.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,10 +10,10 @@ import java.awt.*;
 import java.security.*;
 import java.sql.SQLException;
 
-import static ControlPanel.Utility.hashPassword.hashPassword;
-import static ControlPanel.Utility.hashPassword.inputPassHashCheck;
+import static ControlPanel.Utility.HashPassword.hashPassword;
+import static ControlPanel.Utility.HashPassword.inputPassHashCheck;
 
-public class loginScreen extends controlPanelUser {
+public class loginScreen extends User {
 
     public loginScreen(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
@@ -30,7 +30,7 @@ public class loginScreen extends controlPanelUser {
 
     public void getPermissions(String user, String token){
 
-        //This function will add data from server to an array, then place the data within the controlPanelUser object
+        //This function will add data from server to an array, then place the data within the User object
 
         //boolean[] permissions = new boolean[4];
 
@@ -140,7 +140,7 @@ public class loginScreen extends controlPanelUser {
                 }
 
                 frame.dispose();
-                controlPanelGUI.displayGUI();
+                GUI.displayGUI();
 
             }
 
