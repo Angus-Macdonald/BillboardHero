@@ -16,17 +16,21 @@ public class GUI extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    private static String window;
+
+    public static void setWindow(String window) {
+        GUI.window = window;
+    }
+
+    public static String getWindow() {
+        return window;
+    }
+
     public static void main(String[] args){
         displayGUI();
     }
 
     public static void displayGUI(){
-        Map<String, Boolean> userPermissionFromServer = new HashMap<String, Boolean>();
-        userPermissionFromServer.put("createBillboards", true);
-        userPermissionFromServer.put("editAllBillboards", true);
-        userPermissionFromServer.put("scheduleBillboards", true);
-        userPermissionFromServer.put("editUsers", true);
-
         JFrame frame = new JFrame("Control Panel GUI");
         JPanel panel1 = new JPanel();
         JPanel panel2 = new JPanel();
@@ -48,13 +52,15 @@ public class GUI extends User {
 
         panel1.add(controlPanelHead);
 
-        if(userPermissionFromServer.get("createBillboards")) {
-            panel2.add(createBillboard);
+        setUserID(10);
+
+        if(getCreateBBPermission()) {
+            panel3.add(createBillboard);
         }
-        if(userPermissionFromServer.get("editAllBillboards")) {
-            panel2.add(editBillboard);
+        if(getEditBBPermission()) {
+            panel3.add(editBillboard);
         }
-        if(userPermissionFromServer.get("scheduleBillboards")) {
+        if(getScheduleBBPermission()) {
             panel3.add(scheduleBillboard);
         }
 
