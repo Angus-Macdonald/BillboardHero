@@ -1,12 +1,12 @@
 package ControlPanel.Home.GUI;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
@@ -41,6 +41,8 @@ public class billboardCreateGUI {
         frame.add(msgColorPicker);
         frame.add(sourcePicLabel);
         frame.add(typePicBox);
+        sourcePicBox.setEnabled(false);
+        sourcePicBox.setBackground(Color.lightGray);
         frame.add(sourcePicBox);
         frame.add(infoLabel);
         infoBox.setToolTipText("Max 200 characters.");
@@ -63,6 +65,18 @@ public class billboardCreateGUI {
                     Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
                     msgBox.setForeground(msgColor);
                     msgColorPicker.setBackground(msgColor);
+                }
+            }
+        });
+        typePicBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (!typePicBox.getSelectedItem().equals("None")) {
+                    sourcePicBox.setEnabled(true);
+                    sourcePicBox.setBackground(Color.white);
+                } else {
+                    sourcePicBox.setEnabled(false);
+                    sourcePicBox.setBackground(Color.lightGray);
                 }
             }
         });
@@ -94,8 +108,6 @@ public class billboardCreateGUI {
                                 msgColorPicker.getBackground().getGreen(),
                                 msgColorPicker.getBackground().getBlue())
                         );
-                    } else if (!msgBox.getText().isEmpty() && msgBox.getText().length() > 50) {
-                        return;
                     }
                     if (!typePicBox.getSelectedItem().toString().equals("None") && !sourcePicBox.getText().isEmpty()) {
                         newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
@@ -107,10 +119,9 @@ public class billboardCreateGUI {
                                 infoColorPicker.getBackground().getGreen(),
                                 infoColorPicker.getBackground().getBlue())
                         );
-                    } else if (!infoBox.getText().isEmpty() && infoBox.getText().length() > 200) {
-                        return;
                     }
                     System.out.println(newBillboard.xmlToString());
+                    newBillboard.writeToFile();
                     //upload the created XML file to the server
                     ServerBillboard serverConn = new ServerBillboard();
                     try {
@@ -130,3 +141,6 @@ public class billboardCreateGUI {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 }
+
+
+//change default color of msg and info (currently grabs default background color of button which is grey)

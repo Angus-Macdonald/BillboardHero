@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import ControlPanel.Utility.billboard;
@@ -42,8 +43,8 @@ public class billboardEditGUI {
             public void actionPerformed(ActionEvent e) {    //opens a file browser to select a file and imports it to the billboard class
                 int confirmation = fileChooser.showOpenDialog(frame);
                 if (confirmation == JFileChooser.APPROVE_OPTION) {
-                    selectedFile = fileChooser.getSelectedFile();
                     System.out.println("Importing file...");
+                    selectedFile = fileChooser.getSelectedFile();
                     editFromFile(selectedFile.getAbsoluteFile());
                     frame.dispose();
                 }
@@ -53,13 +54,14 @@ public class billboardEditGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    ServerBillboard serverConn = new ServerBillboard();
+                    String billboard = serverConn.getBBInfo(xmlName.getText());
+                    if (billboard == null) {
+                        return;
+                    }
                     editFromServer(xmlName.getText());
                 } catch (SQLException | IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                } catch (ClassNotFoundException ex) {
-//                    ex.printStackTrace();
                 }
             }
         });
@@ -91,8 +93,10 @@ public class billboardEditGUI {
         msgBox.setForeground(Color.decode(newBillboard.getColor("message")));
         msgColorPicker.setBackground(Color.decode(newBillboard.getColor("message")));
         HashMap<String, String> imgProps = newBillboard.getImg();
-        typePicBox.setSelectedItem(imgProps.get("type"));
-        sourcePicBox.setText(imgProps.get("source"));
+        if (imgProps != null) {
+            typePicBox.setSelectedItem(imgProps.get("type"));
+            sourcePicBox.setText(imgProps.get("source"));
+        }
         infoBox.setText(newBillboard.getInfo());
         infoBox.setForeground(Color.decode(newBillboard.getColor("information")));
         infoColorPicker.setBackground(Color.decode(newBillboard.getColor("information")));
@@ -182,7 +186,6 @@ public class billboardEditGUI {
 
     public static void editFromServer(String fileName) throws SQLException, IOException, ClassNotFoundException {
         ServerBillboard serverConn = new ServerBillboard();
-        //CHECK WHAT HEPPENS WHEN AN INVALID NAMES GETS PUT IN
         String billboard = serverConn.getBBInfo(fileName);
 
         JFrame frame = new JFrame("Edit an Existing Billboard");

@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -112,7 +114,6 @@ public class billboard {
                         //remove all existing attributes in picture element
                         element.removeAttribute("url");
                         element.removeAttribute("data");
-                        element.removeAttribute("error");
                     }
 
                     //adds the correct attribute specified by the user
@@ -124,10 +125,6 @@ public class billboard {
                         Attr imgData = document.createAttribute("data");
                         imgData.setValue(input);
                         element.setAttributeNode(imgData);
-                    } else {
-                        Attr imgURL = document.createAttribute("error");
-                        imgURL.setValue("true");
-                        element.setAttributeNode(imgURL);
                     }
 
                     System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
@@ -147,10 +144,6 @@ public class billboard {
             Attr imgData = document.createAttribute("data");
             imgData.setValue(input);
             img.setAttributeNode(imgData);
-        } else {
-            Attr imgURL = document.createAttribute("error");
-            imgURL.setValue("true");
-            img.setAttributeNode(imgURL);
         }
 
         System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
@@ -234,6 +227,20 @@ public class billboard {
         }
     }
 
+    //return properties about billboard (element1, elementn...)
+    public static Object[] getBillboardProperties() {
+        Node billboard = document.getElementsByTagName("billboard").item(0);
+        NodeList elements = billboard.getChildNodes();
+        Object[] returnVal = new Object[elements.getLength()];
+
+        for (int i = 0; i < elements.getLength(); i++) {
+            Node element = elements.item(i);
+            returnVal[i] = element.getNodeName();
+        }
+
+        return returnVal;
+    }
+
     //return the msg of the document
     public static String getMsg() {
         //Target existing root element
@@ -250,7 +257,7 @@ public class billboard {
             }
         }
 
-        return "";
+        return null;
     }
 
     //return the color of the requested element of the document
@@ -275,7 +282,7 @@ public class billboard {
             }
         }
 
-        return "";
+        return null;
     }
 
     //return the img and its properties of the document
@@ -326,7 +333,7 @@ public class billboard {
             }
         }
 
-        return "";
+        return null;
     }
 
     //converts the document to a string for database entry
