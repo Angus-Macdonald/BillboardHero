@@ -5,31 +5,27 @@
 //with grabbing specific text from the xml file for each access.
 
 package ControlPanel.Utility;
-import java.awt.*;
+
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class billboard {
-    private static File file;   //stores the xml file
     private static String filePath; //stores the path to the xml file
 
     private static Document document;   //stores the actual document before conversion
@@ -57,12 +53,12 @@ public class billboard {
     //handles input from a file or server
     public static void importXML(File xmlFile, String xmlString, String fileOrServer) {
         if (fileOrServer.equals("file")) {
-            file = xmlFile;
-            filePath = file.getAbsolutePath();
+            //stores the xml file
+            filePath = xmlFile.getAbsolutePath();
             try {
                 DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
-                document = documentBuilder.parse(file);
+                document = documentBuilder.parse(xmlFile);
             } catch (ParserConfigurationException | SAXException | IOException pce) {
                 pce.printStackTrace();
             }
@@ -177,7 +173,7 @@ public class billboard {
     public static void addColor(String changeColorOf, String color) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
-        if (changeColorOf == "billboard") {
+        if (changeColorOf.equals("billboard")) {
             Element element = (Element) billboard;
             if (element.getAttributes() != null) {
                 element.removeAttribute("color");
@@ -284,9 +280,9 @@ public class billboard {
         }
 
         if (colorOf.equals("billboard")) {
-            return "#000000";
-        } else {
             return "#ffffff";
+        } else {
+            return "#000000";
         }
     }
 
@@ -303,7 +299,7 @@ public class billboard {
                 Element element = (Element) node;
                 if ("picture".equals(element.getNodeName())) {
                     if (element.getAttributes() != null) {
-                        HashMap<String, String> imgProp = new HashMap<String, String>();
+                        HashMap<String, String> imgProp = new HashMap<>();
                         if (element.hasAttribute("url")) {
                             imgProp.put("type", "url");
                             imgProp.put("source", element.getAttribute("url"));
@@ -319,8 +315,7 @@ public class billboard {
             }
         }
 
-        HashMap<String, String> empty = new HashMap<>();
-        return empty;
+        return new HashMap<>();
     }
 
     //return the information of the document
@@ -334,7 +329,7 @@ public class billboard {
             Node element = elements.item(i);
             if ("information".equals(element.getNodeName())) {
                 String info = element.getTextContent();
-                System.out.println("Got (" + info + ") as a message to the XML file at (" + filePath + ")");
+                System.out.println("Got (" + info + ") as a information to the XML file at (" + filePath + ")");
                 return info;
             }
         }

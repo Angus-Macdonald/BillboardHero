@@ -1,22 +1,23 @@
 package ControlPanel.Home.GUI;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
-
 import ControlPanel.Utility.billboard;
 import Server.ServerBillboard;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class billboardCreateGUI {
     public static void main(String[] args) {
-//    public billboardCreateGUI() {
+        new billboardCreateGUI();
+    }
+
+    public billboardCreateGUI() {
         JFrame frame = new JFrame("Create a New Billboard");
         JLabel nameLabel = new JLabel("Name:* ");
         JTextField nameBox = new JTextField();
@@ -161,7 +162,3 @@ public class billboardCreateGUI {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 }
-
-//check lock system for inputting
-//add error warning before creating
-//change default color of msg and info (currently grabs default background color of button which is grey)
