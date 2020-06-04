@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -45,7 +47,7 @@ public class billboard {
             Element billboard = document.createElement("billboard");
             document.appendChild(billboard);
             //writeToFile();
-            System.out.println("Done creating XML File at (" + filePath + ")");
+            System.out.println("Successfully created new document.");
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         }
@@ -112,7 +114,6 @@ public class billboard {
                         //remove all existing attributes in picture element
                         element.removeAttribute("url");
                         element.removeAttribute("data");
-                        element.removeAttribute("error");
                     }
 
                     //adds the correct attribute specified by the user
@@ -124,10 +125,6 @@ public class billboard {
                         Attr imgData = document.createAttribute("data");
                         imgData.setValue(input);
                         element.setAttributeNode(imgData);
-                    } else {
-                        Attr imgURL = document.createAttribute("error");
-                        imgURL.setValue("true");
-                        element.setAttributeNode(imgURL);
                     }
 
                     System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
@@ -147,10 +144,6 @@ public class billboard {
             Attr imgData = document.createAttribute("data");
             imgData.setValue(input);
             img.setAttributeNode(imgData);
-        } else {
-            Attr imgURL = document.createAttribute("error");
-            imgURL.setValue("true");
-            img.setAttributeNode(imgURL);
         }
 
         System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
@@ -229,9 +222,24 @@ public class billboard {
             DOMSource domSource = new DOMSource(document);  //stores DOM from the document
             StreamResult streamResult = new StreamResult(new File(filePath));   //stores the output of writing the DOM to a file
             transformer.transform(domSource, streamResult);
+            System.out.println("Successfully created XML file at (" + filePath + ").");
         } catch (TransformerException e) {
             e.printStackTrace();
         }
+    }
+
+    //return properties about billboard (element1, elementn...)
+    public static Object[] getBillboardProperties() {
+        Node billboard = document.getElementsByTagName("billboard").item(0);
+        NodeList elements = billboard.getChildNodes();
+        Object[] returnVal = new Object[elements.getLength()];
+
+        for (int i = 0; i < elements.getLength(); i++) {
+            Node element = elements.item(i);
+            returnVal[i] = element.getNodeName();
+        }
+
+        return returnVal;
     }
 
     //return the msg of the document
@@ -275,7 +283,11 @@ public class billboard {
             }
         }
 
-        return "";
+        if (colorOf.equals("billboard")) {
+            return "#000000";
+        } else {
+            return "#ffffff";
+        }
     }
 
     //return the img and its properties of the document
@@ -307,7 +319,8 @@ public class billboard {
             }
         }
 
-        return null;
+        HashMap<String, String> empty = new HashMap<>();
+        return empty;
     }
 
     //return the information of the document
