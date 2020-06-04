@@ -7,17 +7,13 @@ public class Logout extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
-    public static void clearControlPanelUser(){
+    public static void logout(JFrame frame){
         setUserID(0);
         setSessionToken(0);
         setCreateBBPermission(false);
         setEditBBPermission(false);
         setScheduleBBPermission(false);
         setEditUsersPermission(false);
-    }
-
-    public static void logout(JFrame frame){
-        clearControlPanelUser();
         frame.dispose();
     }
 }

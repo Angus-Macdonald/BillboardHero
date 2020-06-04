@@ -37,6 +37,7 @@ public class LogoutAlert extends Logout {
             Frame[] frames = getFrames();
             for (int i = 0; i < frames.length; i++) {
                 frames[i].dispose();
+                logout(frame);
             }
             try {
                 controlPanelLogin();
