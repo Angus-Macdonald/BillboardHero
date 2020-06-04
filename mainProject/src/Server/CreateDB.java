@@ -41,7 +41,29 @@ public class CreateDB {
                 "UserID int NOT NULL," +
                 "PRIMARY KEY (Token))");
 
+        CreateDB rootUser = new CreateDB();
+        rootUser.createRoot(1);
         Statement.close();
+
+    }
+    public void createRoot(int userID) throws SQLException {
+        Connection connection = DBConnection.getInstance();
+        //check if it exists
+        int found = 0;
+        PreparedStatement findstatement = connection.prepareStatement("SElECT UserID FROM users WHERE UserID=?");
+        findstatement.clearParameters();
+        findstatement.setInt(1, userID);
+        ResultSet rs = findstatement.executeQuery();
+        while(rs.next()) {
+            String someName = rs.getString("UserID");
+            found++;
+        }
+        if(found==1){ }
+        else{
+            Users user = new Users();
+            user.createUser(1,"root",true,true,true,true,true);
+        }
+        findstatement.close();
 
     }
     public static void main(String[] args) throws NoSuchAlgorithmException, SQLException, IOException, ParseException, ClassNotFoundException {
@@ -103,8 +125,8 @@ public class CreateDB {
         //System.out.println(token);
 
         /////create Billboard////////
-        //Object ojBB = "this is the stuff for 44";
-        //billboard.createBB("the44",44,ojBB);
+        Object ojBB = "this is the stuff for 44";
+        billboard.createBB("the44",44,ojBB);
 
         ////delete Billboard /////////
         //billboard.deleteBB("the44");
