@@ -77,6 +77,7 @@ public class CreateDB {
         session session = new session();
         Permission permission = new Permission();
         ServerBillboard billboard = new ServerBillboard();
+        Client client = new Client();
 
         /////create user//////
         //user.createUser(10,"passpass",true,true,true,true,true);
@@ -125,8 +126,8 @@ public class CreateDB {
         //System.out.println(token);
 
         /////create Billboard////////
-        Object ojBB = "this is the stuff for 44";
-        billboard.createBB("the44",44,ojBB);
+//        Object ojBB = "this is the stuff for 44";
+//        billboard.createBB("the44",44,ojBB);
 
         ////delete Billboard /////////
         //billboard.deleteBB("the44");
@@ -144,5 +145,36 @@ public class CreateDB {
         //java.util.Date now = calendar.getTime();
         //java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
         //System.out.println("Current time: "+currentTimestamp);
+
+        //network methods
+
+        //create user
+        //client.createUserS(2,"falseman",false,false,false,false,false);
+
+        //delete user
+        //client.deleteUserS(2);
+
+//        //list users ////not working////
+//        ArrayList al = client.listUsersS();
+//        System.out.println(al);
+
+        //set password
+        //client.setPasswordS("newpass",1);
+
+        //login
+        //client.loginS(1,"newpass");
+
+        //logout
+        //client.logoutS(1);
+
+        ////check permissions///// not working/////
+
+        //set permissions
+        //client.setPermissionS(1,true,true,false,false,false);
+
+
+        //get bb info
+        //System.out.println(client.getBBInfoS("the44"));
+
     }
 }
