@@ -7,11 +7,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static ControlPanel.Home.GUI.UserManagement.changePassword.changePasswordWindow;
-import static ControlPanel.Home.GUI.UserManagement.createUser.createUserWindow;
-import static ControlPanel.Home.GUI.UserManagement.editUser.editUserWindow;
+import static ControlPanel.Home.GUI.UserManagement.ChangePassword.changePasswordWindow;
+import static ControlPanel.Home.GUI.UserManagement.CreateUser.createUserWindow;
+import static ControlPanel.Home.GUI.UserManagement.EditUser.editUserWindow;
 
-public class userManagement extends GUI {
+public class UserManagement extends GUI {
 
     static String selectedUser = "";
 
@@ -23,7 +23,7 @@ public class userManagement extends GUI {
         return selectedUser;
     }
 
-    public userManagement(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+    public UserManagement(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
     public static void main(String[] args){
@@ -47,7 +47,7 @@ public class userManagement extends GUI {
 
         Menubar.menubar(frame);
 
-        String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
+        String[] userArray = {"12345", "32432", "23421", "43534", "32452", "43253", "99999", "21345"};
 
         JLabel header = new JLabel("Account Management");
         header.setFont(new Font("Serif", Font.BOLD, 35));
@@ -102,7 +102,7 @@ public class userManagement extends GUI {
         });
 
         //Line below is the action listener for the Delete User Button. Is a temp test to show it can retrieve the selected user
-        deleteUser.addActionListener(e -> System.out.println("Delete User: "+ selectedUser));
+        deleteUser.addActionListener(e -> DeleteUserAlert.deleteUserAlert());
 
         createUser.addActionListener(e -> createUserWindow());
 
