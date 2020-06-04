@@ -47,7 +47,7 @@ public class billboard {
             Element billboard = document.createElement("billboard");
             document.appendChild(billboard);
             //writeToFile();
-            System.out.println("Done creating XML File at (" + filePath + ")");
+            System.out.println("Successfully created new document.");
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         }
@@ -222,6 +222,7 @@ public class billboard {
             DOMSource domSource = new DOMSource(document);  //stores DOM from the document
             StreamResult streamResult = new StreamResult(new File(filePath));   //stores the output of writing the DOM to a file
             transformer.transform(domSource, streamResult);
+            System.out.println("Successfully created XML file at (" + filePath + ").");
         } catch (TransformerException e) {
             e.printStackTrace();
         }
@@ -257,7 +258,7 @@ public class billboard {
             }
         }
 
-        return null;
+        return "";
     }
 
     //return the color of the requested element of the document
@@ -282,7 +283,11 @@ public class billboard {
             }
         }
 
-        return null;
+        if (colorOf.equals("billboard")) {
+            return "#000000";
+        } else {
+            return "#ffffff";
+        }
     }
 
     //return the img and its properties of the document
@@ -314,7 +319,8 @@ public class billboard {
             }
         }
 
-        return null;
+        HashMap<String, String> empty = new HashMap<>();
+        return empty;
     }
 
     //return the information of the document
@@ -333,7 +339,7 @@ public class billboard {
             }
         }
 
-        return null;
+        return "";
     }
 
     //converts the document to a string for database entry
