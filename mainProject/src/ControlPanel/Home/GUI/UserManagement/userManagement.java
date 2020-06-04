@@ -2,6 +2,7 @@ package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Home.GUI.controlPanelGUI;
 import ControlPanel.Utility.QuitAlert;
+import ControlPanel.Utility.menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,24 +27,6 @@ public class userManagement extends controlPanelGUI {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
-    public static void changePassword(){
-        //Code to change a users password
-        //If EDIT user permission, can change any password
-        //Else, can only change their own user password
-
-        //Enter UserID - Check edit user permission:
-        //                      if false, check own UserID, if inputID and userID == false, return error
-        //                      if true, continue;
-
-        //Enter Your Password - Check edit user permission:
-        //                      if false: check inputPassword == databasePassword for userID, if false return error
-        //                      if true: check inputPassword == getUserID.dbPassword, if false return error
-
-        //Enter New Password:
-        //                  Check new password != old password
-        //                  Check new password == int data type
-        //                  Check new password has been hashed, use inputPassHashCheck Function(inputPW, hashPW), return true if they aren't equal
-    }
 
 
     public static void main(String[] args){
@@ -65,13 +48,7 @@ public class userManagement extends controlPanelGUI {
         else {
             frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 4));
         }
-//        JMenuBar menuBar = new JMenuBar();
-//        JMenu menu = new JMenu("File");
-//        JMenuItem item = new JMenuItem("Exit");
-//        menuBar.add(menu);
-//        menu.add(item);
-//        frame.setJMenuBar(menuBar);
-
+        menubar.menubar(frame);
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
 
         JLabel header = new JLabel("Account Management");
@@ -79,7 +56,6 @@ public class userManagement extends controlPanelGUI {
         header.setBorder(new EmptyBorder(10,10,0,10));
         panel1.add(header);
         JLabel userLabel = new JLabel("User: " + getUserID());
-
 
         JList list = new JList(userArray);
         JScrollPane userList = new JScrollPane(list);
@@ -102,8 +78,6 @@ public class userManagement extends controlPanelGUI {
             panel2.add(userLabel);
             panel3.add(changePassword);
         }
-
-//        item.addActionListener(e -> QuitAlert.alterWindow());
 
         //Line Below retrieves selected User from the User List and stores the value within a variable
         list.addListSelectionListener(e -> setSelectedUser((String) list.getSelectedValue()));

@@ -2,6 +2,7 @@ package ControlPanel.Home.GUI;
 
 import ControlPanel.Utility.QuitAlert;
 import ControlPanel.Utility.controlPanelUser;
+import ControlPanel.Utility.menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -38,22 +39,7 @@ public class controlPanelGUI extends controlPanelUser {
         frame.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
         frame.setLocation(dim.width/3, dim.height/3);
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        JMenuItem quit = new JMenuItem("Quit");
-        JMenuItem logout = new JMenuItem("Log Out");
-        logout.addActionListener(e -> {
-            logoutAlert();
-
-        });
-
-        quit.addActionListener(e -> QuitAlert.alterWindow());
-
-        menuBar.add(menu);
-        menu.add(logout);
-        menu.add(quit);
-        frame.setJMenuBar(menuBar);
-        frame.setLayout(new GridLayout(3,1));
+        menubar.menubar(frame);
 
         JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
         controlPanelHead.setFont(new Font("Serif", Font.BOLD, 35));

@@ -1,6 +1,7 @@
 package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Utility.controlPanelUser;
+import ControlPanel.Utility.menubar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,12 +27,7 @@ public class changePassword extends userManagement {
         JPanel newPasswordPane = new JPanel();
         JPanel submitPane = new JPanel();
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        JMenuItem item = new JMenuItem("Exit");
-        menuBar.add(menu);
-        menu.add(item);
-        passwordFrame.setJMenuBar(menuBar);
+        menubar.menubar(passwordFrame);
 
         JLabel heading = new JLabel("Change Password");
         headingPane.add(heading);
