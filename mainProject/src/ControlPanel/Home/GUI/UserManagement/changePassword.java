@@ -10,13 +10,13 @@ public class changePassword extends userManagement {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
-    public static void changePasswordWindow(){
+    public static void changePasswordWindow(String user){
 
         boolean admin = getEditUsersPermission();
 
         JFrame passwordFrame = new JFrame("Change Password");
         passwordFrame.setLayout(new GridLayout(5, 1));
-        passwordFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        passwordFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         passwordFrame.setPreferredSize(new Dimension(dim.width / 5, dim.height / 2));
 
@@ -36,18 +36,18 @@ public class changePassword extends userManagement {
         JLabel heading = new JLabel("Change Password");
         headingPane.add(heading);
 
-        JLabel userID = new JLabel("Enter your User ID: ");
+        JLabel userID = new JLabel("Enter User ID: ");
 
-        JTextField userInput = new JTextField(10);
+        JTextField userInput = new JTextField(getSelectedUser(),10);
         userIdPane.add(userID);
         userIdPane.add(userInput);
 
-        JLabel oldPassword = new JLabel("Enter your Old Password: ");
+        JLabel oldPassword = new JLabel("Enter Old Password: ");
         JPasswordField oldInput = new JPasswordField(10);
         oldPasswordPane.add(oldPassword);
         oldPasswordPane.add(oldInput);
 
-        JLabel newPassword = new JLabel("Enter your New Password: ");
+        JLabel newPassword = new JLabel("Enter New Password: ");
         JPasswordField newInput = new JPasswordField(10);
         newPasswordPane.add(newPassword);
         newPasswordPane.add(newInput);
