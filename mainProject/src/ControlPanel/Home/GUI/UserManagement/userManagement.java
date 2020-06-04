@@ -31,6 +31,9 @@ public class userManagement extends GUI {
     }
 
     public static void userManagementGUI() {
+
+        setWindow("userManagement");
+
         setEditUsersPermission(true);
         boolean admin = getEditUsersPermission();
         JFrame frame = new JFrame("Account Management");
@@ -41,6 +44,7 @@ public class userManagement extends GUI {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 2));
+
         Menubar.menubar(frame);
 
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
@@ -56,6 +60,8 @@ public class userManagement extends GUI {
         JScrollPane userList = new JScrollPane(list);
         list.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
         list.setPreferredSize(new Dimension(dim.width/5, dim.height/ 3));
+
+        JButton backButton = new JButton("Back Button");
 
         JButton editUser = new JButton("Edit User");
         JButton deleteUser = new JButton("Delete User");
@@ -76,6 +82,15 @@ public class userManagement extends GUI {
             panel[1].add(userLabel);
             panel[2].add(changePassword);
         }
+
+        panel[0].add(backButton);
+
+        backButton.addActionListener(e -> {
+            if(getWindow() == "userManagement"){
+                frame.dispose();
+                GUI.displayGUI();
+            }
+        });
 
         //Line Below retrieves selected User from the User List and stores the value within a variable
         list.addListSelectionListener(e -> setSelectedUser((String) list.getSelectedValue()));
