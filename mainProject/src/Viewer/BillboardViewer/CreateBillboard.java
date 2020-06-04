@@ -25,18 +25,24 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 // Third testing class - can DELETE
 public class CreateBillboard {
     public static String defaultMessage = "There are currently no billboards scheduled.";
     public static Color background;
-    public static String testMessage;
+    public static Color messageColour, infoColour = Color.BLACK;
+    public static int messageSize = 100;
+    public static int informationSize = 80;
+    public static String messageText;
     public static String informationText;
-    public static int messageSize;
-    public static int informationSize;
+    private static Font messageFont = new Font("Helvetica", Font.BOLD, messageSize);
+    private static Font infoFont = new Font("Helvetica", Font.BOLD, informationSize);
     public static URL url;
     public static boolean serverResponse = false;
+    private static List<String> elementOrder = new ArrayList<>();
     public static int xmlElements = 0;
 
     static {
@@ -78,17 +84,41 @@ public class CreateBillboard {
             background = Color.decode(attributeValue);
         }
 
-        NodeList xmlTags = documentElement.getChildNodes();
 
+        NodeList xmlTags = documentElement.getChildNodes();
+//        List<String> elementOrder = new ArrayList<>();
         for (int i = 0; i < xmlTags.getLength(); i++) {
             Node node = xmlTags.item(i);
             if (node instanceof Element) {
-                xmlElements++;
+//                xmlElements++;
                 Element element = (Element) node;
-                System.out.println("Child: " + element.getTagName());
+                String tagName = element.getTagName();
+                System.out.println("Child: " + tagName);
+                elementOrder.add(tagName);
+
+                if (tagName == "message") {
+                    System.out.println("Content: " + element.getTextContent());
+                    messageText = element.getTextContent();
+                    messageColour = Color.decode(element.getAttribute("color"));
+                    System.out.println("Colour: " + element.getAttribute("color"));
+                } else if (tagName == "information") {
+                    infoColour = Color.decode(element.getAttribute("color"));
+                    informationText = element.getTextContent();
+                    System.out.println("Colour: " + element.getAttribute("color"));
+                }
+                else if (tagName == "url") {
+                    System.out.println(element.getAttribute("url"));
+                    url = new URL(element.getAttribute("url"));
+                    BufferedImage urlImage = ImageIO.read(url);
+
+                } else if (tagName == "data") {
+                    // Do data changes
+                }
+
             }
         }
-//        System.out.println(xmlElements);
+        System.out.println(elementOrder);
+        System.out.println(elementOrder.size());
     }
 
     public static void formBillboard() {
@@ -101,8 +131,8 @@ public class CreateBillboard {
 
     // Need to have something to check how many elements are in billboard
     // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
-    private static void createBillboard() throws IOException {
-
+    private static void createBillboard() throws IOException, ClassNotFoundException, SQLException, ParserConfigurationException, SAXException {
+        serverConnect();
         JFrame frame = new JFrame();
         // Constant
         JPanel topPanel = new JPanel();
@@ -129,9 +159,21 @@ public class CreateBillboard {
             middlePanel.add(defaultText);
         }
         else {
+            if (elementOrder.size() == 1) {
+                // Code for single element
+            } else if (elementOrder.size() == 2) {
+                for (int i = 0; i < elementOrder.size(); i++) {
+                    if (elementOrder.get(i) == "message") {
+
+                    }
+                }
+            } else {
+                // code for three elements
+            }
+
             // 25 character limit before downsizing font
             // 50 character max for message
-            JLabel message = new JLabel(testMessage);
+            JLabel message = new JLabel(messageText);
             JLabel information = new JLabel(informationText);
 
             // Testing image data
@@ -145,7 +187,7 @@ public class CreateBillboard {
             JLabel imageInput = new JLabel(new ImageIcon(resizedImg));
 
 
-            resizeText(testMessage);
+            resizeText(messageText);
 
             message.setFont(new Font("Helvetica", Font.BOLD, messageSize));
             message.setForeground(Color.decode("#FF9E3F"));
@@ -184,15 +226,15 @@ public class CreateBillboard {
      * thread.
      */
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
-//        SwingUtilities.invokeLater(() -> {
-//            try {
-//                createBillboard();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
+        SwingUtilities.invokeLater(() -> {
+            try {
+                createBillboard();
+            } catch (IOException | ClassNotFoundException | SQLException | ParserConfigurationException | SAXException e) {
+                e.printStackTrace();
+            }
+        });
 
-        serverConnect();
+//        serverConnect();
 
     }
 
