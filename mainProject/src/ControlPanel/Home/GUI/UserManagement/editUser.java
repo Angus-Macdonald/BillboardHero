@@ -23,7 +23,7 @@ public class editUser  extends userManagement {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width/5, dim.height/2));
-        frame.setLayout(new GridLayout(5, 1));
+        frame.setLayout(new GridLayout(5, 2));
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");

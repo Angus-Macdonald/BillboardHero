@@ -1,16 +1,11 @@
 package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Home.GUI.controlPanelGUI;
-import ControlPanel.Utility.controlPanelExitAlert;
-import Server.Users;
+import ControlPanel.Utility.QuitAlert;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static ControlPanel.Home.GUI.UserManagement.changePassword.changePasswordWindow;
 import static ControlPanel.Home.GUI.UserManagement.editUser.editUserWindow;
@@ -70,12 +65,12 @@ public class userManagement extends controlPanelGUI {
         else {
             frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 4));
         }
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        JMenuItem item = new JMenuItem("Exit");
-        menuBar.add(menu);
-        menu.add(item);
-        frame.setJMenuBar(menuBar);
+//        JMenuBar menuBar = new JMenuBar();
+//        JMenu menu = new JMenu("File");
+//        JMenuItem item = new JMenuItem("Exit");
+//        menuBar.add(menu);
+//        menu.add(item);
+//        frame.setJMenuBar(menuBar);
 
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
 
@@ -108,7 +103,7 @@ public class userManagement extends controlPanelGUI {
             panel3.add(changePassword);
         }
 
-        item.addActionListener(e -> controlPanelExitAlert.alterWindow());
+//        item.addActionListener(e -> QuitAlert.alterWindow());
 
         //Line Below retrieves selected User from the User List and stores the value within a variable
         list.addListSelectionListener(e -> setSelectedUser((String) list.getSelectedValue()));
