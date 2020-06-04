@@ -1,13 +1,12 @@
 package ControlPanel.Login.GUI;
 import ControlPanel.Home.GUI.controlPanelGUI;
 
-import ControlPanel.Utility.controlPanelExitAlert;
+import ControlPanel.Utility.QuitAlert;
 import ControlPanel.Utility.controlPanelUser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.sql.SQLException;
 
@@ -113,7 +112,7 @@ public class loginScreen extends controlPanelUser {
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
         frame.getContentPane().add(panel4);
-        item.addActionListener(e -> controlPanelExitAlert.alterWindow());
+        item.addActionListener(e -> QuitAlert.alterWindow());
 
         loginButton.addActionListener(e -> {
             String inputUser = inputUsername.getText();

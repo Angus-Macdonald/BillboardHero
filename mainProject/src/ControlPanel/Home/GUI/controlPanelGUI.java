@@ -1,18 +1,15 @@
 package ControlPanel.Home.GUI;
 
-import ControlPanel.Utility.controlPanelExitAlert;
+import ControlPanel.Utility.QuitAlert;
 import ControlPanel.Utility.controlPanelUser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import static ControlPanel.Login.GUI.loginScreen.controlPanelLogin;
-import static ControlPanel.Utility.logout.logout;
+import static ControlPanel.Utility.logoutAlert.logoutAlert;
 
 
 public class controlPanelGUI extends controlPanelUser {
@@ -43,21 +40,20 @@ public class controlPanelGUI extends controlPanelUser {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
-        JMenuItem item = new JMenuItem("Exit");
+        JMenuItem quit = new JMenuItem("Quit");
+        JMenuItem logout = new JMenuItem("Log Out");
+        logout.addActionListener(e -> {
+            logoutAlert();
 
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controlPanelExitAlert.alterWindow();
-            }
         });
 
+        quit.addActionListener(e -> QuitAlert.alterWindow());
+
         menuBar.add(menu);
-        menu.add(item);
+        menu.add(logout);
+        menu.add(quit);
         frame.setJMenuBar(menuBar);
         frame.setLayout(new GridLayout(3,1));
-
-        JButton logoutButton = new JButton("Log Out");
 
         JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
         controlPanelHead.setFont(new Font("Serif", Font.BOLD, 35));
@@ -80,20 +76,10 @@ public class controlPanelGUI extends controlPanelUser {
         }
 
         panel3.add(userManagement);
-        panel3.add(logoutButton);
 
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
-
-        logoutButton.addActionListener(e -> {
-            logout(frame);
-            try {
-                controlPanelLogin();
-            } catch (NoSuchAlgorithmException ex) {
-                ex.printStackTrace();
-            }
-        });
 
         userManagement.addActionListener(e -> {
             ControlPanel.Home.GUI.UserManagement.userManagement.userManagementGUI();
