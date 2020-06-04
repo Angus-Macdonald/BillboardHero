@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import static ControlPanel.Login.GUI.loginScreen.controlPanelLogin;
-import static ControlPanel.Utility.logOut.clearControlPanelUser;
+import static ControlPanel.Utility.logout.logout;
 
 
 public class controlPanelGUI extends controlPanelUser {
@@ -57,6 +57,7 @@ public class controlPanelGUI extends controlPanelUser {
         frame.setJMenuBar(menuBar);
         frame.setLayout(new GridLayout(3,1));
 
+        JButton logoutButton = new JButton("Log Out");
 
         JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
         controlPanelHead.setFont(new Font("Serif", Font.BOLD, 35));
@@ -65,8 +66,6 @@ public class controlPanelGUI extends controlPanelUser {
         JButton editBillboard = new JButton("Edit A Billboard");
         JButton scheduleBillboard = new JButton("Schedule A Billboard");
         JButton userManagement = new JButton("Account Management");
-
-        JButton logOut = new JButton("Log Out");
 
         panel1.add(controlPanelHead);
 
@@ -81,15 +80,14 @@ public class controlPanelGUI extends controlPanelUser {
         }
 
         panel3.add(userManagement);
-        panel3.add(logOut);
+        panel3.add(logoutButton);
 
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(panel2);
         frame.getContentPane().add(panel3);
 
-        logOut.addActionListener(e -> {
-            clearControlPanelUser();
-            frame.dispose();
+        logoutButton.addActionListener(e -> {
+            logout(frame);
             try {
                 controlPanelLogin();
             } catch (NoSuchAlgorithmException ex) {

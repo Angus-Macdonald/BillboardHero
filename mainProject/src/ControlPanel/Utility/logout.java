@@ -2,8 +2,8 @@ package ControlPanel.Utility;
 
 import javax.swing.*;
 
-public class logOut extends controlPanelUser{
-    public logOut(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+public class logout extends controlPanelUser {
+    public logout(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
@@ -16,6 +16,8 @@ public class logOut extends controlPanelUser{
         setEditUsersPermission(false);
     }
 
-
+    public static void logout(JFrame frame){
+        clearControlPanelUser();
+        frame.dispose();
+    }
 }
-
