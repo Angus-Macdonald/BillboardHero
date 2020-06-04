@@ -27,7 +27,6 @@ import java.util.HashMap;
 
 public class billboard {
     private static String filePath; //stores the path to the xml file
-
     private static Document document;   //stores the actual document before conversion
 
     //creates a new XML file to the file path with only a billboard tag with no attributes
@@ -62,12 +61,12 @@ public class billboard {
             } catch (ParserConfigurationException | SAXException | IOException pce) {
                 pce.printStackTrace();
             }
+            System.out.println("Done importing (" + xmlFile + ").");
         } else if (fileOrServer.equals("server")) {
             filePath = "./";
             stringToXml(xmlString);
+            System.out.println("Done importing from server.");
         }
-
-        System.out.println("Done importing (" + xmlFile + ").");
     }
 
     //either creates or modifies a message element with the input msg from the user, then adds it to the document
@@ -89,7 +88,7 @@ public class billboard {
         //Add msg text
         Element msgTag = document.createElement("message");
         msgTag.appendChild(document.createTextNode(msg));
-        billboard.appendChild(msgTag);
+        billboard.insertBefore(msgTag, billboard.getFirstChild());
 
         System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
     }
@@ -131,7 +130,7 @@ public class billboard {
 
         //Add img type and source
         Element img = document.createElement("picture");
-        billboard.appendChild(img);
+        billboard.insertBefore(img, billboard.getFirstChild().getNextSibling());
         if (source.equals("url")) {
             Attr imgURL = document.createAttribute("url");
             imgURL.setValue(input);
@@ -206,7 +205,6 @@ public class billboard {
                 }
             }
         }
-        System.out.println("Added (" + color + ") as the color of (" + changeColorOf + ") to the XML file at (" + filePath + ")");
     }
 
     //create the xml file
@@ -343,10 +341,10 @@ public class billboard {
             StringWriter writer = new StringWriter();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+//            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+//            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+//            transformer.setOutputProperty(OutputKeys.INDENT, "no");
+//            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
             transformer.transform(new DOMSource(document), new StreamResult(writer));
             return writer.toString();
@@ -370,3 +368,5 @@ public class billboard {
 
     }
 }
+
+//remove existing element if user deletes it when editing

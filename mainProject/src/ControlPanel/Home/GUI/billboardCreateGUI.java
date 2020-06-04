@@ -7,8 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -53,45 +51,31 @@ public class billboardCreateGUI {
         frame.add(infoColorPicker);
         frame.add(exportBillboard);
         frame.add(button);
-        bgColorPicker.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!nameBox.getText().isEmpty()) {
-                    Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.white);
-                    bgColorPicker.setBackground(bgColor);
-                }
+        bgColorPicker.addActionListener(e -> {
+            if (!nameBox.getText().isEmpty()) {
+                Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.white);
+                bgColorPicker.setBackground(bgColor);
             }
         });
-        msgColorPicker.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!msgBox.getText().isEmpty()) {
-                    Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
-                    msgBox.setForeground(msgColor);
-                    msgColorPicker.setBackground(msgColor);
-                }
+        msgColorPicker.addActionListener(e -> {
+            if (!msgBox.getText().isEmpty()) {
+                Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
+                msgBox.setForeground(msgColor);
             }
         });
-        typePicBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (!typePicBox.getSelectedItem().equals("None")) {
-                    sourcePicBox.setEnabled(true);
-                    sourcePicBox.setBackground(Color.white);
-                } else {
-                    sourcePicBox.setEnabled(false);
-                    sourcePicBox.setBackground(Color.lightGray);
-                }
+        typePicBox.addItemListener(e -> {
+            if (!typePicBox.getSelectedItem().equals("None")) {
+                sourcePicBox.setEnabled(true);
+                sourcePicBox.setBackground(Color.white);
+            } else {
+                sourcePicBox.setEnabled(false);
+                sourcePicBox.setBackground(Color.lightGray);
             }
         });
-        infoColorPicker.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!infoBox.getText().isEmpty()) {
-                    Color infoColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
-                    infoBox.setForeground(infoColor);
-                    infoColorPicker.setBackground(infoColor);
-                }
+        infoColorPicker.addActionListener(e -> {
+            if (!infoBox.getText().isEmpty()) {
+                Color infoColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
+                infoBox.setForeground(infoColor);
             }
         });
         button.addActionListener(new ActionListener() {
