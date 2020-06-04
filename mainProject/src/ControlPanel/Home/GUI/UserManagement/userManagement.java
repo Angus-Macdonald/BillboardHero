@@ -1,22 +1,27 @@
 package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Home.GUI.controlPanelGUI;
-import ControlPanel.Utility.controlPanelExitAlert;
-import Server.Users;
+import ControlPanel.Utility.QuitAlert;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static ControlPanel.Home.GUI.UserManagement.changePassword.changePasswordWindow;
+import static ControlPanel.Home.GUI.UserManagement.editUser.editUserWindow;
 
 public class userManagement extends controlPanelGUI {
 
     static String selectedUser = "";
+
+    public static void setSelectedUser(String value){
+        selectedUser = value;
+    }
+
+    public static String getSelectedUser(){
+        return selectedUser;
+    }
+
     public userManagement(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
@@ -40,17 +45,12 @@ public class userManagement extends controlPanelGUI {
         //                  Check new password has been hashed, use inputPassHashCheck Function(inputPW, hashPW), return true if they aren't equal
     }
 
-    public static String selectUser(JList list){
-        String selectedUser = (String) list.getSelectedValue();
-        return selectedUser;
-    }
 
     public static void main(String[] args){
         userManagementGUI();
     }
     public static void userManagementGUI() {
-
-        setEditUsersPermission(false);
+        setEditUsersPermission(true);
         boolean admin = getEditUsersPermission();
         JFrame frame = new JFrame("Account Management");
         JPanel panel1 = new JPanel();
@@ -65,14 +65,12 @@ public class userManagement extends controlPanelGUI {
         else {
             frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 4));
         }
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        JMenuItem item = new JMenuItem("Exit");
-        menuBar.add(menu);
-        menu.add(item);
-        frame.setJMenuBar(menuBar);
-
-
+//        JMenuBar menuBar = new JMenuBar();
+//        JMenu menu = new JMenu("File");
+//        JMenuItem item = new JMenuItem("Exit");
+//        menuBar.add(menu);
+//        menu.add(item);
+//        frame.setJMenuBar(menuBar);
 
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
 
@@ -105,20 +103,23 @@ public class userManagement extends controlPanelGUI {
             panel3.add(changePassword);
         }
 
-        item.addActionListener(e -> controlPanelExitAlert.alterWindow());
+//        item.addActionListener(e -> QuitAlert.alterWindow());
 
         //Line Below retrieves selected User from the User List and stores the value within a variable
-        list.addListSelectionListener(e -> selectedUser = selectUser(list));
+        list.addListSelectionListener(e -> setSelectedUser((String) list.getSelectedValue()));
 
         //Line below is the action listener for the Edit User Button. Is a temp test to show it can retrieve the selected user
-        editUser.addActionListener(e -> System.out.println("Edit User: " + selectedUser));
+        editUser.addActionListener(e -> {
+            editUserWindow(getSelectedUser());
+            System.out.println(getSelectedUser());
+        });
 
         //Line below is the action listener for the Delete User Button. Is a temp test to show it can retrieve the selected user
         deleteUser.addActionListener(e -> System.out.println("Delete User: "+ selectedUser));
 
         //Following Code implements Changing the password
         changePassword.addActionListener(e -> {
-            changePasswordWindow();
+            changePasswordWindow(getSelectedUser());
         });
 
         frame.getContentPane().add(panel1);
