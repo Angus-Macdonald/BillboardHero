@@ -9,8 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import static ControlPanel.Utility.HashPassword.hashPassword;
 import static ControlPanel.Utility.HashPassword.inputPassHashCheck;
 
-public class changePassword extends userManagement {
-    public changePassword(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+public class ChangePassword extends UserManagement {
+    public ChangePassword(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 

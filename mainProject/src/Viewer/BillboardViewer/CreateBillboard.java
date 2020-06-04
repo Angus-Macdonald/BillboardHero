@@ -40,18 +40,20 @@ public class CreateBillboard {
     public static String informationText;
     private static Font messageFont = new Font("Helvetica", Font.BOLD, messageSize);
     private static Font infoFont = new Font("Helvetica", Font.BOLD, informationSize);
-    public static URL url;
+    private static URL url;
+    private static BufferedImage urlImage;
+    private static String imageStream;
     public static boolean serverResponse = false;
     private static List<String> elementOrder = new ArrayList<>();
     public static int xmlElements = 0;
 
-    static {
-        try {
-            url = new URL("https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
+//    static {
+//        try {
+//            url = new URL("https://cloudstor.aarnet.edu.au/plus/s/X79GyWIbLEWG4Us/download");
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        }
+//    }
     public static String test = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAIAAAD4YuoOAAAAKXRFWHRDcmVhdGlvb" +
             "iBUaW1lAJCFIDI1IDMgMjAyMCAwOTowMjoxNyArMDkwMHlQ1XMAAAAHdElNRQfkAxkAAyQ8nibjAAAACXBIWX" +
             "MAAAsSAAALEgHS3X78AAAABGdBTUEAALGPC/xhBQAAAS5JREFUeNq1kb9KxEAQxmcgcGhhJ4cnFwP6CIIiPoZ" +
@@ -106,10 +108,11 @@ public class CreateBillboard {
                     informationText = element.getTextContent();
                     System.out.println("Colour: " + element.getAttribute("color"));
                 }
-                else if (tagName == "url") {
+                else if (tagName == "picture") {
+                    // NEW Set of ifs for url or data
                     System.out.println(element.getAttribute("url"));
                     url = new URL(element.getAttribute("url"));
-                    BufferedImage urlImage = ImageIO.read(url);
+//                    urlImage = ImageIO.read(url);
 
                 } else if (tagName == "data") {
                     // Do data changes
@@ -118,16 +121,16 @@ public class CreateBillboard {
             }
         }
         System.out.println(elementOrder);
-        System.out.println(elementOrder.size());
+        System.out.println(elementOrder.get(1));
     }
 
-    public static void formBillboard() {
-        Object[] contents = new Object[] {};
-        contents = testBillboard.getBillboardProperties();
-        System.out.println(contents);
-
-
-    }
+//    public static void formBillboard() {
+//        Object[] contents = new Object[] {};
+//        contents = testBillboard.getBillboardProperties();
+//        System.out.println(contents);
+//
+//
+//    }
 
     // Need to have something to check how many elements are in billboard
     // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
@@ -162,47 +165,66 @@ public class CreateBillboard {
             if (elementOrder.size() == 1) {
                 // Code for single element
             } else if (elementOrder.size() == 2) {
-                for (int i = 0; i < elementOrder.size(); i++) {
-                    if (elementOrder.get(i) == "message") {
+                String firstItem = elementOrder.get(0);
+                String secondItem = elementOrder.get(1);
 
-                    }
+                if (firstItem == "information") {
+                    JTextArea topElement = packedInfo(firstItem);
+                    JLabel bottomElement = packedElement(secondItem);
+
+                    topPanel.add(topElement);
+                    bottomPanel.add(bottomElement);
+                } else if (secondItem == "information") {
+                    JLabel topElement = packedElement(firstItem);
+                    JTextArea bottomElement = packedInfo(secondItem);
+
+                    topPanel.add(topElement);
+                    bottomPanel.add(bottomElement);
+                } else {
+                    JLabel topElement = packedElement(firstItem);
+                    JLabel bottomElement = packedElement(secondItem);
+
+                    topPanel.add(topElement);
+                    bottomPanel.add(bottomElement);
                 }
+
+
             } else {
                 // code for three elements
             }
 
             // 25 character limit before downsizing font
             // 50 character max for message
-            JLabel message = new JLabel(messageText);
-            JLabel information = new JLabel(informationText);
+//            JLabel message = new JLabel(messageText);
+//            JLabel information = new JLabel(informationText);
 
             // Testing image data
-            byte[] byteTest = Base64.getMimeDecoder().decode(test2);
-            BufferedImage img = ImageIO.read(new ByteArrayInputStream(byteTest));
+//            byte[] byteTest = Base64.getMimeDecoder().decode(test2);
+//            BufferedImage img = ImageIO.read(new ByteArrayInputStream(byteTest));
+//
+//            // Scaling iff image needs it???
+//            BufferedImage resizedImg = resizeImage(img, 1);
+//
+//            BufferedImage image = ImageIO.read(url);
+//            JLabel imageInput = new JLabel(new ImageIcon(resizedImg));
 
-            // Scaling iff image needs it???
-            BufferedImage resizedImg = resizeImage(img, 1);
 
-            BufferedImage image = ImageIO.read(url);
-            JLabel imageInput = new JLabel(new ImageIcon(resizedImg));
+//            resizeText(messageText);
 
+//            message.setFont(new Font("Helvetica", Font.BOLD, messageSize));
+//            message.setForeground(Color.decode("#FF9E3F"));
+//            information.setFont(new Font("Helvetica", Font.BOLD, informationSize));
+//            information.setForeground(Color.decode("#3FFFC7"));
 
-            resizeText(messageText);
-
-            message.setFont(new Font("Helvetica", Font.BOLD, messageSize));
-            message.setForeground(Color.decode("#FF9E3F"));
-            information.setFont(new Font("Helvetica", Font.BOLD, informationSize));
-            information.setForeground(Color.decode("#3FFFC7"));
-
-            topPanel.add(message);
+//            topPanel.add(message);
             topPanel.setBackground(background);
             topPanel.setBorder(new EmptyBorder(150, 10, 10, 10));
 
-            bottomPanel.add(information);
+//            bottomPanel.add(information);
             bottomPanel.setBackground(background);
             bottomPanel.setBorder(new EmptyBorder(10, 10, 150, 10));
 
-            middlePanel.add(imageInput);
+//            middlePanel.add(imageInput);
             middlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
             middlePanel.setBackground(background);
         }
@@ -313,5 +335,39 @@ public class CreateBillboard {
         }
 
         return enlargedImage;
+    }
+
+    public static JLabel packedElement(String element) throws IOException {
+        JLabel output = new JLabel();
+
+        if (element == "message") {
+            output = new JLabel(messageText);
+            output.setForeground(messageColour);
+
+        } else if (element == "picture") {
+            BufferedImage image = ImageIO.read(url);
+            output = new JLabel(new ImageIcon(image));
+
+        } else {
+//            output = new JLabel(new ImageIcon(imageStream));
+        }
+
+        return output;
+    }
+
+    public static JTextArea packedInfo(String element) {
+        JTextArea information = new JTextArea(informationText, 5, 20);
+
+        information.setLineWrap(true);
+        information.setWrapStyleWord(true);
+        information.setOpaque(false);
+        information.setEditable(false);
+
+        information.addMouseListener(clickCheck);
+        information.addKeyListener(escListener);
+        information.setFont(infoFont);
+        information.setForeground(infoColour);
+
+        return information;
     }
 }
