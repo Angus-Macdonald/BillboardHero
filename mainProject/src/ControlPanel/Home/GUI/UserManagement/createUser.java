@@ -1,6 +1,6 @@
 package ControlPanel.Home.GUI.UserManagement;
 
-import ControlPanel.Utility.menubar;
+import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +13,7 @@ public class createUser {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width/5, dim.height/2));
         frame.setLayout(new GridLayout(5, 1));
-        menubar.menubar(frame);
+        Menubar.menubar(frame);
 
         JPanel[] panel = new JPanel[5];
         for(int i = 0; i < panel.length; i++){

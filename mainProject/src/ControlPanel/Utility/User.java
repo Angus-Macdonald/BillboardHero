@@ -1,12 +1,10 @@
 package ControlPanel.Utility;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import static ControlPanel.Utility.logoutAlert.logoutAlert;
+import static ControlPanel.Utility.LogoutAlert.logoutAlert;
 
-public class controlPanelUser {
+public class User {
     private static int userID;
     private static int sessionToken;
     private static boolean createBBPermission;
@@ -14,7 +12,7 @@ public class controlPanelUser {
     private static boolean scheduleBBPermission;
     private static boolean editUsersPermission;
 
-    public controlPanelUser(
+    public User(
                             int userID,
                             int sessionToken,
                             boolean createBBPermission,

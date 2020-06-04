@@ -1,8 +1,7 @@
 package ControlPanel.Home.GUI.UserManagement;
 
-import ControlPanel.Home.GUI.controlPanelGUI;
-import ControlPanel.Utility.QuitAlert;
-import ControlPanel.Utility.menubar;
+import ControlPanel.Home.GUI.GUI;
+import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +11,7 @@ import static ControlPanel.Home.GUI.UserManagement.changePassword.changePassword
 import static ControlPanel.Home.GUI.UserManagement.createUser.createUserWindow;
 import static ControlPanel.Home.GUI.UserManagement.editUser.editUserWindow;
 
-public class userManagement extends controlPanelGUI {
+public class userManagement extends GUI {
 
     static String selectedUser = "";
 
@@ -42,7 +41,7 @@ public class userManagement extends controlPanelGUI {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 2));
-        menubar.menubar(frame);
+        Menubar.menubar(frame);
 
         String[] userArray = {"User 1", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4", "User 2", "User 3", "User 4"};
 

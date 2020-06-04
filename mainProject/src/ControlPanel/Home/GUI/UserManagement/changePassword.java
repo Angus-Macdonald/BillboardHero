@@ -1,14 +1,13 @@
 package ControlPanel.Home.GUI.UserManagement;
 
-import ControlPanel.Utility.controlPanelUser;
-import ControlPanel.Utility.menubar;
+import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 
-import static ControlPanel.Utility.hashPassword.hashPassword;
-import static ControlPanel.Utility.hashPassword.inputPassHashCheck;
+import static ControlPanel.Utility.HashPassword.hashPassword;
+import static ControlPanel.Utility.HashPassword.inputPassHashCheck;
 
 public class changePassword extends userManagement {
     public changePassword(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
@@ -28,7 +27,7 @@ public class changePassword extends userManagement {
         JPanel newPasswordPane = new JPanel();
         JPanel submitPane = new JPanel();
 
-        menubar.menubar(passwordFrame);
+        Menubar.menubar(passwordFrame);
 
         JLabel heading = new JLabel("Change Password");
         heading.setFont(new Font("Serif", Font.BOLD, 35));

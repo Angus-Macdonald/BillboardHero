@@ -2,15 +2,13 @@ package ControlPanel.Utility;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 
 import static ControlPanel.Login.GUI.loginScreen.controlPanelLogin;
 import static java.awt.Frame.getFrames;
 
-public class logoutAlert extends logout {
-    public logoutAlert(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+public class LogoutAlert extends Logout {
+    public LogoutAlert(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 

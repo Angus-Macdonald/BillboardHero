@@ -2,8 +2,8 @@ package ControlPanel.Utility;
 
 import javax.swing.*;
 
-public class logout extends controlPanelUser {
-    public logout(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+public class Logout extends User {
+    public Logout(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 

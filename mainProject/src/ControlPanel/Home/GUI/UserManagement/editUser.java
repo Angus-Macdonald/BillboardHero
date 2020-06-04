@@ -1,6 +1,6 @@
 package ControlPanel.Home.GUI.UserManagement;
 
-import ControlPanel.Utility.menubar;
+import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -28,7 +28,7 @@ public class editUser  extends userManagement {
         frame.setPreferredSize(new Dimension(dim.width/5, dim.height/2));
         frame.setLayout(new GridLayout(5, 1));
 
-        menubar.menubar(frame);
+        Menubar.menubar(frame);
 
         JPanel panel1 = new JPanel();
         JLabel header = new JLabel("Edit User");

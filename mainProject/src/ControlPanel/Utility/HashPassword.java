@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class hashPassword {
+public class HashPassword {
 
     public static byte[] hashPassword(String pass) throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();

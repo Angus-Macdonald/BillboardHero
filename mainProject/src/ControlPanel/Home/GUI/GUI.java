@@ -1,8 +1,7 @@
 package ControlPanel.Home.GUI;
 
-import ControlPanel.Utility.QuitAlert;
-import ControlPanel.Utility.controlPanelUser;
-import ControlPanel.Utility.menubar;
+import ControlPanel.Utility.User;
+import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,12 +9,10 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ControlPanel.Utility.logoutAlert.logoutAlert;
 
+public class GUI extends User {
 
-public class controlPanelGUI extends controlPanelUser {
-
-    public controlPanelGUI(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
+    public GUI(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
@@ -39,7 +36,7 @@ public class controlPanelGUI extends controlPanelUser {
         frame.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
         frame.setLocation(dim.width/3, dim.height/3);
 
-        menubar.menubar(frame);
+        Menubar.menubar(frame);
 
         JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
         controlPanelHead.setFont(new Font("Serif", Font.BOLD, 35));

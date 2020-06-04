@@ -1,11 +1,10 @@
 package ControlPanel.Utility;
 
 import javax.swing.*;
-import java.awt.*;
 
-import static ControlPanel.Utility.logoutAlert.logoutAlert;
+import static ControlPanel.Utility.LogoutAlert.logoutAlert;
 
-public class menubar {
+public class Menubar {
     public static void menubar(JFrame frame){
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
