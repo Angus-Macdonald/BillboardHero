@@ -1,11 +1,13 @@
 package ControlPanel.Home.GUI.UserManagement;
 
+import ControlPanel.Utility.FrameAndPanelUtility;
 import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 import static ControlPanel.Utility.HashPassword.hashPassword;
 import static ControlPanel.Utility.HashPassword.inputPassHashCheck;
 
@@ -15,42 +17,35 @@ public class ChangePassword extends UserManagement {
     }
 
     public static void changePasswordWindow(String user){
-        JFrame passwordFrame = new JFrame("Change Password");
-        passwordFrame.setLayout(new GridLayout(5, 1));
-        passwordFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        passwordFrame.setPreferredSize(new Dimension(dim.width / 5, dim.height / 2));
-
-        JPanel headingPane = new JPanel();
-        JPanel userIdPane = new JPanel();
-        JPanel oldPasswordPane = new JPanel();
-        JPanel newPasswordPane = new JPanel();
-        JPanel submitPane = new JPanel();
-
-        Menubar.menubar(passwordFrame);
+        JFrame frame = new JFrame("Change Password");
+        FrameAndPanelUtility.frameManage(frame, 5, 1);
+        
+        JPanel[] panel = new JPanel[5];
+        panelInitialise(panel);
+        Menubar.menubar(frame);
 
         JLabel heading = new JLabel("Change Password");
         heading.setFont(new Font("Serif", Font.BOLD, 35));
-        headingPane.add(heading);
+        panel[0].add(heading);
 
         JLabel userID = new JLabel("Enter User ID: ");
 
         JTextField userInput = new JTextField(getSelectedUser(),10);
-        userIdPane.add(userID);
-        userIdPane.add(userInput);
+        panel[1].add(userID);
+        panel[1].add(userInput);
 
         JLabel oldPassword = new JLabel("Enter Old Password: ");
         JPasswordField oldInput = new JPasswordField(10);
-        oldPasswordPane.add(oldPassword);
-        oldPasswordPane.add(oldInput);
+        panel[2].add(oldPassword);
+        panel[2].add(oldInput);
 
         JLabel newPassword = new JLabel("Enter New Password: ");
         JPasswordField newInput = new JPasswordField(10);
-        newPasswordPane.add(newPassword);
-        newPasswordPane.add(newInput);
+        panel[3].add(newPassword);
+        panel[3].add(newInput);
 
         JButton submitButton = new JButton("Submit");
-        submitPane.add(submitButton);
+        panel[4].add(submitButton);
 
         //Code Below demonstrates the submit button using the input data
         submitButton.addActionListener(e -> {
@@ -80,19 +75,19 @@ public class ChangePassword extends UserManagement {
             }
 
 
-            passwordFrame.dispose();
+            frame.dispose();
 
         });
 
-        passwordFrame.getContentPane().add(headingPane);
-        passwordFrame.getContentPane().add(userIdPane);
-        passwordFrame.getContentPane().add(oldPasswordPane);
-        passwordFrame.getContentPane().add(newPasswordPane);
-        passwordFrame.getContentPane().add(submitPane);
+        frame.getContentPane().add(panel[0]);
+        frame.getContentPane().add(panel[1]);
+        frame.getContentPane().add(panel[2]);
+        frame.getContentPane().add(panel[3]);
+        frame.getContentPane().add(panel[4]);
 
-        passwordFrame.pack();
-        passwordFrame.setLocationRelativeTo(null);
-        passwordFrame.setVisible(true);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
     }
 }

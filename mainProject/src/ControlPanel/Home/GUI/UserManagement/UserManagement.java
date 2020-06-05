@@ -10,6 +10,8 @@ import java.awt.*;
 import static ControlPanel.Home.GUI.UserManagement.ChangePassword.changePasswordWindow;
 import static ControlPanel.Home.GUI.UserManagement.CreateUser.createUserWindow;
 import static ControlPanel.Home.GUI.UserManagement.EditUser.editUserWindow;
+import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 
 public class UserManagement extends GUI {
 
@@ -38,13 +40,8 @@ public class UserManagement extends GUI {
         boolean admin = getEditUsersPermission();
         JFrame frame = new JFrame("Account Management");
         JPanel[] panel = new JPanel[3];
-        for(int i = 0; i < panel.length; i++){
-            panel[i] = new JPanel();
-        }
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 2));
-
+        panelInitialise(panel);
+        frameManage(frame);
         Menubar.menubar(frame);
 
         String[] userArray = {"12345", "32432", "23421", "43534", "32452", "43253", "99999", "21345"};
@@ -59,7 +56,7 @@ public class UserManagement extends GUI {
         JList list = new JList(userArray);
         JScrollPane userList = new JScrollPane(list);
         list.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-        list.setPreferredSize(new Dimension(dim.width/5, dim.height/ 3));
+        list.setPreferredSize(new Dimension(frameManage(frame).width/5, frameManage(frame).height/ 3));
 
         JButton backButton = new JButton("Back Button");
 
@@ -77,7 +74,7 @@ public class UserManagement extends GUI {
         }
 
         if(!admin) {
-            frame.setPreferredSize(new Dimension(dim.width / 4, dim.height / 4));
+            frame.setPreferredSize(new Dimension(frameManage(frame).width / 4, frameManage(frame).height / 4));
             frame.setLayout(new GridLayout(3, 1));
             panel[1].add(userLabel);
             panel[2].add(changePassword);
