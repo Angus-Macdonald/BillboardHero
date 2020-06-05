@@ -293,6 +293,16 @@ public class billboard {
     public String getColor(String colorOf) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
+        if (colorOf.equals("billboard")) {
+            Element element = (Element) billboard;
+            if (element.getAttributes() != null) {
+                String bgcolor = element.getAttribute("background");
+                System.out.println("Added (" + bgcolor + ") as the color of (" + colorOf + ") to the XML file at (" + filePath + ")");
+                return bgcolor;
+            }
+
+            return "#ffffff";
+        }
 
         //Checks if there's an existing message element and edits that if there is
         NodeList elementList = billboard.getChildNodes();
@@ -302,7 +312,6 @@ public class billboard {
                 Element element = (Element) node;
                 if (colorOf.equals(element.getNodeName())) {
                     if (element.getAttributes() != null) {
-                        //remove all existing attributes in picture element
                         String color = element.getAttribute("color");
                         System.out.println("Got (" + color + ") as the color of (" + colorOf + ") to the XML file at (" + filePath + ")");
                         return color;
@@ -311,11 +320,7 @@ public class billboard {
             }
         }
 
-        if (colorOf.equals("billboard")) {
-            return "#ffffff";
-        } else {
-            return "#000000";
-        }
+        return "#000000";
     }
 
     //return the img and its properties of the document

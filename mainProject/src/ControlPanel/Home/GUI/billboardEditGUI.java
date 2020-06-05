@@ -1,7 +1,7 @@
 package ControlPanel.Home.GUI;
 
 import ControlPanel.Utility.billboard;
-import Server.ServerBillboard;
+import Server.Client;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -36,39 +36,33 @@ public class billboardEditGUI {
         frame.add(xmlName);
         frame.add(fromServer);
 
-        fromFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {    //opens a file browser to select a file and imports it to the billboard class
-                int confirmation = fileChooser.showOpenDialog(frame);
-                if (confirmation == JFileChooser.APPROVE_OPTION) {
-                    System.out.println("Importing file...");
-                    selectedFile = fileChooser.getSelectedFile();
-                    try {
-                        edit(selectedFile.getAbsoluteFile(), null, "file");
-                    } catch (SQLException | IOException | ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    }
-                    //editFromFile(selectedFile.getAbsoluteFile());
-                    frame.dispose();
-                }
-            }
-        });
-        fromServer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        fromFile.addActionListener(e -> {    //opens a file browser to select a file and imports it to the billboard class
+            int confirmation = fileChooser.showOpenDialog(frame);
+            if (confirmation == JFileChooser.APPROVE_OPTION) {
+                System.out.println("Importing file...");
+                selectedFile = fileChooser.getSelectedFile();
                 try {
-                    ServerBillboard serverConn = new ServerBillboard();
-                    String billboard = serverConn.getBBInfo(xmlName.getText());
-                    if (billboard == null) {
-                        JOptionPane.showMessageDialog(frame, "Invalid billboard name.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    edit(null, xmlName.getText(), "server");
-                    frame.dispose();
-                    //editFromServer(xmlName.getText());
+                    edit(selectedFile.getAbsoluteFile(), null, "file");
                 } catch (SQLException | IOException | ClassNotFoundException ex) {
                     ex.printStackTrace();
                 }
+                //editFromFile(selectedFile.getAbsoluteFile());
+                frame.dispose();
+            }
+        });
+        fromServer.addActionListener(e -> {
+            try {
+                Client serverConn = new Client();
+                String billboard = serverConn.getBBInfoS(xmlName.getText());
+                if (billboard == null) {
+                    JOptionPane.showMessageDialog(frame, "Invalid billboard name.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                edit(null, xmlName.getText(), "server");
+                frame.dispose();
+                //editFromServer(xmlName.getText());
+            } catch (SQLException | IOException | ClassNotFoundException ex) {
+                ex.printStackTrace();
             }
         });
 
@@ -99,10 +93,11 @@ public class billboardEditGUI {
         if (fileOrServer.equals("file")) {
             newBillboard.importXML(xmlFile, null, "file");
         } else if (fileOrServer.equals("server")) {
-            ServerBillboard serverConn = new ServerBillboard();
-            String xmlString = serverConn.getBBInfo(billboardName);
+            Client serverConn = new Client();
+            String xmlString = serverConn.getBBInfoS(billboardName);
             newBillboard.importXML(null, xmlString, "server");
         }
+        bgColorPicker.setBackground(Color.decode(newBillboard.getColor("billboard")));
         msgBox.setText(newBillboard.getMsg());
         msgBox.setForeground(Color.decode(newBillboard.getColor("message")));
         HashMap<String, String> imgProps = newBillboard.getImg();
@@ -130,29 +125,29 @@ public class billboardEditGUI {
         if (fileOrServer.equals("server")) { frame.add(deleteButton); } //user can only delete when editing billboards from server
         frame.add(saveButton);
         bgColorPicker.addActionListener(e -> {
-            Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.white);
+            Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.decode(newBillboard.getColor("billboard")));
             bgColorPicker.setBackground(bgColor);
         });
         msgColorPicker.addActionListener(e -> {
             if (!msgBox.getText().isEmpty()) {
-                Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
+                Color msgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.decode(newBillboard.getColor("message")));
                 msgBox.setForeground(msgColor);
             }
         });
         infoColorPicker.addActionListener(e -> {
             if (!infoBox.getText().isEmpty()) {
-                Color infoColor = JColorChooser.showDialog(frame, "Pick a Color", Color.black);
+                Color infoColor = JColorChooser.showDialog(frame, "Pick a Color", Color.decode(newBillboard.getColor("information")));
                 infoBox.setForeground(infoColor);
             }
         });
         deleteButton.addActionListener(e -> {
             int confirmation = JOptionPane.showConfirmDialog(frame, "Are you sure you want to delete this billboard?", "Warning", JOptionPane.YES_NO_OPTION);
             if (confirmation == 0) {
-                ServerBillboard serverConn = new ServerBillboard();
+                Client serverConn = new Client();
                 try {
-                    serverConn.deleteBB(billboardName);
+                    serverConn.deleteBBS(billboardName);
                     System.out.println("Successfully deleted (" + billboardName + ") from server.");
-                } catch (SQLException throwables) {
+                } catch (IOException throwables) {
                     throwables.printStackTrace();
                 }
                 new billboardEditGUI();
@@ -177,11 +172,11 @@ public class billboardEditGUI {
                     JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for message.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (!sourcePicBox.getText().isEmpty()) {
-                    newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
-                } else if (!typePicBox.getSelectedItem().toString().equals("None") && sourcePicBox.getText().isEmpty()) {
+                if (!typePicBox.getSelectedItem().toString().equals("None") && sourcePicBox.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Please fill in the picture source or pick none.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
+                } else {
+                    newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
                 }
                 if (infoBox.getText().length() <= 350) {
                     newBillboard.addInfo(infoBox.getText());
@@ -199,14 +194,14 @@ public class billboardEditGUI {
                 }
                 System.out.println(newBillboard.xmlToString());
                 //upload the created XML file to the server
-                ServerBillboard serverConn = new ServerBillboard();
+                Client serverConn = new Client();
                 try {
                     if (fileOrServer.equals("file")) {
-                        serverConn.createBB(xmlFile.getName(), 1, newBillboard.xmlToString());
+                        serverConn.createBBS(xmlFile.getName(), 1, newBillboard.xmlToString());
                     } else if (fileOrServer.equals("server")) {
-                        serverConn.createBB(billboardName, 1, newBillboard.xmlToString());
+                        serverConn.createBBS(billboardName, 1, newBillboard.xmlToString());
                     }
-                } catch (SQLException | IOException throwables) {
+                } catch (IOException throwables) {
                     throwables.printStackTrace();
                 }
                 new billboardEditGUI();
