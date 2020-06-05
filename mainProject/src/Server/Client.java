@@ -2,10 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Client {
@@ -71,26 +68,25 @@ public class Client {
         oos.close();
         socket.close();
     }
-//    public ArrayList<Integer> listUsersS() throws IOException, ClassNotFoundException {
-//        Socket socket = new Socket("localhost",12345);
-//        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-//        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-//
-//        //call method
-//        oos.writeUTF("listUsers");
-//
-//        //get results
-//        oos.flush();
-//
-//
-//        System.out.println(userslist);
-//
-//
-//        ois.close();
-//        oos.close();
-//        socket.close();
-//        return userslist;
-//    };
+    public ArrayList<Integer> listUsersS() throws IOException, ClassNotFoundException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("listUsers");
+
+        //get results
+        oos.flush();
+        ArrayList<Integer> al = new ArrayList<Integer>();
+        al = (ArrayList<Integer>) ois.readObject();
+
+
+        ois.close();
+        oos.close();
+        socket.close();
+        return al;
+    };
 public void setPasswordS(String password, int userID ) throws IOException {
     Socket socket = new Socket("localhost",12345);
     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -146,6 +142,27 @@ public void setPasswordS(String password, int userID ) throws IOException {
         oos.close();
         socket.close();
     }
+    public ArrayList<Boolean> ChkPermsS(int userID) throws IOException, ClassNotFoundException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("ChkPerms");
+
+        //callparams
+        oos.writeInt(userID);
+        //get results
+        oos.flush();
+        ArrayList<Boolean> al = new ArrayList<Boolean>();
+        al = (ArrayList<Boolean>) ois.readObject();
+
+
+        ois.close();
+        oos.close();
+        socket.close();
+        return al;
+    }
     public void setPermissionS(int userID,
                               boolean setAdmin,
                               boolean setCreateBB,
@@ -175,6 +192,145 @@ public void setPasswordS(String password, int userID ) throws IOException {
         socket.close();
 
     }
+    public void scheduleBBS(String bbName, int creator, Timestamp dateStart, int duration, int repD, int repH, int repM) throws IOException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("scheduleBB");
+        //callparams
+        oos.writeUTF(bbName);
+        oos.writeInt(creator);
+        oos.writeObject(dateStart);
+        oos.writeInt(duration);
+        oos.writeInt(repD);
+        oos.writeInt(repH);
+        oos.writeInt(repM);
+
+        //get result
+        oos.flush();
+        //String result = ois.readUTF();
+
+        ois.close();
+        oos.close();
+        socket.close();
+
+    }
+    public ArrayList viewScheduleS() throws IOException, ClassNotFoundException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("viewSchedule");
+
+        //get results
+        oos.flush();
+        ArrayList al = new ArrayList();
+        al = (ArrayList) ois.readObject();
+
+
+        ois.close();
+        oos.close();
+        socket.close();
+        return al;
+    }
+    public void rmvFromSchS(String bbname,Timestamp dateStart) throws IOException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("rmvFromSch");
+
+        //callparams
+        oos.writeUTF(bbname);
+        oos.writeObject(dateStart);
+        //get results
+        oos.flush();
+
+        ois.close();
+        oos.close();
+        socket.close();
+    }
+    public Object currentBBS(Timestamp currentStamp) throws IOException, ClassNotFoundException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("currentBB");
+
+        //callparams
+        oos.writeObject(currentStamp);
+        //get results
+        Object bb = ois.readObject();
+        oos.flush();
+
+        ois.close();
+        oos.close();
+        socket.close();
+        return bb;
+    }
+    public boolean sessionCheckS(int token,int userID) throws IOException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("sessionCheck");
+
+        //callparams
+        oos.writeInt(token);
+        oos.writeInt(userID);
+        //get results
+        oos.flush();
+        boolean answer = ois.readBoolean();
+
+
+        ois.close();
+        oos.close();
+        socket.close();
+        return answer;
+
+    }
+    public void createBBS(String BBname,int creator,Object billboard) throws IOException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("createBB");
+
+        //callparams
+        oos.writeUTF(BBname);
+        oos.writeInt(creator);
+        oos.writeObject(billboard);
+        //get results
+        oos.flush();
+
+        ois.close();
+        oos.close();
+        socket.close();
+    }
+    public void deleteBBS(String BBname) throws IOException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("deleteBB");
+
+        //callparams
+        oos.writeUTF(BBname);
+        //get results
+        oos.flush();
+
+        ois.close();
+        oos.close();
+        socket.close();
+    }
     public static String getBBInfoS(String bbName) throws IOException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -193,5 +349,25 @@ public void setPasswordS(String password, int userID ) throws IOException {
         oos.close();
         socket.close();
         return result;
+    }
+    public ArrayList ListBillboardsS() throws IOException, ClassNotFoundException {
+        Socket socket = new Socket("localhost",12345);
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+
+        //call method
+        oos.writeUTF("ListBillboards");
+
+        //get results
+        oos.flush();
+        ArrayList al = new ArrayList();
+        al = (ArrayList) ois.readObject();
+
+
+        ois.close();
+        oos.close();
+        socket.close();
+        return al;
+
     }
 }

@@ -30,7 +30,7 @@ public class billboard {
     private static Document document;   //stores the actual document before conversion
 
     //creates a new XML file to the file path with only a billboard tag with no attributes
-    public static void createXML(String name) {
+    public void createXML(String name) {
         filePath = "./" + name + ".xml";
 
         try {
@@ -50,7 +50,7 @@ public class billboard {
 
     //imports an existing xml file to this class for easy access
     //handles input from a file or server
-    public static void importXML(File xmlFile, String xmlString, String fileOrServer) {
+    public void importXML(File xmlFile, String xmlString, String fileOrServer) {
         if (fileOrServer.equals("file")) {
             //stores the xml file
             filePath = xmlFile.getAbsolutePath();
@@ -70,7 +70,7 @@ public class billboard {
     }
 
     //either creates or modifies a message element with the input msg from the user, then adds it to the document
-    public static void addMsg(String msg) {
+    public void addMsg(String msg) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -79,22 +79,35 @@ public class billboard {
         for (int i = 0; i < elementList.getLength(); i++) {
             Node element = elementList.item(i);
             if ("message".equals(element.getNodeName())) {
-                element.setTextContent(msg);
-                System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
+                if (msg.equals("")) {
+                    //deletes message element if the user enters nothing when editing
+                    billboard.removeChild(element);
+                    System.out.println("Deleted message from the XML file at (" + filePath + ")");
+                } else {
+                    element.setTextContent(msg);
+                    System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
+                }
+
                 return;
             }
         }
 
+        if (msg.equals("")) { return; } //ignore empty inputs if the element doesn't already exist
+
         //Add msg text
         Element msgTag = document.createElement("message");
         msgTag.appendChild(document.createTextNode(msg));
-        billboard.insertBefore(msgTag, billboard.getFirstChild());
+        if (billboard.getFirstChild() != null) {
+            billboard.insertBefore(msgTag, billboard.getFirstChild());
+        } else {
+            billboard.appendChild(msgTag);
+        }
 
         System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
     }
 
     //either creates or modifies a image element with the input from the user, then adds it to the document
-    public static void addImg(String source, String input) {
+    public void addImg(String source, String input) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -105,32 +118,45 @@ public class billboard {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 if ("picture".equals(element.getNodeName())) {
-                    if (element.getAttributes() != null) {
-                        //remove all existing attributes in picture element
-                        element.removeAttribute("url");
-                        element.removeAttribute("data");
+                    if (source.equals("None")) {
+                        //deletes picture element if the user enters None when editing
+                        billboard.removeChild(element);
+                        System.out.println("Deleted image from the XML file at (" + filePath + ")");
+                    } else {
+                        if (element.getAttributes() != null) {
+                            //remove all existing attributes in picture element
+                            element.removeAttribute("url");
+                            element.removeAttribute("data");
+                        }
+
+                        //adds the correct attribute specified by the user
+                        if (source.equals("url")) {
+                            Attr imgURL = document.createAttribute("url");
+                            imgURL.setValue(input);
+                            element.setAttributeNode(imgURL);
+                        } else if (source.equals("data")) {
+                            Attr imgData = document.createAttribute("data");
+                            imgData.setValue(input);
+                            element.setAttributeNode(imgData);
+                        }
+                        System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
                     }
 
-                    //adds the correct attribute specified by the user
-                    if (source.equals("url")) {
-                        Attr imgURL = document.createAttribute("url");
-                        imgURL.setValue(input);
-                        element.setAttributeNode(imgURL);
-                    } else if (source.equals("data")) {
-                        Attr imgData = document.createAttribute("data");
-                        imgData.setValue(input);
-                        element.setAttributeNode(imgData);
-                    }
-
-                    System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
                     return;
                 }
             }
         }
 
-        //Add img type and source
+        if (source.equals("None")) { return; }  //ignore empty inputs if the element doesn't already exist
+
+        //checks if there are any existing nodes already and places the picture node in the correct order
         Element img = document.createElement("picture");
-        billboard.insertBefore(img, billboard.getFirstChild().getNextSibling());
+        if (billboard.getLastChild() != null && billboard.getLastChild().getNodeName().equals("information")) {
+            billboard.insertBefore(img, billboard.getLastChild());
+        } else {
+            billboard.appendChild(img);
+        }
+        //adds the correct attribute to picture element
         if (source.equals("url")) {
             Attr imgURL = document.createAttribute("url");
             imgURL.setValue(input);
@@ -145,7 +171,7 @@ public class billboard {
     }
 
     //either creates or modifies a information element with the input info from the user, then adds it to the document
-    public static void addInfo(String info) {
+    public void addInfo(String info) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -154,11 +180,19 @@ public class billboard {
         for (int i = 0; i < elements.getLength(); i++) {
             Node element = elements.item(i);
             if ("information".equals(element.getNodeName())) {
-                element.setTextContent(info);
-                System.out.println("Added (" + info + ") as a message to the XML file at (" + filePath + ")");
+                if (info.equals("")) {
+                    billboard.removeChild(element);
+                    System.out.println("Deleted information element from the XML file at (" + filePath + ")");
+                } else {
+                    element.setTextContent(info);
+                    System.out.println("Added (" + info + ") as a message to the XML file at (" + filePath + ")");
+                }
+
                 return;
             }
         }
+
+        if (info.equals("")) { return; }    //ignore empty inputs if the element doesn't already exist
 
         //Add info text
         Element infoTag = document.createElement("information");
@@ -169,16 +203,16 @@ public class billboard {
     }
 
     //either creates or modifies a picture element with the input from the user, then adds it to the document
-    public static void addColor(String changeColorOf, String color) {
+    public void addColor(String changeColorOf, String color) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
         if (changeColorOf.equals("billboard")) {
             Element element = (Element) billboard;
             if (element.getAttributes() != null) {
-                element.removeAttribute("color");
+                element.removeAttribute("background");
             }
             //adds the correct attribute specified by the user
-            Attr colorTag = document.createAttribute("color");
+            Attr colorTag = document.createAttribute("background");
             colorTag.setValue(color);
             element.setAttributeNode(colorTag);
             System.out.println("Added (" + color + ") as the color of (" + changeColorOf + ") to the XML file at (" + filePath + ")");
@@ -209,7 +243,7 @@ public class billboard {
 
     //create the xml file
     //convert the DOM Object to an xml File
-    public static void writeToFile() {
+    public void writeToFile() {
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -223,7 +257,7 @@ public class billboard {
     }
 
     //return properties about billboard (element1, elementn...)
-    public static Object[] getBillboardProperties() {
+    public Object[] getBillboardProperties() {
         Node billboard = document.getElementsByTagName("billboard").item(0);
         NodeList elements = billboard.getChildNodes();
         Object[] returnVal = new Object[elements.getLength()];
@@ -237,7 +271,7 @@ public class billboard {
     }
 
     //return the msg of the document
-    public static String getMsg() {
+    public String getMsg() {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -256,7 +290,7 @@ public class billboard {
     }
 
     //return the color of the requested element of the document
-    public static String getColor(String colorOf) {
+    public String getColor(String colorOf) {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -285,7 +319,7 @@ public class billboard {
     }
 
     //return the img and its properties of the document
-    public static HashMap<String, String> getImg() {
+    public HashMap<String, String> getImg() {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -317,7 +351,7 @@ public class billboard {
     }
 
     //return the information of the document
-    public static String getInfo() {
+    public String getInfo() {
         //Target existing root element
         Node billboard = document.getElementsByTagName("billboard").item(0);
 
@@ -336,7 +370,7 @@ public class billboard {
     }
 
     //converts the document to a string for database entry
-    public static String xmlToString() {
+    public String xmlToString() {
         try {
             StringWriter writer = new StringWriter();
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -354,7 +388,7 @@ public class billboard {
     }
 
     //converts the string to a document for easy access to elements
-    public static void stringToXml(String xmlString) {
+    public void stringToXml(String xmlString) {
         try {
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
@@ -364,7 +398,7 @@ public class billboard {
         }
     }
 
-    public static void previewBillboard() {
+    public void previewBillboard() {
 
     }
 }

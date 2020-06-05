@@ -110,31 +110,32 @@ public class CreateDB {
         //schedule.scheduleBB("2020",100,timestamp,60,0,0,25);
 
         ////view schedule//////
-        //ArrayList sch = schedule.viewSchedule();
-        //System.out.println(sch);
+//        ArrayList sch = schedule.viewSchedule();
+//        System.out.println(sch);
 
         ////remove from schedule/////
         //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:00:0.0");
         //schedule.rmvFromSch("2020",timestamp);
 
         /////current billboard///
-        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("1996-1-03 3:00:0.0");
-        //Object ans =schedule.currentBB(timestamp); System.out.println(ans);
+//        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:30:0.0");
+//        String ans =schedule.currentBB(timestamp);
+//        System.out.println(ans);
 
         //////check if in session///
         //boolean token = session.sessionCheck(172286850,1);
         //System.out.println(token);
 
         /////create Billboard////////
-//        Object ojBB = "this is the stuff for 44";
-//        billboard.createBB("the44",44,ojBB);
+//        Object ojBB = "this this";
+//        billboard.createBB("this",45,ojBB);
 
         ////delete Billboard /////////
-        //billboard.deleteBB("the44");
+        //billboard.deleteBB("herge");
 
         ////get billboard information/////
-        //String bbinfo = billboard.getBBInfo("test");
-        //System.out.println(bbinfo);
+//        String bbinfo = billboard.getBBInfo("the44");
+//        System.out.println(bbinfo);
 
         ////list billboards//////
         //ArrayList lBB = billboard.ListBillboards();
@@ -155,8 +156,8 @@ public class CreateDB {
         //client.deleteUserS(2);
 
 //        //list users ////not working////
-//        ArrayList al = client.listUsersS();
-//        System.out.println(al);
+        //ArrayList al = client.listUsersS();
+        //System.out.println(al);
 
         //set password
         //client.setPasswordS("newpass",1);
@@ -168,13 +169,47 @@ public class CreateDB {
         //client.logoutS(1);
 
         ////check permissions///// not working/////
+//        ArrayList all = client.ChkPermsS(1);
+//        System.out.println(all);
 
         //set permissions
         //client.setPermissionS(1,true,true,false,false,false);
 
 
+//        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2022-12-12 4:00:0.0");
+//        client.scheduleBBS("this",300,timestamp,60,0,0,25);
+
+        ////view schedule//////
+//        ArrayList sch = client.viewScheduleS();
+//        System.out.println(sch);
+
+        //remove from schedule
+//        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:00:0.0");
+//        client.rmvFromSchS("2020",timestamp);
+
+        //current schedule
+//        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2022-12-12 4:10:0.0");
+//        Object ans =client.currentBBS(timestamp);
+//        System.out.println(ans);
+
+        //check in session
+//        boolean token = client.sessionCheckS(1633428359,1);
+//        System.out.println(token);
+
+        ///////object create billboard///////
+//        Object ojBB = "serverCreatedsssss";
+//        client.createBBS("serversss",22,ojBB);
+
+        //delete billboard//
+        //client.deleteBBS("this");
+
         //get bb info
         //System.out.println(client.getBBInfoS("the44"));
+
+        ////list billboards//////
+        //ArrayList lBB = client.ListBillboardsS();
+        //System.out.println(lBB);
+
 
     }
 }

@@ -114,7 +114,7 @@ public class billboardCreateGUI {
                                     infoBox.getForeground().getGreen(),
                                     infoBox.getForeground().getBlue())
                             );
-                        } else if (msgBox.getText().length() > 350) {
+                        } else if (infoBox.getText().length() > 350) {
                             JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for information.", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }

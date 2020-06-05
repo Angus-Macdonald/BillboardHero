@@ -4,10 +4,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Server {
-    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, ParseException {
         ServerSocket serverSocket = new ServerSocket(12345);
         Users user = new Users();
         logIO log = new logIO();
@@ -27,19 +29,12 @@ public class Server {
             }
             else if(methodRun.equals("deleteUser")){
                 user.deleteUser(ois.readInt());
-
             }
-//            else if(methodRun.equals("listUsers")){
-//
-//                ArrayList lU = user.listUsers();
-//                //oos.writeUnshared(lU);
-//
-//                FileOutputStream fos = new FileOutputStream("listData");
-//                oos = new ObjectOutputStream(fos);
-//                oos.writeObject(lU);
-//                fos.close();
-//
-//            }
+            else if(methodRun.equals("listUsers")){
+                ArrayList al = user.listUsers();
+                oos.writeObject(al);
+                oos.flush();
+            }
             else if(methodRun.equals("setPassword")){
                 user.setPassword(ois.readUTF(),ois.readInt());
             }
@@ -51,8 +46,40 @@ public class Server {
             else if(methodRun.equals("logout")){
                 log.logout(ois.readInt());
             }
+            else if(methodRun.equals("ChkPerms")){
+                ArrayList al = permission.ChkPerms(1);
+                oos.writeObject(al);
+            }
             else if(methodRun.equals("setPermission")){
                 permission.setPermission(ois.readInt(),ois.readBoolean(),ois.readBoolean(),ois.readBoolean(),ois.readBoolean(),ois.readBoolean());
+            }
+            else if(methodRun.equals("scheduleBB")){
+                //Timestamp timestamp =ois.available();
+                schedule.scheduleBB(ois.readUTF(),ois.readInt(), (Timestamp) ois.readObject(),ois.readInt(),ois.readInt(),ois.readInt(),ois.readInt());
+            }
+            else if(methodRun.equals("viewSchedule")) {
+                ArrayList al = schedule.viewSchedule();
+                oos.writeObject(al);
+                oos.flush();
+            }
+            else if(methodRun.equals("rmvFromSch")){
+                schedule.rmvFromSch(ois.readUTF(), (Timestamp) ois.readObject());
+            }
+            else if(methodRun.equals("currentBB")){
+                Object bb = schedule.currentBB((Timestamp) ois.readObject());
+                oos.writeObject(bb);
+                oos.flush();
+            }
+            else if(methodRun.equals("sessionCheck")){
+                boolean bool = session.sessionCheck(ois.readInt(),ois.readInt());
+                oos.writeBoolean(bool);
+                oos.flush();
+            }
+            else if(methodRun.equals("createBB")){
+                billboard.createBB(ois.readUTF(),ois.readInt(),ois.readObject());
+            }
+            else if(methodRun.equals("deleteBB")){
+                billboard.deleteBB(ois.readUTF());
             }
             else if(methodRun.equals("BBinfo")){
                 //String methIn = ois.readUTF();
@@ -60,7 +87,11 @@ public class Server {
                 oos.writeUTF(result);
                 oos.flush();
             }
-
+            else if(methodRun.equals("ListBillboards")){
+                ArrayList al = billboard.ListBillboards();
+                oos.writeObject(al);
+                oos.flush();
+            }
 
             ois.close();
             oos.close();
