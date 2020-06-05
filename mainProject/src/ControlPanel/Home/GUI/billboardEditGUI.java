@@ -1,3 +1,7 @@
+/*This class handles everything to do with editing existing
+* billboards. It allows the user to choose editing from the
+* server or from a file on their computer. */
+
 package ControlPanel.Home.GUI;
 
 import ControlPanel.Utility.billboard;
@@ -16,10 +20,6 @@ import java.util.HashMap;
 public class billboardEditGUI {
     private static File selectedFile;
 
-    public static void main(String[] args) {
-        new billboardEditGUI();
-    }
-
     public billboardEditGUI() {
         JFrame frame = new JFrame("Edit an Existing Billboard");
         JLabel title = new JLabel("Where would you like to edit from", SwingConstants.CENTER);
@@ -37,21 +37,22 @@ public class billboardEditGUI {
         frame.add(fromServer);
 
         fromFile.addActionListener(e -> {    //opens a file browser to select a file and imports it to the billboard class
+            //opens a new window that allows the user to browse the files on their computer (only accepts .xml files)
             int confirmation = fileChooser.showOpenDialog(frame);
-            if (confirmation == JFileChooser.APPROVE_OPTION) {
+            if (confirmation == JFileChooser.APPROVE_OPTION) {  //makes sure the selection is valid
                 System.out.println("Importing file...");
                 selectedFile = fileChooser.getSelectedFile();
                 try {
                     edit(selectedFile.getAbsoluteFile(), null, "file");
-                } catch (SQLException | IOException | ClassNotFoundException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-                //editFromFile(selectedFile.getAbsoluteFile());
                 frame.dispose();
             }
         });
-        fromServer.addActionListener(e -> {
+        fromServer.addActionListener(e -> { //pulls the existing billboard from the server with the name inputted by the user
             try {
+                //trys to pull the billboard, if its non-existent then return a error warning to the user
                 Client serverConn = new Client();
                 if (serverConn.getBBInfoS(xmlName.getText()).equals("nothing")) {
                     JOptionPane.showMessageDialog(frame, "Invalid billboard name.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -59,8 +60,7 @@ public class billboardEditGUI {
                 }
                 edit(null, xmlName.getText(), "server");
                 frame.dispose();
-                //editFromServer(xmlName.getText());
-            } catch (SQLException | IOException | ClassNotFoundException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
@@ -71,7 +71,7 @@ public class billboardEditGUI {
         frame.setVisible(true);
     }
 
-    public static void edit(File xmlFile, String billboardName, String fileOrServer) throws SQLException, IOException, ClassNotFoundException {
+    public static void edit(File xmlFile, String billboardName, String fileOrServer) throws IOException {
         JFrame frame = new JFrame("Edit an Existing Billboard");
         JLabel title = new JLabel("Editing Billboard", SwingConstants.CENTER);
         JButton bgColorPicker = new JButton("Background Color");
@@ -89,6 +89,7 @@ public class billboardEditGUI {
         JButton saveButton = new JButton("Save and Exit");
         billboard newBillboard = new billboard();
 
+        //gets all the relevant properties and applies them to the correct input field
         if (fileOrServer.equals("file")) {
             newBillboard.importXML(xmlFile, null, "file");
         } else if (fileOrServer.equals("server")) {
@@ -123,6 +124,8 @@ public class billboardEditGUI {
         frame.add(exportBillboard);
         if (fileOrServer.equals("server")) { frame.add(deleteButton); } //user can only delete when editing billboards from server
         frame.add(saveButton);
+
+        //opens a new window that allows the user to pick a color for the corresponding element in the xml
         bgColorPicker.addActionListener(e -> {
             Color bgColor = JColorChooser.showDialog(frame, "Pick a Color", Color.decode(newBillboard.getColor("billboard")));
             bgColorPicker.setBackground(bgColor);

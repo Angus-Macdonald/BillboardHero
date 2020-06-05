@@ -1,3 +1,7 @@
+/*This class controls everything to do with scheduling billboards that for the viewer. It also allows
+* the user to view the scheduled billboards throughout the week. The class will take the user's input
+* and convert it to the appropriate format for the server to handle.*/
+
 package ControlPanel.Home.GUI;
 
 import Server.Client;

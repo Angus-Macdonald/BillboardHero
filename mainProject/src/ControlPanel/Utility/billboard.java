@@ -1,8 +1,8 @@
-//This class controls everything to do with the billboard
-//which includes creating the base structure of the XML file
-//as a doocument, and then converting it to an xml file for user to
-//export. The class also controls editing existing xml files along
-//with grabbing specific text from the xml file for each access.
+/*This class controls everything to do with the billboard
+* which includes creating the base structure of the XML file
+* as a doocument, and then converting it to an xml file for user to
+* export. The class also controls editing existing xml files along
+* with grabbing specific text from the xml file for each access.*/
 
 package ControlPanel.Utility;
 
@@ -13,7 +13,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -257,7 +256,7 @@ public class billboard {
     }
 
     //return properties about billboard (element1, elementn...)
-    public Object[] getBillboardProperties() {
+    /*public Object[] getBillboardProperties() {
         Node billboard = document.getElementsByTagName("billboard").item(0);
         NodeList elements = billboard.getChildNodes();
         Object[] returnVal = new Object[elements.getLength()];
@@ -268,7 +267,7 @@ public class billboard {
         }
 
         return returnVal;
-    }
+    }*/
 
     //return the msg of the document
     public String getMsg() {

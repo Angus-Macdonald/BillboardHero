@@ -1,3 +1,8 @@
+/*This class controls everything to do with the billboard creation. The user can
+* input a message, a picture, a information, and colors for specific parts and
+* the class will convert it to a document and export it to a file or upload it
+* to the server based on what the user chooses.*/
+
 package ControlPanel.Home.GUI;
 
 import ControlPanel.Utility.billboard;
@@ -11,10 +16,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class billboardCreateGUI {
-    public static void main(String[] args) {
-        new billboardCreateGUI();
-    }
-
     public billboardCreateGUI() {
         JFrame frame = new JFrame("Create a New Billboard");
         JLabel nameLabel = new JLabel("Name:* ");
