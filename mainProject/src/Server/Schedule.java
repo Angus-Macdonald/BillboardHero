@@ -48,7 +48,7 @@ public class Schedule {
             int dur = rs.getInt("duration");
             int repeatD = rs.getInt("repeatDay");
             int repeatH = rs.getInt("repeatHour");
-            int repeatM = rs.getInt("repeatHour");
+            int repeatM = rs.getInt("repeatMin");
 
             schList.add(listName);
             schList.add(creator);

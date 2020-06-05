@@ -110,8 +110,8 @@ public class CreateDB {
         //schedule.scheduleBB("2020",100,timestamp,60,0,0,25);
 
         ////view schedule//////
-        //ArrayList sch = schedule.viewSchedule();
-        //System.out.println(sch);
+        ArrayList sch = schedule.viewSchedule();
+        System.out.println(sch);
 
         ////remove from schedule/////
         //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:00:0.0");
