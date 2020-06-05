@@ -9,6 +9,14 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Server {
+    /**
+     *
+     * @param args
+     * @throws IOException
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     * @throws ParseException
+     */
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, ParseException {
         ServerSocket serverSocket = new ServerSocket(12345);
         Users user = new Users();

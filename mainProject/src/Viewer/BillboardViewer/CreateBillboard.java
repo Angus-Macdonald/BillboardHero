@@ -65,76 +65,101 @@ public class CreateBillboard {
         // table
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        // Build document
+        // Build document for xml parsing
         DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
+        // Initialises connection to the server and scheduled billboards
         try {
+
+            // Calls to server methods to start up a new instance of Client
             Client connection = new Client();
+            // Returns the scheduled billboard as an object then parses to string
             Object data = connection.currentBBS(timestamp);
             String dataString = data.toString();
 
+            // Transfers the String to bytes for parsing to the document
             ByteArrayInputStream bais = new ByteArrayInputStream(dataString.getBytes());
             Document document = builder.parse(bais);
             bais.close();
 
+            // retrieves the "background" tag of XML and checks if it has a chosen colour
+            // makes it the default white if not
             Element documentElement = document.getDocumentElement();
             String attributeValue = documentElement.getAttribute("background");
-
             if (attributeValue.isEmpty()) {
                 background = Color.WHITE;
             } else {
                 background = Color.decode(attributeValue);
             }
 
+            // Creates a list of the xml tags for proper retrieval of elements
             NodeList xmlTags = documentElement.getChildNodes();
             for (int i = 0; i < xmlTags.getLength(); i++) {
                 Node node = xmlTags.item(i);
                 if (node instanceof Element) {
                     Element element = (Element) node;
                     String tagName = element.getTagName();
-                    System.out.println("Child: " + tagName);
+
+                    // One by one adds the elements to a string list for order of panel placement
+                    // later on
                     elementOrder.add(tagName);
 
                     if (tagName == "message") {
                         System.out.println("Content: " + element.getTextContent());
                         messageText = element.getTextContent();
-                        messageColour = Color.decode(element.getAttribute("color"));
-                        System.out.println("Colour: " + element.getAttribute("color"));
-                    } else if (tagName == "information") {
-                        infoColour = Color.decode(element.getAttribute("color"));
+                        if (element.hasAttribute("color")) {
+                            messageColour = Color.decode(element.getAttribute("color"));
+                        }
+                    }
+                    else if (tagName == "information") {
+                        if (element.hasAttribute("color")) {
+                            infoColour = Color.decode(element.getAttribute("color"));
+                        }
                         informationText = element.getTextContent();
-                        System.out.println("Colour: " + element.getAttribute("color"));
-                    } else if (tagName == "picture") {
+                    }
+                    else if (tagName == "picture") {
+                        // Checks the type of image in the xml, and performs the correct generating
                         if (element.hasAttribute("url")) {
-                            System.out.println(element.getAttribute("url"));
                             isDataImage = false;
                             url = new URL(element.getAttribute("url"));
-                        } else {
-                            System.out.println(element.getAttribute("data"));
+                        }
+                        else {
                             isDataImage = true;
                             byteImg = Base64.getMimeDecoder().decode(element.getAttribute("data"));
                         }
                     }
                 }
             }
+            // Sets the server response boolean to true for the createBillboard() method
             serverResponse = true;
-            System.out.println(elementOrder);
         } catch(Exception e) {
+            // If any of the server interaction, or above I/O operations fail, the response boolean
+            // is set to false for createBillboard()
             serverResponse = false;
-            System.out.println("Connection failed");
         }
     }
 
-    // Need to have something to check how many elements are in billboard
-    // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
+    /**
+     * Method to create fullscreen GUI that is the billboard viewer. Takes it's data from variables set up by
+     * serverConnect(). This formats and sets up all the JSwing elements.
+     *
+     * @throws IOException handles any failed or interrupted I/O operations
+     * @throws ClassNotFoundException handles any errors if class interaction between packages fails
+     * @throws SQLException handles any errors from server interaction
+     * @throws ParserConfigurationException handles any configuration errors
+     * @throws SAXException handles any errors from the parsing process for xml
+     */
     public static void createBillboard() throws IOException, ClassNotFoundException, SQLException, ParserConfigurationException, SAXException {
+        // Calls the above method to set up all the variables to be checked and used throughout
         serverConnect();
+
         JFrame frame = new JFrame();
         JPanel topPanel = new JPanel();
         JPanel middlePanel = new JPanel();
         JPanel bottomPanel = new JPanel();
 
+        // If there's no server connection, or no billboards currently scheduled, a default billboard is displayed
         if (!serverResponse) {
             JTextArea defaultText = new JTextArea(defaultMessage, 1,20);
             defaultText.setLineWrap(true);
@@ -142,7 +167,7 @@ public class CreateBillboard {
             defaultText.setOpaque(false);
             defaultText.setEditable(false);
 
-
+            // Adds mouse listener and key listener to JTextArea to keep the same exit functionality
             defaultText.addMouseListener(clickCheck);
             defaultText.addKeyListener(escListener);
             defaultText.setFont(new Font("Helvetica", Font.BOLD,80));
@@ -150,16 +175,21 @@ public class CreateBillboard {
             middlePanel.setBorder(new EmptyBorder(420,10,10,10));
             middlePanel.add(defaultText);
         }
+
+        // This runs if server connection is successful
         else {
+            // If there is one element in the billboard
             if (elementOrder.size() == 1) {
-                // Code for single element
+                // Checks element names inside String list
                 String billboardElement = elementOrder.get(0);
 
+                // Formats JLabel or JTextArea for relevant panel and main frame
                 if (billboardElement == "information") {
                     JTextArea element = packedInfo(billboardElement);
                     middlePanel.add(element);
                     middlePanel.setBorder(new EmptyBorder(420, 10, 10, 10));
-                } else if (billboardElement == "picture") {
+                }
+                else if (billboardElement == "picture") {
                     JLabel element = packedElement(billboardElement);
                     middlePanel.add(element);
                     middlePanel.setLayout(new GridBagLayout());
@@ -171,10 +201,13 @@ public class CreateBillboard {
                 }
 
 
-            } else if (elementOrder.size() == 2) {
+            }
+            // If there are two elements to the billboard
+            else if (elementOrder.size() == 2) {
                 String firstItem = elementOrder.get(0);
                 String secondItem = elementOrder.get(1);
 
+                // Formats correctly if second element is a String
                 if (secondItem == "information") {
                     JLabel topElement = packedElement(firstItem);
                     JTextArea bottomElement = packedInfo(secondItem);
@@ -190,7 +223,9 @@ public class CreateBillboard {
                 }
                 topPanel.setBorder(new EmptyBorder(160, 10, 10, 10));
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 160, 10));
-            } else {
+            }
+            // If there are three elements to the billboard
+            else {
                 String firstItem = elementOrder.get(0);
                 String secondItem = elementOrder.get(1);
                 String thirdItem = elementOrder.get(2);
@@ -208,6 +243,7 @@ public class CreateBillboard {
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 100, 10));
             }
 
+            // Need to clear the String list
             elementOrder.clear();
 
             topPanel.setBackground(background);
@@ -401,7 +437,14 @@ public class CreateBillboard {
      * @return returns a JTextArea containing the passed information text
      */
     public static JTextArea packedInfo(String element) {
-        JTextArea information = new JTextArea(informationText, 4, 60);
+        int textLength;
+        if (element.length() < 60) {
+            textLength = element.length();
+        } else {
+            textLength = 60;
+        }
+
+        JTextArea information = new JTextArea(informationText, 4, textLength);
 
         information.setLineWrap(true);
         information.setWrapStyleWord(true);
