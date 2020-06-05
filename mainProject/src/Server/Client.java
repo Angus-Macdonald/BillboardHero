@@ -150,13 +150,7 @@ public class Client {
         socket.close();
         return result;
     }
-
-    /**
-     *
-     * @param userID the users ID to send over the server
-     * @throws IOException
-     */
-    public void logoutS(int userID) throws IOException {
+    public static void logoutS(int userID) throws IOException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());

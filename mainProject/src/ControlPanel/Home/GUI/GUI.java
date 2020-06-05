@@ -1,5 +1,8 @@
 package ControlPanel.Home.GUI;
 
+import ControlPanel.Home.GUI.Billboard.billboardCreateGUI;
+import ControlPanel.Home.GUI.Billboard.billboardEditGUI;
+import ControlPanel.Home.GUI.Billboard.billboardScheduleGUI;
 import ControlPanel.Home.GUI.UserManagement.UserManagement;
 import ControlPanel.Utility.User;
 import ControlPanel.Utility.Menubar;
@@ -58,9 +61,27 @@ public class GUI extends User {
         JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
         controlPanelHead.setFont(new Font("Serif", Font.BOLD, 35));
         controlPanelHead.setBorder(new EmptyBorder(10,10,0,10));
+
         JButton createBillboard = new JButton("Create New Billboard");
+        createBillboard.addActionListener(e ->
+                new billboardCreateGUI());
+
         JButton editBillboard = new JButton("Edit A Billboard");
+        editBillboard.addActionListener(e ->
+                new billboardEditGUI());
+
         JButton scheduleBillboard = new JButton("Schedule A Billboard");
+        scheduleBillboard.addActionListener(e ->
+        {
+            try {
+                new billboardScheduleGUI();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+
         JButton userManagement = new JButton("Account Management");
 
         panel[0].add(controlPanelHead);

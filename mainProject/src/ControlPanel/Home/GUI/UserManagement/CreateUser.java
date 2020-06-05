@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
+import static ControlPanel.Login.GUI.loginScreen.parseUserID;
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 import static ControlPanel.Utility.FrameDispose.disposeFrames;
+import static ControlPanel.Utility.HashPassword.hashPassword;
 import static Server.Client.createUserS;
 import static java.lang.Integer.parseInt;
 
@@ -38,7 +40,7 @@ public class CreateUser {
         panel[1].add(inputID);
 
         JLabel PW = new JLabel("New User Password: ");
-        JTextField inputPW = new JTextField(10);
+        JPasswordField inputPW = new JPasswordField(10);
         inputPW.setHorizontalAlignment(SwingConstants.CENTER);
         panel[2].add(PW);
         panel[2].add(inputPW);
@@ -99,21 +101,19 @@ public class CreateUser {
         panel[4].add(submit);
 
         submit.addActionListener(e ->{
-            for (boolean b: permArray
-                 ) {System.out.print(b + " - ");
+            String inputUser = inputID.getText();
+            char[] inputPass = inputPW.getPassword();
 
-            }
-            int user = Integer.parseInt(inputID.getText());
+            int user = parseUserID(inputUser);
 
-            String password = "root";
-//            String password = null;
+            String pass = new String(inputPass);
 //            try {
-//                password = hashPassword(password2).toString();
+//                password = new String(hashPassword(pass));
 //            } catch (NoSuchAlgorithmException ex) {
 //                ex.printStackTrace();
 //            }
             try {
-                createUserS(user, password, false, permArray[0], permArray[1], permArray[2], permArray[3]);
+                createUserS(user, pass, false, permArray[0], permArray[1], permArray[2], permArray[3]);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } catch (IOException ex) {

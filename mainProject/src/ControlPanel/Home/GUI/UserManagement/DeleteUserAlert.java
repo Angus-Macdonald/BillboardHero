@@ -1,5 +1,7 @@
 package ControlPanel.Home.GUI.UserManagement;
 
+import ControlPanel.Utility.FrameAndPanelUtility;
+import ControlPanel.Utility.FrameDispose;
 import Server.Client;
 
 import javax.swing.*;
@@ -22,6 +24,7 @@ public class DeleteUserAlert extends UserManagement{
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((dim.width/5)*2, (dim.height/5)*2);
         JPanel[] panel = new JPanel[2];
+        frame.setLayout(new GridLayout(2,1));
         panelInitialise(panel);
 
         JLabel alert = new JLabel("Are you sure you want to delete UserID:  " + UserManagement.getSelectedUser());
@@ -40,10 +43,16 @@ public class DeleteUserAlert extends UserManagement{
             }
         });
 
-
-        cancel.addActionListener(e ->
-                frame.dispose()
-        );
+        cancel.addActionListener(e -> {
+            try {
+                FrameDispose.disposeFrames();
+                userManagementGUI();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         panel[0].add(alert);
         panel[1].add(yes);
