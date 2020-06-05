@@ -20,6 +20,10 @@ public class ChangePassword extends UserManagement {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * Function creates a GUI for the user to change a users password. If the user has the edit User permission they can change any users password, otherwise the user can only change their own password.
+     * @param user Used for admin to take the selected user variable and change the password
+     */
     public static void changePasswordWindow(int user){
         JFrame frame = new JFrame("Change Password");
         FrameAndPanelUtility.frameManage(frame, 5, 1);
@@ -31,12 +35,13 @@ public class ChangePassword extends UserManagement {
         JLabel heading = new JLabel("Change Password");
         heading.setFont(new Font("Serif", Font.BOLD, 35));
         panel[0].add(heading);
-
         JLabel userID = new JLabel("Enter User ID: ");
-
         JTextField userInput = new JTextField(getSelectedUser().toString(),10);
-        panel[1].add(userID);
-        panel[1].add(userInput);
+        if(getEditUsersPermission()) {
+            panel[1].add(userID);
+            panel[1].add(userInput);
+        }
+
 
         JLabel newPassword = new JLabel("Enter New Password: ");
         JPasswordField newInput = new JPasswordField(10);
@@ -48,7 +53,13 @@ public class ChangePassword extends UserManagement {
 
         //Code Below demonstrates the submit button using the input data
         submitButton.addActionListener(e -> {
-                    String inputUser = userInput.getText();
+            String inputUser = null;
+            if(getEditUsersPermission()) {
+            inputUser = userInput.getText();
+            }
+            else{
+                inputUser = String.valueOf(getUserID());
+            }
                     char[] inputNewPassword = newInput.getPassword();
                     int username = parseUserID(inputUser);
                     String password = new String(inputNewPassword);

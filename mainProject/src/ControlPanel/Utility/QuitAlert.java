@@ -11,6 +11,9 @@ public class QuitAlert extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * This function is called to provide an Alert window GUI when the user attemps to QUIT the program. The user must confirm or deny the quit.
+     */
     public static void alterWindow(){
 
         JFrame frame = new JFrame("Alert");

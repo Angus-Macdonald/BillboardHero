@@ -37,6 +37,11 @@ public class UserManagement extends GUI {
         userManagementGUI();
     }
 
+    /**
+     * Function creates a GUI for the user to see all the users within the database, select the chosen user and choose a button to select from. Also include a back button to return to the main control panel.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static void userManagementGUI() throws IOException, ClassNotFoundException {
 
         setWindow("userManagement");
@@ -89,7 +94,13 @@ public class UserManagement extends GUI {
         backButton.addActionListener(e -> {
             if(getWindow() == "userManagement"){
                 disposeFrames();
-                GUI.displayGUI();
+                try {
+                    GUI.displayGUI();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 

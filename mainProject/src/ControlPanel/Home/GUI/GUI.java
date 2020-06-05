@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
@@ -24,19 +25,46 @@ public class GUI extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * This variable holds a string which is called to hold the current window, so that a back button can be used.
+     */
     private static String window;
+
+    /**
+     * setter function for "window" variable.
+     * @param window
+     */
     public static void setWindow(String window) {
         GUI.window = window;
     }
+
+    /**
+     * getter function for "window" variable.
+     * @return
+     */
     public static String getWindow() {
         return window;
     }
 
+
+    /**
+     * Main function displayGUI() for development
+     * @param args
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         displayGUI();
     }
 
-    public static void displayGUI(){
+    /**
+     * This function is a GUI for the Control Panel Home. It displays buttons based on the users permissions. It accesses the parent class
+     * via the getter functions, and only displays Buttons that reflect the permissions its given. The GUI also displays the databases current
+     * billboards, including their name and author.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public static void displayGUI() throws IOException, ClassNotFoundException {
         ArrayList<Boolean> permission = new ArrayList<Boolean>();
         try {
             permission = Client.ChkPermsS(getUserID());
@@ -98,19 +126,22 @@ public class GUI extends User {
 
         panel[1].add(userManagement);
 
-        String[] columns = {"Name", "Date", "Author"};
+        String[] columns = {"Name", "Author"};
 
-        //Fill Data with Billboard Data
-        Object[][] data = {{"Test", "This", "Test"}};
+        ArrayList billboard = Client.ListBillboardsS();
+        Object[][] data = new Object[billboard.size()][2];
+        if(billboard.size() > 0) {
+            for (int i = 0; i < billboard.size()/2; i+=2) {
+                data[i][i] = billboard.get(i);
+                data[i][i+1] = billboard.get(i+1);
+            }
+        }
 
         JTable billboardList = new JTable(data, columns);
         JScrollPane table = new JScrollPane(billboardList);
         table.setPreferredSize(new Dimension(dim.width/3, dim.height/3/3));
         table.setBorder(new EmptyBorder(0,20,30,20));
-
-
         panel[2].add(table);
-
 
         userManagement.addActionListener(e -> {
             try {
@@ -122,6 +153,7 @@ public class GUI extends User {
             }
             frame.dispose();
         });
+
         for(JPanel pan: panel){
             frame.getContentPane().add(pan);
         }
