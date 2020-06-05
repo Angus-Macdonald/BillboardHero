@@ -1,19 +1,13 @@
 package ControlPanel.Home.GUI;
 
-import javax.swing.*;
-
 import Server.Client;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class billboardScheduleGUI {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -22,15 +16,10 @@ public class billboardScheduleGUI {
 
     public billboardScheduleGUI() throws IOException, ClassNotFoundException {
         JFrame frame = new JFrame("Schedule a Billboard");
-        JLabel title = new JLabel("Pick a Data and a Billboard");
+        JLabel title = new JLabel("Pick a Date and a Billboard");
         Client serverConn = new Client();
-        ArrayList scheduledBillboards = serverConn.viewScheduleS();
-        String[][] data = new String[scheduledBillboards.size() + 1][7];
-        for (int i = 0; i < 7; i++) {
-            data[0][i] = "";
-//            billboardNames[0][i] = scheduledBillboards.get(i).toString();
-        }
-        String[] headings = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        String[][] data = updateData(serverConn);
+        String[] headings = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         JTable calender = new JTable(data, headings);
         JScrollPane scrollPane = new JScrollPane(calender);
         JPanel inputs = new JPanel();
@@ -40,7 +29,7 @@ public class billboardScheduleGUI {
                 1970, 3000, 1);
         JSpinner yearBox = new JSpinner(yearModel);
         JLabel monthLabel = new JLabel("Month: ", SwingConstants.RIGHT);
-        SpinnerModel monthModel = new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MONTH),
+        SpinnerModel monthModel = new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MONTH) + 1,
                 1, 12, 1);
         JSpinner monthBox = new JSpinner(monthModel);
         JLabel dayLabel = new JLabel("Day: ", SwingConstants.RIGHT);
@@ -56,13 +45,13 @@ public class billboardScheduleGUI {
         JLabel durationLabel = new JLabel("Duration: ", SwingConstants.RIGHT);
         SpinnerModel durationModel = new SpinnerNumberModel(1, 1, 999, 1);
         JSpinner durationBox = new JSpinner(durationModel);
-        JLabel repeatDayLabel = new JLabel("Every day: ", SwingConstants.RIGHT);
+        JLabel repeatDayLabel = new JLabel("Every _ day: ", SwingConstants.RIGHT);
         SpinnerModel repeatDayModel = new SpinnerNumberModel(0, 0, 999, 1);
         JSpinner repeatDay = new JSpinner(repeatDayModel);
-        JLabel repeatHourLabel = new JLabel("Every hour: ", SwingConstants.RIGHT);
+        JLabel repeatHourLabel = new JLabel("Every _ hour: ", SwingConstants.RIGHT);
         SpinnerModel repeatHourModel = new SpinnerNumberModel(0, 0, 999, 1);
         JSpinner repeatHour = new JSpinner(repeatHourModel);
-        JLabel repeatMinLabel = new JLabel("Every x min: ", SwingConstants.RIGHT);
+        JLabel repeatMinLabel = new JLabel("Every _ min: ", SwingConstants.RIGHT);
         SpinnerModel repeatMinModel = new SpinnerNumberModel(0, 0, 999, 1);
         JSpinner repeatMin = new JSpinner(repeatMinModel);
         JPanel namePanel = new JPanel();
@@ -134,7 +123,7 @@ public class billboardScheduleGUI {
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
-            if (repeatDay.getValue().equals(0) && repeatHour.getValue().equals(0) && repeatMin.getValue().equals(0)) {
+            if (!repeatDay.getValue().equals(0) && !repeatHour.getValue().equals(0) && !repeatMin.getValue().equals(0)) {
                 JOptionPane.showMessageDialog(frame, "Please only fill in one repeat field.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -147,8 +136,17 @@ public class billboardScheduleGUI {
             Timestamp timestamp = java.sql.Timestamp.valueOf(input);
 
             try {
-                serverConn.scheduleBBS(billboardName.getText(), 2000, timestamp,
-                        (int) durationBox.getValue(), (int) repeatDay.getValue(), (int) repeatHour.getValue(), (int) repeatMin.getValue());
+                serverConn.scheduleBBS(
+                        billboardName.getText(),
+                        2000,
+                        timestamp,
+                        (int) durationBox.getValue(),
+                        (int) repeatDay.getValue(),
+                        (int) repeatHour.getValue(),
+                        (int) repeatMin.getValue()
+                );
+                System.out.println("Successfully added billboard (" + billboardName.getText() + ") to the schedule.");
+                JOptionPane.showMessageDialog(frame, "Successfully added billboard (" + billboardName.getText() + ") to the schedule.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -157,5 +155,33 @@ public class billboardScheduleGUI {
         frame.setSize(500, 400);
         frame.setLayout(new GridLayout(2, 1));
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    }
+
+    public String[][] updateData(Client serverConn) throws IOException, ClassNotFoundException {
+        ArrayList scheduledBillboards = serverConn.viewScheduleS();
+        String[][] returnVal = new String[scheduledBillboards.size()][7];
+
+        for (int i = 0; i < scheduledBillboards.size(); i+=7) {
+            long timestamp = java.sql.Timestamp.valueOf(scheduledBillboards.get(i+2).toString()).getTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timestamp);
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            int weekInYear = calendar.get(Calendar.WEEK_OF_YEAR);
+            int today = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+
+            if (today == weekInYear) {
+                for (int k = 0; k < 7; k++) {
+                    System.out.println(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+                    if (dayInWeek == k+1) {
+                        returnVal[0][k] = returnVal[0][k] + " | " + (String) scheduledBillboards.get(i);
+                    }
+                }
+            }
+        }
+
+        return returnVal;
     }
 }
