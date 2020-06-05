@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Server {
-    public static void server() throws IOException, SQLException, ClassNotFoundException, ParseException {
+    public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, ParseException {
         ServerSocket serverSocket = new ServerSocket(12345);
         Users user = new Users();
         logIO log = new logIO();

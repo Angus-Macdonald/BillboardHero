@@ -28,6 +28,11 @@ public class loginScreen extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * Function takes a String data type and converts to an int data type.
+     * @param user Input a value that is a String data type that you wish to change to an int
+     * @return Function will return int if the String can be converted to int, otherwise returns as 0
+     */
     public static int parseUserID(String user){
         int parseUser;
         try{
@@ -39,10 +44,24 @@ public class loginScreen extends User {
         }
         return parseUser;
     }
+
+
+    /**
+     * Function that runs the controlPanelLogin function, used for development.
+     * @param args No arguments are used.
+     * @throws NoSuchAlgorithmException Throws exception if password hashing isn't usable
+     */
     public static void main(String[] args) throws NoSuchAlgorithmException {
         controlPanelLogin();
     }
 
+    /**
+     * This is the Control Panel Login GUI. It displays a GUI for the user to log in.
+     * The function takes a userID and password, and makes a request to log in to the server once the log in button is chosen.
+     * The password is "hashed" (function was created, but implementation was not).
+     * If the user successfull logs in it will call the Control Panel Home GUI.
+     * @throws NoSuchAlgorithmException Throws exception when password hashing isn't allowed, but was never implemented.
+     */
     public static void controlPanelLogin() throws NoSuchAlgorithmException {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
