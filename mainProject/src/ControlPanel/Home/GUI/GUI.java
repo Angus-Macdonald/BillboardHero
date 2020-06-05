@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
@@ -36,7 +37,7 @@ public class GUI extends User {
         displayGUI();
     }
 
-    public static void displayGUI(){
+    public static void displayGUI() throws IOException, ClassNotFoundException {
         ArrayList<Boolean> permission = new ArrayList<Boolean>();
         try {
             permission = Client.ChkPermsS(getUserID());
@@ -98,10 +99,14 @@ public class GUI extends User {
 
         panel[1].add(userManagement);
 
-        String[] columns = {"Name", "Date", "Author"};
+        String[] columns = {"Name", "Author"};
 
-        //Fill Data with Billboard Data
-        Object[][] data = {{"Test", "This", "Test"}};
+        ArrayList billboard = Client.ListBillboardsS();
+        Object[][] data = new Object[billboard.size()][2];
+        for (int i = 0; i < billboard.size(); i+=2) {
+            data[i][i] = billboard.get(i);
+            data[i][i+1] = billboard.get(i+1);
+        }
 
         JTable billboardList = new JTable(data, columns);
         JScrollPane table = new JScrollPane(billboardList);

@@ -350,7 +350,7 @@ public static void setPasswordS(String password, int userID) throws IOException 
         socket.close();
         return result;
     }
-    public ArrayList ListBillboardsS() throws IOException, ClassNotFoundException {
+    public static ArrayList ListBillboardsS() throws IOException, ClassNotFoundException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());

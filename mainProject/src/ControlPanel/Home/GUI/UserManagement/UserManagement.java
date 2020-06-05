@@ -89,7 +89,13 @@ public class UserManagement extends GUI {
         backButton.addActionListener(e -> {
             if(getWindow() == "userManagement"){
                 disposeFrames();
-                GUI.displayGUI();
+                try {
+                    GUI.displayGUI();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 

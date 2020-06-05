@@ -14,6 +14,7 @@ import java.security.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static ControlPanel.Home.GUI.GUI.displayGUI;
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 import static ControlPanel.Utility.HashPassword.hashPassword;
@@ -98,7 +99,13 @@ public class loginScreen extends User {
                 setSessionToken(serverResponse);
 
                 frame.dispose();
-                GUI.displayGUI();
+                try {
+                    displayGUI();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }
 
 
