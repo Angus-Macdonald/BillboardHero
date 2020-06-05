@@ -20,6 +20,10 @@ public class ChangePassword extends UserManagement {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * Function creates a GUI for the user to change
+     * @param user
+     */
     public static void changePasswordWindow(int user){
         JFrame frame = new JFrame("Change Password");
         FrameAndPanelUtility.frameManage(frame, 5, 1);

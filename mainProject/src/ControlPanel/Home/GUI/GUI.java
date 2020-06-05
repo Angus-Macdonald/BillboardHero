@@ -130,9 +130,11 @@ public class GUI extends User {
 
         ArrayList billboard = Client.ListBillboardsS();
         Object[][] data = new Object[billboard.size()][2];
-        for (int i = 0; i < billboard.size(); i+=2) {
-            data[i][i] = billboard.get(i);
-            data[i][i+1] = billboard.get(i+1);
+        if(billboard.size() > 0) {
+            for (int i = 0; i < billboard.size()/2; i+=2) {
+                data[i][i] = billboard.get(i);
+                data[i][i+1] = billboard.get(i+1);
+            }
         }
 
         JTable billboardList = new JTable(data, columns);
