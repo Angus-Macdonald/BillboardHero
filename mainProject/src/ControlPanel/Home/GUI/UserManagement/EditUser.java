@@ -29,6 +29,7 @@ public class EditUser extends UserManagement {
         ArrayList<Boolean> userPermissions = Client.ChkPermsS(user);
         System.out.println(userPermissions);
         boolean[] localPermissions = new boolean[4];
+
         localPermissions[0] = userPermissions.get(1);
         localPermissions[1] = userPermissions.get(2);
         localPermissions[2] = userPermissions.get(3);
