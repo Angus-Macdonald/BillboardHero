@@ -2,7 +2,7 @@ package ControlPanel.Utility;
 
 import javax.swing.*;
 
-import static ControlPanel.Utility.LogoutAlert.logoutAlert;
+import static ControlPanel.Utility.Logout.logoutAlert;
 
 public class Menubar {
     public static void menubar(JFrame frame){

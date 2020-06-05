@@ -1,5 +1,6 @@
 package ControlPanel.Home.GUI.UserManagement;
 
+import ControlPanel.Utility.FrameAndPanelUtility;
 import ControlPanel.Utility.Menubar;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 import static ControlPanel.Home.GUI.UserManagement.ChangePassword.changePasswordWindow;
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 
 public class EditUser extends UserManagement {
 
@@ -23,17 +25,10 @@ public class EditUser extends UserManagement {
 
     public static void editUserWindow(String user){
         JFrame frame = new JFrame("Edit User");
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setPreferredSize(new Dimension(dim.width/5, dim.height/2));
-        frame.setLayout(new GridLayout(6, 1));
-
+        FrameAndPanelUtility.frameManage(frame, 6, 1);
         Menubar.menubar(frame);
-
         JPanel[] panel = new JPanel[6];
-        for(int i = 0; i < panel.length; i++){
-            panel[i] = new JPanel();
-        }
+        panelInitialise(panel);
 
         JLabel header = new JLabel("Edit User");
         panel[0].add(header);
