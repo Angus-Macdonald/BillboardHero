@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -48,20 +49,19 @@ public class CreateBillboard {
     private static boolean isDataImage;
     private static List<String> elementOrder = new ArrayList<>();
     private static byte[] byteImg;
-    public static int xmlElements = 0;
-
-
 
     public static void serverConnect() throws SQLException, IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
         try {
             Client connection = new Client();
-            String data = connection.getBBInfoS("messageInMiddleTest");
-//            String data = connection.getBBInfoS("Bob");
+            Object data = connection.currentBBS(timestamp);
+            String dataString = data.toString();
 
-            ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
+            ByteArrayInputStream bais = new ByteArrayInputStream(dataString.getBytes());
             Document document = builder.parse(bais);
             bais.close();
 
@@ -75,11 +75,9 @@ public class CreateBillboard {
             }
 
             NodeList xmlTags = documentElement.getChildNodes();
-//        List<String> elementOrder = new ArrayList<>();
             for (int i = 0; i < xmlTags.getLength(); i++) {
                 Node node = xmlTags.item(i);
                 if (node instanceof Element) {
-//                xmlElements++;
                     Element element = (Element) node;
                     String tagName = element.getTagName();
                     System.out.println("Child: " + tagName);
@@ -114,12 +112,15 @@ public class CreateBillboard {
                     }
                 }
             }
+            serverResponse = true;
             System.out.println(elementOrder);
+
             //System.out.println(elementOrder.get(1));
         } catch(Exception e) {
             serverResponse = false;
             System.out.println("Connection failed");
-            System.out.println(e);
+//            System.out.println(e);
+            //return;
         }
     }
 
@@ -127,8 +128,11 @@ public class CreateBillboard {
     // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
     public static void createBillboard() throws IOException, ClassNotFoundException, SQLException, ParserConfigurationException, SAXException {
         serverConnect();
+
+        // Testing frame disposal
+//        ControlPanel.Utility.FrameDispose.disposeFrames();
+
         JFrame frame = new JFrame();
-        // Constant
         JPanel topPanel = new JPanel();
         JPanel middlePanel = new JPanel();
         JPanel bottomPanel = new JPanel();
@@ -187,7 +191,7 @@ public class CreateBillboard {
                     topPanel.add(topElement);
                     bottomPanel.add(bottomElement);
                 }
-                topPanel.setBorder(new EmptyBorder(140, 10, 10, 10));
+                topPanel.setBorder(new EmptyBorder(160, 10, 10, 10));
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 160, 10));
             } else {
                 String firstItem = elementOrder.get(0);
@@ -203,7 +207,8 @@ public class CreateBillboard {
                 bottomPanel.add(bottomElement);
 
                 topPanel.setBorder(new EmptyBorder(120, 10, 10, 10));
-                middlePanel.setBorder(new EmptyBorder(110, 10, 10, 10));
+//                middlePanel.setBorder(new EmptyBorder(60, 10, 10, 10));
+                middlePanel.setLayout(new GridBagLayout());
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 100, 10));
             }
 
@@ -242,31 +247,31 @@ public class CreateBillboard {
         SwingUtilities.invokeLater(() -> {
             try {
                 createBillboard();
+                System.out.println(serverResponse);
             } catch (IOException | ClassNotFoundException | SQLException | ParserConfigurationException | SAXException e) {
                 e.printStackTrace();
             }
         });
 
-        System.out.println(background);
 //        serverConnect();
 
     }
 
-    /**
-     * Simple method to resize billboard font size based on message length
-     *
-     * @param input the message string to be checked
-     */
-    public static void resizeText(String input) {
-        if (input.length() > 35) {
-            messageSize = 60;
-//            informationSize = 40;
-        } else {
-            messageSize = 100;
-//            informationSize = 80;
-        }
-//        System.out.println(input.length());
-    }
+//    /**
+//     * Simple method to resize billboard font size based on message length
+//     *
+//     * @param input the message string to be checked
+//     */
+//    public static void resizeText(String input) {
+//        if (input.length() > 35) {
+//            messageSize = 60;
+////            informationSize = 40;
+//        } else {
+//            messageSize = 100;
+////            informationSize = 80;
+//        }
+////        System.out.println(input.length());
+//    }
 
     public static MouseListener clickCheck = new MouseListener() {
         @Override
@@ -380,7 +385,7 @@ public class CreateBillboard {
         JLabel output = new JLabel();
 
         if (element == "message") {
-            resizeText(messageText);
+//            resizeText(messageText);
             output = new JLabel(messageText);
             output.setFont(messageFont);
             output.setForeground(messageColour);
@@ -402,12 +407,7 @@ public class CreateBillboard {
                 output = new JLabel(new ImageIcon(resizedImg));
             }
         }
-//        else {
-//            output = new JLabel(new ImageIcon(imageStream));
-//            BufferedImage dataImage = ImageIO.read(new ByteArrayInputStream(byteImg));
-//            BufferedImage resizedImg = resizeImage(dataImage, 1); // CHECK SCALE
-//            output = new JLabel(new ImageIcon(resizedImg));
-//        }
+
 
         return output;
     }

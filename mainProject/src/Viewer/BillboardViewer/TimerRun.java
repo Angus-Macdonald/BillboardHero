@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TimerTest extends TimerTask {
+public class TimerRun extends TimerTask {
     private boolean isResponse = false;
 
     CreateBillboard viewer = new CreateBillboard();
@@ -25,6 +25,6 @@ public class TimerTest extends TimerTask {
 
     public static void main(String[] args) {
         Timer timer = new Timer();
-        timer.schedule(new TimerTest(),0,15000);
+        timer.schedule(new TimerRun(),0,15000);
     }
 }
