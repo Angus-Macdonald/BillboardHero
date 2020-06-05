@@ -53,8 +53,9 @@ public class DeleteUserAlert extends UserManagement{
         for(JPanel pan: panel){
             frame.getContentPane().add(pan);
         }
-        frame.setLocationRelativeTo(null);
+
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
     }
