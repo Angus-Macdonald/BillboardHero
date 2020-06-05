@@ -6,9 +6,12 @@ package ControlPanel.Home.GUI.Billboard;
 
 import ControlPanel.Utility.billboard;
 import Server.Client;
+import Viewer.BillboardViewer.ViewerBillboard;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,6 +100,7 @@ public class billboardEditGUI {
         JButton infoColorPicker = new JButton("Information Color");
         JCheckBox exportBillboard = new JCheckBox("Export Billboard", false);
         JButton deleteButton = new JButton("Delete Billboard");
+        JButton previewButton = new JButton("Preivew Billboard");
         JButton saveButton = new JButton("Save and Exit");
         billboard newBillboard = new billboard();
 
@@ -167,6 +171,50 @@ public class billboardEditGUI {
                 frame.dispose();
             }
         });
+        previewButton.addActionListener(e -> {
+            if (!msgBox.getText().isEmpty() || !typePicBox.getSelectedItem().toString().equals("None") || !infoBox.getText().isEmpty()) {
+                newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
+                        bgColorPicker.getBackground().getRed(),
+                        bgColorPicker.getBackground().getGreen(),
+                        bgColorPicker.getBackground().getBlue())
+                );
+                if (msgBox.getText().length() <= 50) {
+                    newBillboard.addMsg(msgBox.getText());
+                    newBillboard.addColor("message", String.format("#%02X%02X%02X",
+                            msgBox.getForeground().getRed(),
+                            msgBox.getForeground().getGreen(),
+                            msgBox.getForeground().getBlue())
+                    );
+                } else if (msgBox.getText().length() > 50) {
+                    JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for message.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!typePicBox.getSelectedItem().toString().equals("None") && sourcePicBox.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please fill in the picture source or pick none.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else {
+                    newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
+                }
+                if (infoBox.getText().length() <= 350) {
+                    newBillboard.addInfo(infoBox.getText());
+                    newBillboard.addColor("information", String.format("#%02X%02X%02X",
+                            infoBox.getForeground().getRed(),
+                            infoBox.getForeground().getGreen(),
+                            infoBox.getForeground().getBlue())
+                    );
+                } else if (infoBox.getText().length() > 350) {
+                    JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for information.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                ViewerBillboard viewer = new ViewerBillboard();
+                try {
+                    viewer.serverConnect(newBillboard.xmlToString());
+                } catch (SQLException | IOException | ClassNotFoundException | ParserConfigurationException | SAXException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
         saveButton.addActionListener(e -> {
             if (!msgBox.getText().isEmpty() || !typePicBox.getSelectedItem().toString().equals("None") || !infoBox.getText().isEmpty()) {
                 newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
@@ -225,7 +273,7 @@ public class billboardEditGUI {
         });
 
         frame.setSize(400, 400);
-        frame.setLayout(new GridLayout(14, 1));
+        frame.setLayout(new GridLayout(15, 1));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

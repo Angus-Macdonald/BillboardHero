@@ -7,8 +7,12 @@ package ControlPanel.Home.GUI.Billboard;
 
 import ControlPanel.Utility.billboard;
 import Server.Client;
+import Viewer.BillboardViewer.CreateViewer;
+import Viewer.BillboardViewer.ViewerBillboard;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,58 +93,51 @@ public class billboardCreateGUI {
             }
         });
         preview.addActionListener(e -> {
-            if (!nameBox.getText().isEmpty()) {
-                if (!msgBox.getText().isEmpty() || !typePicBox.getSelectedItem().toString().equals("None") || !infoBox.getText().isEmpty()) {
-                    billboard newBillboard = new billboard();
-                    newBillboard.createXML(nameBox.getText());
-                    newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
-                            bgColorPicker.getBackground().getRed(),
-                            bgColorPicker.getBackground().getGreen(),
-                            bgColorPicker.getBackground().getBlue())
+            if (!msgBox.getText().isEmpty() || !typePicBox.getSelectedItem().toString().equals("None") || !infoBox.getText().isEmpty()) {
+                billboard newBillboard = new billboard();
+                newBillboard.createXML(nameBox.getText());
+                newBillboard.addColor("billboard", String.format("#%02X%02X%02X",
+                        bgColorPicker.getBackground().getRed(),
+                        bgColorPicker.getBackground().getGreen(),
+                        bgColorPicker.getBackground().getBlue())
+                );
+                if (!msgBox.getText().isEmpty() && msgBox.getText().length() <= 50) {
+                    newBillboard.addMsg(msgBox.getText());
+                    newBillboard.addColor("message", String.format("#%02X%02X%02X",
+                            msgBox.getForeground().getRed(),
+                            msgBox.getForeground().getGreen(),
+                            msgBox.getForeground().getBlue())
                     );
-                    if (!msgBox.getText().isEmpty() && msgBox.getText().length() <= 50) {
-                        newBillboard.addMsg(msgBox.getText());
-                        newBillboard.addColor("message", String.format("#%02X%02X%02X",
-                                msgBox.getForeground().getRed(),
-                                msgBox.getForeground().getGreen(),
-                                msgBox.getForeground().getBlue())
-                        );
-                    } else if (msgBox.getText().length() > 50) {
-                        JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for message.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    if (!typePicBox.getSelectedItem().toString().equals("None") && !sourcePicBox.getText().isEmpty()) {
-                        newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
-                    } else if (!typePicBox.getSelectedItem().toString().equals("None") && sourcePicBox.getText().isEmpty()) {
-                        JOptionPane.showMessageDialog(frame, "Please fill in the picture source or pick none.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    if (!infoBox.getText().isEmpty() && infoBox.getText().length() <= 350) {
-                        newBillboard.addInfo(infoBox.getText());
-                        newBillboard.addColor("information", String.format("#%02X%02X%02X",
-                                infoBox.getForeground().getRed(),
-                                infoBox.getForeground().getGreen(),
-                                infoBox.getForeground().getBlue())
-                        );
-                    } else if (infoBox.getText().length() > 350) {
-                        JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for information.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    if (exportBillboard.isSelected()) {
-                        newBillboard.writeToFile();
-                    }
-                    System.out.println(newBillboard.xmlToString());
-                    //upload the created XML file to the server
-                    try {
-                        newBillboard.previewBillboard();
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Please fill out at least one field.", "Error", JOptionPane.ERROR_MESSAGE);
+                } else if (msgBox.getText().length() > 50) {
+                    JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for message.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!typePicBox.getSelectedItem().toString().equals("None") && !sourcePicBox.getText().isEmpty()) {
+                    newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
+                } else if (!typePicBox.getSelectedItem().toString().equals("None") && sourcePicBox.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please fill in the picture source or pick none.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (!infoBox.getText().isEmpty() && infoBox.getText().length() <= 350) {
+                    newBillboard.addInfo(infoBox.getText());
+                    newBillboard.addColor("information", String.format("#%02X%02X%02X",
+                            infoBox.getForeground().getRed(),
+                            infoBox.getForeground().getGreen(),
+                            infoBox.getForeground().getBlue())
+                    );
+                } else if (infoBox.getText().length() > 350) {
+                    JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for information.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                ViewerBillboard viewer = new ViewerBillboard();
+                try {
+                    viewer.serverConnect(newBillboard.xmlToString());
+                } catch (SQLException | IOException | ClassNotFoundException | ParserConfigurationException | SAXException throwables) {
+                    throwables.printStackTrace();
                 }
             } else {
-                JOptionPane.showMessageDialog(frame, "Please enter a billboard name.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Please fill out at least one field.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
         button.addActionListener(e -> {
