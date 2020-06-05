@@ -2,8 +2,6 @@ package ControlPanel.Utility;
 
 import javax.swing.*;
 
-import static ControlPanel.Utility.LogoutAlert.logoutAlert;
-
 public class User {
     private static int userID;
     private static int sessionToken;
@@ -55,7 +53,7 @@ public class User {
             JMenuItem quit = new JMenuItem("Quit");
             JMenuItem logout = new JMenuItem("Log Out");
             logout.addActionListener(e -> {
-                logoutAlert();
+                Logout.logoutAlert();
 
             });
             quit.addActionListener(e -> QuitAlert.alterWindow());
