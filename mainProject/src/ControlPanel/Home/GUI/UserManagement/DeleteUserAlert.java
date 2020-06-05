@@ -3,6 +3,7 @@ package ControlPanel.Home.GUI.UserManagement;
 import Server.Client;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
@@ -16,14 +17,15 @@ public class DeleteUserAlert extends UserManagement{
 
     static void deleteUserAlert(){
         JFrame frame = new JFrame("Alert");
-        frameManage(frame, 3 ,1);
-        JPanel[] panel = new JPanel[3];
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation((dim.width/5)*2, (dim.height/5)*2);
+        JPanel[] panel = new JPanel[2];
         panelInitialise(panel);
 
-
         JLabel alert = new JLabel("Are you sure you want to delete UserID:  " + UserManagement.getSelectedUser());
-        JLabel passLabel = new JLabel("Enter Your Password To Continue: ");
-        JPasswordField passwordField = new JPasswordField(10);
+
         JButton yes = new JButton("Delete User");
         JButton cancel = new JButton("Cancel");
 
@@ -44,10 +46,8 @@ public class DeleteUserAlert extends UserManagement{
         );
 
         panel[0].add(alert);
-        panel[1].add(passLabel);
-        panel[1].add(passwordField);
-        panel[2].add(yes);
-        panel[2].add(cancel);
+        panel[1].add(yes);
+        panel[1].add(cancel);
 
         for(JPanel pan: panel){
             frame.getContentPane().add(pan);
