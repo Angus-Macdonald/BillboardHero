@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+/**
+ * Class handles display for seeing the billboard preview in the user GUI
+ */
 public class ViewerBillboard extends JFrame {
     private static String defaultMessage = "There are currently no billboards scheduled.";
     private static Color background;

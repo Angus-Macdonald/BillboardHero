@@ -31,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+/**
+ * Class handles the generation of a billboard viewer for the scheduled billboards
+ * in the Server.
+ */
 public class CreateBillboard {
     private static String defaultMessage = "There are currently no billboards scheduled.";
     private static Color background;
