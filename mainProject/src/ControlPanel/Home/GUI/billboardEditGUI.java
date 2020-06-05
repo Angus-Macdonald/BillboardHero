@@ -53,8 +53,7 @@ public class billboardEditGUI {
         fromServer.addActionListener(e -> {
             try {
                 Client serverConn = new Client();
-                String billboard = serverConn.getBBInfoS(xmlName.getText());
-                if (billboard == null) {
+                if (serverConn.getBBInfoS(xmlName.getText()).equals("nothing")) {
                     JOptionPane.showMessageDialog(frame, "Invalid billboard name.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }

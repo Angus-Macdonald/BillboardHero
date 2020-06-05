@@ -64,7 +64,7 @@ public class ServerBillboard {
         statement.clearParameters();
         statement.setString(1, bbName);
         ResultSet rs = statement.executeQuery();
-        String bbInfo = null;
+        String bbInfo = "nothing";
         while(rs.next()) {
             byte[] data = rs.getBytes("billboard");
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
