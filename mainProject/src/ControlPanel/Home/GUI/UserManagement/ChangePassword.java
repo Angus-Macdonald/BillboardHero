@@ -9,7 +9,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+import static ControlPanel.Login.GUI.loginScreen.parseUserID;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+import static ControlPanel.Utility.FrameDispose.disposeFrames;
 import static ControlPanel.Utility.HashPassword.hashPassword;
 import static ControlPanel.Utility.HashPassword.inputPassHashCheck;
 
@@ -46,40 +48,33 @@ public class ChangePassword extends UserManagement {
 
         //Code Below demonstrates the submit button using the input data
         submitButton.addActionListener(e -> {
-            char[] inputNewPassword = newInput.getPassword();
+                    String inputUser = userInput.getText();
+                    char[] inputNewPassword = newInput.getPassword();
+                    int username = parseUserID(inputUser);
+                    String password = new String(inputNewPassword);
 
-            String NewPassword = null;
+//            try {
+//                hashNewPassword = new String(hashPassword(NewPassword));
+//            } catch (NoSuchAlgorithmException ex) {
+//                ex.printStackTrace();
+//            }
 
-            for(char i:inputNewPassword){NewPassword += i;}
-
-
-            String hashNewPassword = null;
 
             try {
-                hashNewPassword = new String(hashPassword(NewPassword));
-            } catch (NoSuchAlgorithmException ex) {
+                Client.setPasswordS(password, username);
+                disposeFrames();
+                userManagementGUI();
+            } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
-
-            if(inputPassHashCheck(NewPassword, hashNewPassword)){
-                try {
-                    Client.setPasswordS(hashNewPassword, user);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-
-            frame.dispose();
-
         });
 
-        frame.getContentPane().add(panel[0]);
-        frame.getContentPane().add(panel[1]);
-        frame.getContentPane().add(panel[2]);
-        frame.getContentPane().add(panel[3]);
-        frame.getContentPane().add(panel[4]);
 
+
+
+        for(JPanel p: panel) {
+            frame.getContentPane().add(p);
+        }
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

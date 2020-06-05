@@ -81,37 +81,27 @@ public class loginScreen extends User {
         loginButton.addActionListener(e -> {
             String inputUser = inputUsername.getText();
             char[] inputPass = inputPassword.getPassword();
-
             int userID = parseUserID(inputUser);
+            String pass = new String(inputPass);
 
-            String pass = null;
-            for(char i: inputPass){
-                pass += i;
-            }
 
-            String password2 = "root";
-//            try {
-//                password2 = new String(hashPassword(pass));
-//            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-//               noSuchAlgorithmException.printStackTrace();
-//           }
             int serverResponse = 0;
 
-            if(inputPassHashCheck(pass, password2)){
-                try {
-                    serverResponse = loginS(userID, password2 );
-                } catch (IOException ex) {
+            try {
+                serverResponse = loginS(userID, pass);
+            } catch (IOException ex) {
                     ex.printStackTrace();
-                }
-
-                if(serverResponse != 0){
-                    setUserID(userID);
-                    setSessionToken(serverResponse);
-
-                    frame.dispose();
-                    GUI.displayGUI();
-                }
             }
+
+            if(serverResponse != 0){
+                setUserID(userID);
+                setSessionToken(serverResponse);
+
+                frame.dispose();
+                GUI.displayGUI();
+            }
+
+
         });
 
         frame.pack();
