@@ -3,10 +3,13 @@ package ControlPanel.Home.GUI;
 import ControlPanel.Home.GUI.UserManagement.UserManagement;
 import ControlPanel.Utility.User;
 import ControlPanel.Utility.Menubar;
+import Server.Client;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
@@ -26,11 +29,23 @@ public class GUI extends User {
         return window;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         displayGUI();
     }
 
     public static void displayGUI(){
+        ArrayList<Boolean> permission = new ArrayList<Boolean>();
+        try {
+            permission = Client.ChkPermsS(getUserID());
+            setCreateBBPermission(permission.get(1));
+            setEditBBPermission(permission.get(2));
+            setScheduleBBPermission(permission.get(3));
+            setEditUsersPermission(permission.get(4));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
         JFrame frame = new JFrame("Control Panel GUI");
 
         JPanel[] panel = new JPanel[3];
@@ -77,7 +92,13 @@ public class GUI extends User {
 
 
         userManagement.addActionListener(e -> {
-            UserManagement.userManagementGUI();
+            try {
+                UserManagement.userManagementGUI();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
             frame.dispose();
         });
         for(JPanel pan: panel){

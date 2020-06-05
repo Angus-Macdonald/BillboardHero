@@ -1,21 +1,28 @@
 package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Utility.Menubar;
+import Server.Client;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+import static ControlPanel.Utility.HashPassword.hashPassword;
+import static Server.Client.createUserS;
+import static java.lang.Integer.parseInt;
 
 public class CreateUser {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         createUserWindow();
     }
 
-    public static void createUserWindow(){
+    public static void createUserWindow() throws NoSuchAlgorithmException {
         JFrame frame = new JFrame("Create User");
         frameManage(frame, 5, 1);
         Menubar.menubar(frame);
@@ -91,8 +98,23 @@ public class CreateUser {
 
         JButton submit = new JButton("Submit");
         panel[4].add(submit);
+
         submit.addActionListener(e ->{
-            //
+            int user = Integer.parseInt(inputID.getText());
+
+            String password = null;
+            try {
+                password = hashPassword(inputPW.toString()).toString();
+            } catch (NoSuchAlgorithmException ex) {
+                ex.printStackTrace();
+            }
+            try {
+                createUserS(user, password, false, permArray[0], permArray[1], permArray[2], permArray[3]);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             frame.dispose();
         });
 

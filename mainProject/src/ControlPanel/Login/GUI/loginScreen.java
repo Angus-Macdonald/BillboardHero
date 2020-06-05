@@ -96,7 +96,7 @@ public class loginScreen extends User {
 ////                noSuchAlgorithmException.printStackTrace();
 ////            }
             int serverResponse = 0;
-            ArrayList<Boolean> permission = new ArrayList<Boolean>();
+
             if(inputPassHashCheck(pass, password2)){
                 try {
                     serverResponse = loginS(userID, password2 );
@@ -107,17 +107,7 @@ public class loginScreen extends User {
                 if(serverResponse != 0){
                     setUserID(userID);
                     setSessionToken(serverResponse);
-                    try {
-                        permission = Client.ChkPermsS(userID);
-                        setCreateBBPermission(permission.get(1));
-                        setEditBBPermission(permission.get(2));
-                        setScheduleBBPermission(permission.get(3));
-                        setEditUsersPermission(permission.get(4));
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    }
+
                     frame.dispose();
                     GUI.displayGUI();
                 }

@@ -2,10 +2,14 @@ package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Home.GUI.GUI;
 import ControlPanel.Utility.Menubar;
+import Server.Client;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import static ControlPanel.Home.GUI.UserManagement.ChangePassword.changePasswordWindow;
 import static ControlPanel.Home.GUI.UserManagement.CreateUser.createUserWindow;
@@ -15,24 +19,24 @@ import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 
 public class UserManagement extends GUI {
 
-    static String selectedUser = "";
+    static Integer selectedUser = 0;
 
-    public static void setSelectedUser(String value){
+    public static void setSelectedUser(Integer value){
         selectedUser = value;
     }
 
-    public static String getSelectedUser(){
+    public static Integer getSelectedUser(){
         return selectedUser;
     }
 
     public UserManagement(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         userManagementGUI();
     }
 
-    public static void userManagementGUI() {
+    public static void userManagementGUI() throws IOException, ClassNotFoundException {
 
         setWindow("userManagement");
 
@@ -44,7 +48,8 @@ public class UserManagement extends GUI {
         frameManage(frame);
         Menubar.menubar(frame);
 
-        String[] userArray = {"12345", "32432", "23421", "43534", "32452", "43253", "99999", "21345"};
+        ArrayList<Integer> users = Client.listUsersS();
+        Integer[] userArray = users.toArray(new Integer[0]);
 
         JLabel header = new JLabel("Account Management");
         header.setFont(new Font("Serif", Font.BOLD, 35));
@@ -90,22 +95,33 @@ public class UserManagement extends GUI {
         });
 
         //Line Below retrieves selected User from the User List and stores the value within a variable
-        list.addListSelectionListener(e -> setSelectedUser((String) list.getSelectedValue()));
+        list.addListSelectionListener(e -> setSelectedUser((Integer) list.getSelectedValue()));
 
         //Line below is the action listener for the Edit User Button. Is a temp test to show it can retrieve the selected user
         editUser.addActionListener(e -> {
-            editUserWindow(getSelectedUser());
-            System.out.println(getSelectedUser());
+            try {
+                editUserWindow(getSelectedUser());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
         });
 
         //Line below is the action listener for the Delete User Button. Is a temp test to show it can retrieve the selected user
         deleteUser.addActionListener(e -> DeleteUserAlert.deleteUserAlert());
 
-        createUser.addActionListener(e -> createUserWindow());
+        createUser.addActionListener(e -> {
+            try {
+                createUserWindow();
+            } catch (NoSuchAlgorithmException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         //Following Code implements Changing the password
         changePassword.addActionListener(e -> {
-            changePasswordWindow(getSelectedUser());
+            changePasswordWindow(getSelectedUser().toString());
         });
 
         frame.getContentPane().add(panel[0]);

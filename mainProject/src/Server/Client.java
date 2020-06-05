@@ -21,13 +21,13 @@ public class Client {
         oos.close();
         socket.close();
     }
-    public void createUserS(int userID,
-                            String password,
-                            boolean admin,
-                            boolean createBB,
-                            boolean editAllBB,
-                            boolean scheduleBB,
-                            boolean editUsers) throws SQLException, IOException {
+    public static void createUserS(int userID,
+                                   String password,
+                                   boolean admin,
+                                   boolean createBB,
+                                   boolean editAllBB,
+                                   boolean scheduleBB,
+                                   boolean editUsers) throws SQLException, IOException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -51,7 +51,7 @@ public class Client {
         oos.close();
         socket.close();
     }
-    public void deleteUserS(int userID) throws  IOException {
+    public static void deleteUserS(int userID) throws  IOException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -68,7 +68,7 @@ public class Client {
         oos.close();
         socket.close();
     }
-    public ArrayList<Integer> listUsersS() throws IOException, ClassNotFoundException {
+    public static ArrayList<Integer> listUsersS() throws IOException, ClassNotFoundException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
@@ -163,12 +163,12 @@ public void setPasswordS(String password, int userID ) throws IOException {
         socket.close();
         return al;
     }
-    public void setPermissionS(int userID,
-                              boolean setAdmin,
-                              boolean setCreateBB,
-                              boolean setEditAllBB,
-                              boolean setScheduleBB,
-                              boolean editUsers) throws IOException {
+    public static void setPermissionS(int userID,
+                                      boolean setAdmin,
+                                      boolean setCreateBB,
+                                      boolean setEditAllBB,
+                                      boolean setScheduleBB,
+                                      boolean editUsers) throws IOException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());

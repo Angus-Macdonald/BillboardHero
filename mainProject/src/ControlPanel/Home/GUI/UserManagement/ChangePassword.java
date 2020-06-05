@@ -30,7 +30,7 @@ public class ChangePassword extends UserManagement {
 
         JLabel userID = new JLabel("Enter User ID: ");
 
-        JTextField userInput = new JTextField(getSelectedUser(),10);
+        JTextField userInput = new JTextField(getSelectedUser().toString(),10);
         panel[1].add(userID);
         panel[1].add(userInput);
 

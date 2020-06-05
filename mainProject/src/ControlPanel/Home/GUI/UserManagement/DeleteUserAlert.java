@@ -1,7 +1,10 @@
 package ControlPanel.Home.GUI.UserManagement;
 
+import Server.Client;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
@@ -27,8 +30,15 @@ public class DeleteUserAlert extends UserManagement{
 
 
         yes.addActionListener(e->
-                frame.dispose()
-        );
+        {
+            try {
+                Client.deleteUserS(getSelectedUser());
+                frame.dispose();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
 
         cancel.addActionListener(e ->
                 frame.dispose()
