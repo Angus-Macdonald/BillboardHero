@@ -110,7 +110,6 @@ public class UserManagement extends GUI {
 
         //Line below is the action listener for the Delete User Button. Is a temp test to show it can retrieve the selected user
         deleteUser.addActionListener(e -> {
-            disposeFrames();
             DeleteUserAlert.deleteUserAlert();
         });
 

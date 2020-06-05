@@ -1,7 +1,10 @@
 package ControlPanel.Utility;
 
+import Server.Client;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import static ControlPanel.Login.GUI.loginScreen.controlPanelLogin;
@@ -47,6 +50,11 @@ public class Logout extends User {
             Frame[] frames = getFrames();
             for (int i = 0; i < frames.length; i++) {
                 frames[i].dispose();
+                try {
+                    Client.logoutS(getUserID());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 logout(frame);
             }
             try {
