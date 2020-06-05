@@ -72,7 +72,7 @@ public class Schedule {
         statement.executeUpdate();
         statement.close();
     };
-    public Object currentBB(Timestamp currentStamp) throws SQLException, IOException, ClassNotFoundException {
+    public String currentBB(Timestamp currentStamp) throws SQLException, IOException, ClassNotFoundException {
         Schedule updateTB = new Schedule();
         updateTB.editRepeats(currentStamp);
         String currentBB = null;
@@ -92,8 +92,10 @@ public class Schedule {
         }
         statement.close();
         rs.close();
+
         ServerBillboard getBB = new ServerBillboard();
-        return getBB.getBBInfo(currentBB);
+        String answer =getBB.getBBInfo(currentBB);
+        return answer;
     };
     public void editRepeats(Timestamp curTime) throws SQLException {
         Connection connection = DBConnection.getInstance();

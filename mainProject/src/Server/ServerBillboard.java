@@ -73,6 +73,7 @@ public class ServerBillboard {
         }
 
 
+
         statement.close();
         //connection.close();
         return bbInfo;
