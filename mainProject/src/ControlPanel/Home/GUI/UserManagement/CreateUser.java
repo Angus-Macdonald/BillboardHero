@@ -100,8 +100,9 @@ public class CreateUser {
              ) {frame.getContentPane().add(j);
 
         }
-        frame.setLocationRelativeTo(null);
+
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
 
