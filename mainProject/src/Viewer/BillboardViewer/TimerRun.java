@@ -10,7 +10,8 @@ import java.util.TimerTask;
 
 /**
  * This class handles the timed running of the billboard viewer, it runs a new instance
- * of the CreateBillboard class every 15 seconds
+ * of the CreateBillboard class every 15 seconds. It is the main means of starting the viewer
+ * and seeing what billboards are currently scheduled.
  */
 public class TimerRun extends TimerTask {
     private boolean isResponse = false;
