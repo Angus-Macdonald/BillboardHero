@@ -5,6 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Users {
+    /**
+     *
+     * @param userID the users ID to sent to the mariaDB database users tables column name users
+     * @param password the password to send to the the mariaDB database users tables column name Password
+     * @param admin a boolean for the admin privilege to sent to the mariaDB database users tables column name Admin
+     * @param createBB a boolean for the createBB to send to the mariaDB database users tables column name createBB
+     * @param editAllBB a boolean for the editAllBB to send to the mariaDB database users tables column name editAllBB
+     * @param scheduleBB a boolean for the scheduleBB to send to mariaDB database users tables column name scheduleBB
+     * @param editUsers a boolean for the editUsers to send to mariaDB database users tables column name editUsers
+     * @throws SQLException
+     */
     public void createUser(int userID,
                            String password,
                            boolean admin,
@@ -35,6 +46,12 @@ public class Users {
         Statement.close();
         //createUserStatementConnection.close();
     };
+
+    /**
+     *
+     * @param userID the users ID to delete from the mariaDB database users tables column name users
+     * @throws SQLException
+     */
     public void deleteUser(int userID) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement(" DELETE FROM Users WHERE UserID=?");
@@ -44,6 +61,12 @@ public class Users {
         statement.close();
         //connection.close();
     };
+
+    /**
+     *
+     * @return return an integer array list of userID's
+     * @throws SQLException
+     */
     public ArrayList<Integer> listUsers() throws SQLException {
         ArrayList<Integer> userslist = new ArrayList<Integer>();
         Connection connection = DBConnection.getInstance();
@@ -57,6 +80,13 @@ public class Users {
         statement.close();
         return(userslist);
     };
+
+    /**
+     *
+     * @param password the current password they wish to change
+     * @param userID the user ID that corresponds to the password that is attempting to be set
+     * @throws SQLException
+     */
     public void setPassword(String password, int userID ) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("update users set password=? where UserID=?");

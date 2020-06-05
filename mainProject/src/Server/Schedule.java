@@ -6,6 +6,18 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Schedule {
+    /**
+     *
+     * @param bbName the name of the billboard to scheduling
+     * @param creator the creator ID of the billboard scheduling
+     * @param dateStart the start Date of the billboard scheduling
+     * @param duration the duration of the billboard scheduling
+     * @param repD the amount of repeat days the billboard will have
+     * @param repH the amount of repeat hours the billboard will have
+     * @param repM the amount of repeat minutes the billboard will have
+     * @throws ParseException
+     * @throws SQLException
+     */
     public void scheduleBB(String bbName, int creator, Timestamp dateStart, int duration, int repD, int repH, int repM) throws ParseException, SQLException {
         //get date start timestamp and add minutes to get end timestamp
         long curTS=dateStart.getTime();
@@ -35,6 +47,12 @@ public class Schedule {
         Statement.close();
 
     };
+
+    /**
+     *
+     * @return  an array list of the schedules
+     * @throws SQLException
+     */
     public ArrayList viewSchedule() throws SQLException {
         ArrayList schList = new ArrayList();
         Connection connection = DBConnection.getInstance();
@@ -63,6 +81,13 @@ public class Schedule {
 
         return(schList);
     };
+
+    /**
+     *
+     * @param bbname the name of the billboard too remove from schedule
+     * @param dateStart the start date of the billboard that will be removed
+     * @throws SQLException
+     */
     public void rmvFromSch(String bbname,Timestamp dateStart) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement(" DELETE FROM schedule WHERE BBname=? And STime=?");
@@ -72,6 +97,15 @@ public class Schedule {
         statement.executeUpdate();
         statement.close();
     };
+
+    /**
+     *
+     * @param currentStamp the date and time that will be used to get the current billboard to display
+     * @return the current billboard that needs to be displayed
+     * @throws SQLException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public String currentBB(Timestamp currentStamp) throws SQLException, IOException, ClassNotFoundException {
         Schedule updateTB = new Schedule();
         updateTB.editRepeats(currentStamp);
@@ -97,6 +131,12 @@ public class Schedule {
         String answer =getBB.getBBInfo(currentBB);
         return answer;
     };
+
+    /**
+     *
+     * @param curTime checks the time and updates all billboards with repeats that are prior to it
+     * @throws SQLException
+     */
     public void editRepeats(Timestamp curTime) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("SElECT BBname, STime, ETime, repeatDay, repeatHour, repeatMin, createNum FROM schedule");
