@@ -2,7 +2,7 @@
 * the user to view the scheduled billboards throughout the week. The class will take the user's input
 * and convert it to the appropriate format for the server to handle.*/
 
-package ControlPanel.Home.GUI;
+package ControlPanel.Home.GUI.Billboard;
 
 import Server.Client;
 
@@ -14,10 +14,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class billboardScheduleGUI {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
-        new billboardScheduleGUI();
-    }
-
+    /**
+     * creates a GUI that display the currently scheduled billbaords and also
+     * allow the user the schedule more billboards for a certain time
+     *
+     * @throws IOException an exception that is related to Input and Output operations in the Java code
+     * @throws ClassNotFoundException an exception that occurs when you try to load a class at run time using Class
+     */
     public billboardScheduleGUI() throws IOException, ClassNotFoundException {
         JFrame frame = new JFrame("Schedule a Billboard");
         JLabel title = new JLabel("Pick a Date and a Billboard");
@@ -163,6 +166,14 @@ public class billboardScheduleGUI {
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * gets the data from the server and adds them to the correct index
+     *
+     * @param serverConn the connection made to the server for fetching and receiving data
+     * @return returns a 2D String array with the values to display on the calender (billboard name)
+     * @throws IOException an exception that is related to Input and Output operations in the Java code
+     * @throws ClassNotFoundException an exception that occurs when you try to load a class at run time using Class
+     */
     public String[][] updateData(Client serverConn) throws IOException, ClassNotFoundException {
         ArrayList scheduledBillboards = serverConn.viewScheduleS();
         String[][] returnVal = new String[scheduledBillboards.size()][7];
@@ -171,15 +182,12 @@ public class billboardScheduleGUI {
             long timestamp = java.sql.Timestamp.valueOf(scheduledBillboards.get(i+2).toString()).getTime();
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(timestamp);
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
             int dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
             int weekInYear = calendar.get(Calendar.WEEK_OF_YEAR);
             int today = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 
             if (today == weekInYear) {
                 for (int k = 0; k < 7; k++) {
-                    System.out.println(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
                     if (dayInWeek == k+1) {
                         returnVal[0][k] = returnVal[0][k] + " | " + (String) scheduledBillboards.get(i);
                     }
