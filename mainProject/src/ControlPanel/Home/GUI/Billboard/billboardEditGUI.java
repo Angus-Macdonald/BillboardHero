@@ -215,6 +215,7 @@ public class billboardEditGUI {
 
         frame.setSize(400, 400);
         frame.setLayout(new GridLayout(14, 1));
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }

@@ -158,6 +158,7 @@ public class billboardScheduleGUI {
 
         frame.setSize(500, 400);
         frame.setLayout(new GridLayout(2, 1));
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
