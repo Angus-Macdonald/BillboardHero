@@ -8,6 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ServerBillboard {
+    /**
+     *
+     * @param BBname the name of the billboard to be created
+     * @param creator the creator of the billboard
+     * @param billboard the object that holds the xml that will be stored on the database
+     * @throws SQLException
+     * @throws IOException
+     */
     public void createBB(String BBname,int creator,Object billboard) throws SQLException, IOException {
         Connection connection = DBConnection.getInstance();
         //check if it exists
@@ -49,7 +57,11 @@ public class ServerBillboard {
         }
     };
 
-
+    /**
+     *
+     * @param BBname the name of the billboard the method is attempting to delete
+     * @throws SQLException
+     */
     public void deleteBB(String BBname) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement(" DELETE FROM Billboards WHERE BBName=?");
@@ -58,6 +70,15 @@ public class ServerBillboard {
         statement.executeUpdate();
         statement.close();
     };
+
+    /**
+     *
+     * @param bbName the name of the billboard that's contents wants to recovered and sends it over the server
+     * @return the billboards xml stored as a string and
+     * @throws SQLException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public String getBBInfo(String bbName) throws SQLException, IOException, ClassNotFoundException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statement = connection.prepareStatement("SElECT Billboard FROM billboards WHERE BBName=? ");
@@ -78,6 +99,12 @@ public class ServerBillboard {
         //connection.close();
         return bbInfo;
     }
+
+    /**
+     *
+     * @return an arraylist that returns all billboard's names and creators
+     * @throws SQLException
+     */
     public ArrayList ListBillboards() throws SQLException {
         Connection connection = DBConnection.getInstance();
         ArrayList billboardList = new ArrayList();

@@ -7,6 +7,13 @@ import java.sql.SQLException;
 
 class SessionException extends Exception{}
 public class session {
+    /**
+     *
+     * @param token the
+     * @param userID
+     * @return a boolean that indicated if the session wasw contained within the tables
+     * @throws SQLException
+     */
     public boolean sessionCheck(int token,int userID) throws SQLException {
         int foundSession=0;
         boolean sessionExists = false;

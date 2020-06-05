@@ -4,6 +4,13 @@ import java.sql.*;
 import java.lang.Math;
 class loginException extends Exception{}
 public class logIO {
+    /**
+     *
+     * @param userID the users ID user to login sent to maria db to check if it is contained within and matches
+     * @param password the password used login sent to maria db to check if it is contained within and matches
+     * @return
+     * @throws SQLException
+     */
     public static int login(int userID, String password) throws SQLException {
 
         Connection connection = DBConnection.getInstance();
@@ -41,6 +48,12 @@ public class logIO {
 
         return token;
     }
+
+    /**
+     *
+     * @param userID the users ID to send to the maria db which will remove the session row where that ID is contained
+     * @throws SQLException
+     */
     public void logout(int userID) throws SQLException {
         Connection connection = DBConnection.getInstance();
         PreparedStatement statementLogout = connection.prepareStatement(" DELETE FROM Session WHERE UserID=?");
