@@ -1,14 +1,11 @@
-package ControlPanel.Home.GUI;
+package ControlPanel.Home.GUI.Billboard;
 
 import ControlPanel.Utility.billboard;
 import Server.Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class billboardCreateGUI {
     public static void main(String[] args) {
@@ -139,6 +136,7 @@ public class billboardCreateGUI {
 
         frame.setSize(400, 400);
         frame.setLayout(new GridLayout(14, 1));
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
