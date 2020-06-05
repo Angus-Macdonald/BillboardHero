@@ -2,9 +2,11 @@ package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Utility.FrameAndPanelUtility;
 import ControlPanel.Utility.Menubar;
+import Server.Client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
@@ -16,7 +18,7 @@ public class ChangePassword extends UserManagement {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
-    public static void changePasswordWindow(String user){
+    public static void changePasswordWindow(int user){
         JFrame frame = new JFrame("Change Password");
         FrameAndPanelUtility.frameManage(frame, 5, 1);
         
@@ -34,11 +36,6 @@ public class ChangePassword extends UserManagement {
         panel[1].add(userID);
         panel[1].add(userInput);
 
-        JLabel oldPassword = new JLabel("Enter Old Password: ");
-        JPasswordField oldInput = new JPasswordField(10);
-        panel[2].add(oldPassword);
-        panel[2].add(oldInput);
-
         JLabel newPassword = new JLabel("Enter New Password: ");
         JPasswordField newInput = new JPasswordField(10);
         panel[3].add(newPassword);
@@ -49,29 +46,27 @@ public class ChangePassword extends UserManagement {
 
         //Code Below demonstrates the submit button using the input data
         submitButton.addActionListener(e -> {
-            char[] inputOldPassword = oldInput.getPassword();
             char[] inputNewPassword = newInput.getPassword();
 
-            String OldPassword = null;
             String NewPassword = null;
 
-            for(char i:inputOldPassword){OldPassword += i;}
             for(char i:inputNewPassword){NewPassword += i;}
 
-            String hashOldPassword = null;
+
             String hashNewPassword = null;
 
             try {
-                hashOldPassword = new String(hashPassword(OldPassword));
                 hashNewPassword = new String(hashPassword(NewPassword));
             } catch (NoSuchAlgorithmException ex) {
                 ex.printStackTrace();
             }
 
-            if(inputPassHashCheck(OldPassword, hashOldPassword) && inputPassHashCheck(NewPassword, hashNewPassword)){
-                //If both passwords are hashed, do something
-                System.out.println(hashOldPassword);
-                System.out.println(hashNewPassword);
+            if(inputPassHashCheck(NewPassword, hashNewPassword)){
+                try {
+                    Client.setPasswordS(hashNewPassword, user);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
 

@@ -3,11 +3,11 @@ package ControlPanel.Home.GUI.UserManagement;
 import Server.Client;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+import static ControlPanel.Utility.FrameDispose.disposeFrames;
 
 public class DeleteUserAlert extends UserManagement{
     public DeleteUserAlert(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
@@ -27,14 +27,13 @@ public class DeleteUserAlert extends UserManagement{
         JButton yes = new JButton("Delete User");
         JButton cancel = new JButton("Cancel");
 
-
-
         yes.addActionListener(e->
         {
             try {
                 Client.deleteUserS(getSelectedUser());
-                frame.dispose();
-            } catch (IOException ex) {
+                disposeFrames();
+                userManagementGUI();
+            } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
         });
@@ -57,6 +56,5 @@ public class DeleteUserAlert extends UserManagement{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 }

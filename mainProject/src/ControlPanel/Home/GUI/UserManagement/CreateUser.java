@@ -1,7 +1,6 @@
 package ControlPanel.Home.GUI.UserManagement;
 
 import ControlPanel.Utility.Menubar;
-import Server.Client;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
-import static ControlPanel.Utility.HashPassword.hashPassword;
+import static ControlPanel.Utility.FrameDispose.disposeFrames;
 import static Server.Client.createUserS;
 import static java.lang.Integer.parseInt;
 
@@ -100,14 +99,19 @@ public class CreateUser {
         panel[4].add(submit);
 
         submit.addActionListener(e ->{
+            for (boolean b: permArray
+                 ) {System.out.print(b + " - ");
+
+            }
             int user = Integer.parseInt(inputID.getText());
 
-            String password = null;
-            try {
-                password = hashPassword(inputPW.toString()).toString();
-            } catch (NoSuchAlgorithmException ex) {
-                ex.printStackTrace();
-            }
+            String password = "root";
+//            String password = null;
+//            try {
+//                password = hashPassword(password2).toString();
+//            } catch (NoSuchAlgorithmException ex) {
+//                ex.printStackTrace();
+//            }
             try {
                 createUserS(user, password, false, permArray[0], permArray[1], permArray[2], permArray[3]);
             } catch (SQLException ex) {
@@ -115,7 +119,15 @@ public class CreateUser {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            frame.dispose();
+            disposeFrames();
+            try {
+                UserManagement.userManagementGUI();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+
         });
 
         for (JPanel j: panel

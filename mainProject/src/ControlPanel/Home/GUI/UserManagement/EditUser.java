@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import static ControlPanel.Home.GUI.UserManagement.ChangePassword.changePasswordWindow;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+import static ControlPanel.Utility.FrameDispose.disposeFrames;
 
 public class EditUser extends UserManagement {
 
@@ -24,8 +25,15 @@ public class EditUser extends UserManagement {
         editUserWindow(getSelectedUser());
     }
 
-    public static void editUserWindow(Integer user) throws IOException, ClassNotFoundException {
+    public static void editUserWindow(int user) throws IOException, ClassNotFoundException {
         ArrayList<Boolean> userPermissions = Client.ChkPermsS(user);
+        System.out.println(userPermissions);
+        boolean[] localPermissions = new boolean[4];
+        localPermissions[0] = userPermissions.get(1);
+        localPermissions[1] = userPermissions.get(2);
+        localPermissions[2] = userPermissions.get(3);
+        localPermissions[3] = userPermissions.get(4);
+
 
         JFrame frame = new JFrame("Edit User");
         FrameAndPanelUtility.frameManage(frame, 6, 1);
@@ -36,13 +44,13 @@ public class EditUser extends UserManagement {
         JLabel header = new JLabel("Edit User");
         panel[0].add(header);
 
-        JLabel userID = new JLabel("User ID:  " + user.toString());
+        JLabel userID = new JLabel("User ID:  " + user);
         panel[1].add(userID);
         frame.add(panel[1]);
 
         JButton changePW = new JButton("Change Password");
         panel[2].add(changePW);
-        changePW.addActionListener(e -> changePasswordWindow(user.toString()));
+        changePW.addActionListener(e -> changePasswordWindow(user));
 
         JLabel permissions = new JLabel("User Permissions");
         panel[3].add(permissions);
@@ -61,54 +69,67 @@ public class EditUser extends UserManagement {
         scheduleBB.setSelected(userPermissions.get(3));
         panel[4].add(scheduleBB);
         JCheckBox editUsers = new JCheckBox("Edit User");
-        if (user.intValue() != getUserID()) {
+        if (user != getUserID()) {
             editUsers.setSelected(userPermissions.get(4));
             panel[4].add(editUsers);
         }
         panel[4].setBorder(new EmptyBorder(0, 50,50,0));
 
         createBB.addActionListener(e -> {
-            if(!userPermissions.get(1)){
-                userPermissions.set(1, true);
+            if(!localPermissions[0]){
+                localPermissions[0] = true;
+                System.out.println(localPermissions[0]);
             }
-            else if (userPermissions.get(1)){
-                userPermissions.set(1, false);
+            else if (localPermissions[0]){
+                localPermissions[0] = false;
+                System.out.println(localPermissions[0]);
             }
         });
 
         editBB.addActionListener(e -> {
-            if(!userPermissions.get(2)){
-                userPermissions.set(2, true);
+            if(!localPermissions[1]){
+                localPermissions[1] = true;
+                System.out.println(localPermissions[1]);
             }
-            else if (userPermissions.get(2)){
-                userPermissions.set(2, false);
+            else if (localPermissions[1]){
+                localPermissions[1] = false;
+                System.out.println(localPermissions[1]);
             }
         });
 
         scheduleBB.addActionListener(e -> {
-            if(!userPermissions.get(3)){
-                userPermissions.set(3, true);
+            if(!localPermissions[2]){
+               localPermissions[2] = true;
+                System.out.println(localPermissions[2]);
             }
-            else if (userPermissions.get(3)){
-                userPermissions.set(3, false);
+            else if (localPermissions[2]){
+                localPermissions[2] = false;
+                System.out.println(localPermissions[2]);
             }
         });
 
         editUsers.addActionListener(e -> {
-            if (!userPermissions.get(4)) {
-                userPermissions.set(4, true);
+            if (!localPermissions[3]) {
+                localPermissions[3] = true;
+                System.out.println(localPermissions[3]);
             }
-            else if (userPermissions.get(4)) {
-                userPermissions.set(4, false);
+            else if (localPermissions[3]) {
+                localPermissions[3] = false;
+                System.out.println(localPermissions[3]);
             }
         });
 
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e ->{
             try {
-                Client.setPermissionS(user, false, userPermissions.get(1), userPermissions.get(2), userPermissions.get(3), userPermissions.get(4));
-                frame.dispose();
-            } catch (IOException ex) {
+                System.out.print(localPermissions[0] + " - ");
+                System.out.print(localPermissions[1] + " - ");
+                System.out.print(localPermissions[2] + " - ");
+                System.out.print(localPermissions[3]);
+                Client.setPermissionS(user, false, localPermissions[0], localPermissions[1], localPermissions[2], localPermissions[3]);
+                disposeFrames();
+                userManagementGUI();
+            } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
 
