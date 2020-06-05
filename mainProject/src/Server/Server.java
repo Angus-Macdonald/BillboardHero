@@ -23,7 +23,6 @@ public class Server {
 
         for(;;){
             Socket socket = serverSocket.accept();
-
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             String methodRun = ois.readUTF();//////read

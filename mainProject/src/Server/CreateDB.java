@@ -61,7 +61,7 @@ public class CreateDB {
         if(found==1){ }
         else{
             Users user = new Users();
-            user.createUser(1,"root",true,true,true,true,true);
+            user.createUser(1,"root",true,true,false,true,true);
         }
         findstatement.close();
 
@@ -153,7 +153,7 @@ public class CreateDB {
         //client.createUserS(2,"falseman",false,false,false,false,false);
 
         //delete user
-        //client.deleteUserS(2);
+        //client.deleteUserS(1);
 
 //        //list users ////not working////
 //        ArrayList al = client.listUsersS();
@@ -165,6 +165,13 @@ public class CreateDB {
         //login
 //        client.loginS(1,"newpass");
 //
+//        Client client2 = new Client();
+//
+//        client2.loginS(2,"falseman");
+////
+
+
+//
 //        //logout
 //        client.logoutS(1);
 
@@ -173,7 +180,7 @@ public class CreateDB {
 //        System.out.println(all);
 
         //set permissions
-        //client.setPermissionS(1,true,true,false,false,false);
+        client.setPermissionS(2,false,true,false,false,false);
 
 
 //        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2022-12-12 4:00:0.0");
@@ -204,7 +211,7 @@ public class CreateDB {
         //client.deleteBBS("this");
 
         //get bb info
-        System.out.println(client.getBBInfoS("the49"));
+        //System.out.println(client.getBBInfoS("the49"));
 
         ////list billboards//////
         //ArrayList lBB = client.ListBillboardsS();
