@@ -166,7 +166,7 @@ public class billboardEditGUI {
                         bgColorPicker.getBackground().getGreen(),
                         bgColorPicker.getBackground().getBlue())
                 );
-                if (!msgBox.getText().isEmpty() && msgBox.getText().length() <= 50) {
+                if (msgBox.getText().length() <= 50) {
                     newBillboard.addMsg(msgBox.getText());
                     newBillboard.addColor("message", String.format("#%02X%02X%02X",
                             msgBox.getForeground().getRed(),
@@ -177,20 +177,20 @@ public class billboardEditGUI {
                     JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for message.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (!typePicBox.getSelectedItem().toString().equals("None") && !sourcePicBox.getText().isEmpty()) {
+                if (!sourcePicBox.getText().isEmpty()) {
                     newBillboard.addImg(typePicBox.getSelectedItem().toString(), sourcePicBox.getText());
                 } else if (!typePicBox.getSelectedItem().toString().equals("None") && sourcePicBox.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Please fill in the picture source or pick none.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (!infoBox.getText().isEmpty() && infoBox.getText().length() <= 350) {
+                if (infoBox.getText().length() <= 350) {
                     newBillboard.addInfo(infoBox.getText());
                     newBillboard.addColor("information", String.format("#%02X%02X%02X",
                             infoBox.getForeground().getRed(),
                             infoBox.getForeground().getGreen(),
                             infoBox.getForeground().getBlue())
                     );
-                } else if (msgBox.getText().length() > 350) {
+                } else if (infoBox.getText().length() > 350) {
                     JOptionPane.showMessageDialog(frame, "Exceeded 50 character limit for information.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }

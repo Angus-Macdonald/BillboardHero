@@ -79,11 +79,20 @@ public class billboard {
         for (int i = 0; i < elementList.getLength(); i++) {
             Node element = elementList.item(i);
             if ("message".equals(element.getNodeName())) {
-                element.setTextContent(msg);
-                System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
+                if (msg.equals("")) {
+                    //deletes message element if the user enters nothing when editing
+                    billboard.removeChild(element);
+                    System.out.println("Deleted message from the XML file at (" + filePath + ")");
+                } else {
+                    element.setTextContent(msg);
+                    System.out.println("Added (" + msg + ") as a message to the XML file at (" + filePath + ")");
+                }
+
                 return;
             }
         }
+
+        if (msg.equals("")) { return; } //ignore empty inputs if the element doesn't already exist
 
         //Add msg text
         Element msgTag = document.createElement("message");
@@ -109,28 +118,36 @@ public class billboard {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) node;
                 if ("picture".equals(element.getNodeName())) {
-                    if (element.getAttributes() != null) {
-                        //remove all existing attributes in picture element
-                        element.removeAttribute("url");
-                        element.removeAttribute("data");
+                    if (source.equals("None")) {
+                        //deletes picture element if the user enters None when editing
+                        billboard.removeChild(element);
+                        System.out.println("Deleted image from the XML file at (" + filePath + ")");
+                    } else {
+                        if (element.getAttributes() != null) {
+                            //remove all existing attributes in picture element
+                            element.removeAttribute("url");
+                            element.removeAttribute("data");
+                        }
+
+                        //adds the correct attribute specified by the user
+                        if (source.equals("url")) {
+                            Attr imgURL = document.createAttribute("url");
+                            imgURL.setValue(input);
+                            element.setAttributeNode(imgURL);
+                        } else if (source.equals("data")) {
+                            Attr imgData = document.createAttribute("data");
+                            imgData.setValue(input);
+                            element.setAttributeNode(imgData);
+                        }
+                        System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
                     }
 
-                    //adds the correct attribute specified by the user
-                    if (source.equals("url")) {
-                        Attr imgURL = document.createAttribute("url");
-                        imgURL.setValue(input);
-                        element.setAttributeNode(imgURL);
-                    } else if (source.equals("data")) {
-                        Attr imgData = document.createAttribute("data");
-                        imgData.setValue(input);
-                        element.setAttributeNode(imgData);
-                    }
-
-                    System.out.println("Added (" + input + ") as the image source to the XML file at (" + filePath + ")");
                     return;
                 }
             }
         }
+
+        if (source.equals("None")) { return; }  //ignore empty inputs if the element doesn't already exist
 
         //checks if there are any existing nodes already and places the picture node in the correct order
         Element img = document.createElement("picture");
@@ -163,11 +180,19 @@ public class billboard {
         for (int i = 0; i < elements.getLength(); i++) {
             Node element = elements.item(i);
             if ("information".equals(element.getNodeName())) {
-                element.setTextContent(info);
-                System.out.println("Added (" + info + ") as a message to the XML file at (" + filePath + ")");
+                if (info.equals("")) {
+                    billboard.removeChild(element);
+                    System.out.println("Deleted information element from the XML file at (" + filePath + ")");
+                } else {
+                    element.setTextContent(info);
+                    System.out.println("Added (" + info + ") as a message to the XML file at (" + filePath + ")");
+                }
+
                 return;
             }
         }
+
+        if (info.equals("")) { return; }    //ignore empty inputs if the element doesn't already exist
 
         //Add info text
         Element infoTag = document.createElement("information");
@@ -184,10 +209,10 @@ public class billboard {
         if (changeColorOf.equals("billboard")) {
             Element element = (Element) billboard;
             if (element.getAttributes() != null) {
-                element.removeAttribute("color");
+                element.removeAttribute("background");
             }
             //adds the correct attribute specified by the user
-            Attr colorTag = document.createAttribute("color");
+            Attr colorTag = document.createAttribute("background");
             colorTag.setValue(color);
             element.setAttributeNode(colorTag);
             System.out.println("Added (" + color + ") as the color of (" + changeColorOf + ") to the XML file at (" + filePath + ")");
