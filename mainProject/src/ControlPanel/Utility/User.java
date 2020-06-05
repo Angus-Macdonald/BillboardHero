@@ -2,6 +2,9 @@ package ControlPanel.Utility;
 
 import javax.swing.*;
 
+/**
+ * This class is a Parent class to all user permission windows. It stores permission data taken from the server and can only be accessed via getter and setters.
+ */
 public class User {
     private static int userID;
     private static int sessionToken;

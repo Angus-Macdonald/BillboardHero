@@ -15,6 +15,10 @@ public class Logout extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * This function re-initialises the Parent class variables to default on log out.
+     * @param frame
+     */
     public static void logout(JFrame frame){
         setUserID(0);
         setSessionToken(0);
@@ -25,6 +29,9 @@ public class Logout extends User {
         frame.dispose();
     }
 
+    /**
+     * This function displays a GUI log out alert that the user must confirm or deny.
+     */
     public static void logoutAlert() {
 
         JFrame frame = new JFrame("Alert");
