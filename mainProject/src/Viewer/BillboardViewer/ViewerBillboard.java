@@ -410,7 +410,14 @@ public class ViewerBillboard extends JFrame {
      * @return returns a JTextArea containing the passed information text
      */
     public static JTextArea packedInfo(String element) {
-        JTextArea information = new JTextArea(informationText, 4, 60);
+        int textLength;
+        if (element.length() < 60) {
+            textLength = element.length();
+        } else {
+            textLength = 60;
+        }
+
+        JTextArea information = new JTextArea(informationText, 4, textLength);
 
         information.setLineWrap(true);
         information.setWrapStyleWord(true);
