@@ -49,7 +49,7 @@ public class Server {
                 log.logout(ois.readInt());
             }
             else if(methodRun.equals("ChkPerms")){
-                ArrayList al = permission.ChkPerms(1);
+                ArrayList al = permission.ChkPerms(ois.readInt());
                 oos.writeObject(al);
             }
             else if(methodRun.equals("setPermission")){

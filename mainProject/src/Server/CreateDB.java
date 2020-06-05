@@ -99,8 +99,8 @@ public class CreateDB {
         //log.logout(3);
 
         ////check permissions/////
-        //ArrayList all = permission.ChkPerms(1);
-        //System.out.println(all);
+//        ArrayList all = permission.ChkPerms(2);
+//        System.out.println(all);
 
         /////change permission//////
         //permission.setPermission(5,false,false,false,false,false);
@@ -176,11 +176,11 @@ public class CreateDB {
 //        client.logoutS(1);
 
         ////check permissions///// not working/////
-//        ArrayList all = client.ChkPermsS(1);
-//        System.out.println(all);
+        ArrayList all = client.ChkPermsS(2);
+        System.out.println(all);
 
         //set permissions
-        client.setPermissionS(2,false,true,false,false,false);
+        //client.setPermissionS(2,false,true,false,false,false);
 
 
 //        java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2022-12-12 4:00:0.0");
