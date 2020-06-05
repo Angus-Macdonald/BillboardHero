@@ -31,28 +31,41 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-// Third testing class - can DELETE
 public class CreateBillboard {
-    public static String defaultMessage = "There are currently no billboards scheduled.";
-    public static Color background;
-    public static Color messageColour, infoColour = Color.BLACK;
-    public static int messageSize = 70;
-    public static int informationSize = 30;
-    public static String messageText;
-    public static String informationText;
+    private static String defaultMessage = "There are currently no billboards scheduled.";
+    private static Color background;
+    private static Color messageColour, infoColour = Color.BLACK;
+    private static int messageSize = 70;
+    private static int informationSize = 30;
+    private static String messageText;
+    private static String informationText;
     private static Font messageFont = new Font("Helvetica", Font.BOLD, messageSize);
     private static Font infoFont = new Font("Helvetica", Font.BOLD, informationSize);
     private static URL url;
     private static BufferedImage urlImage;
     private static String imageStream;
-    public static boolean serverResponse = true;
+    private static boolean serverResponse = true;
     private static boolean isDataImage;
     private static List<String> elementOrder = new ArrayList<>();
     private static byte[] byteImg;
 
+    /**
+     * This method handles interaction with the server and extracts information from xml files returned
+     * from the billboard schedule. If the server is down, or there are currently no billboards
+     * scheduled, this changes the serverResponse boolean.
+     *
+     * @throws SQLException handles any errors from server interaction
+     * @throws IOException handles any failed or interrupted I/O operations
+     * @throws ClassNotFoundException handles any errors if class interaction between packages fails
+     * @throws ParserConfigurationException handles any configuration errors
+     * @throws SAXException handles any errors from the parsing process for xml
+     */
     public static void serverConnect() throws SQLException, IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
-
+        // Grabbing the current timestamp for interaction with the scheduled billboards
+        // table
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        // Build document
         DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
@@ -86,7 +99,6 @@ public class CreateBillboard {
                     if (tagName == "message") {
                         System.out.println("Content: " + element.getTextContent());
                         messageText = element.getTextContent();
-//                        resizeText(messageText);
                         messageColour = Color.decode(element.getAttribute("color"));
                         System.out.println("Colour: " + element.getAttribute("color"));
                     } else if (tagName == "information") {
@@ -94,33 +106,23 @@ public class CreateBillboard {
                         informationText = element.getTextContent();
                         System.out.println("Colour: " + element.getAttribute("color"));
                     } else if (tagName == "picture") {
-                        // NEW Set of ifs for url or data
                         if (element.hasAttribute("url")) {
                             System.out.println(element.getAttribute("url"));
                             isDataImage = false;
                             url = new URL(element.getAttribute("url"));
-
-                            System.out.println("Should see this in bool check");
                         } else {
                             System.out.println(element.getAttribute("data"));
                             isDataImage = true;
                             byteImg = Base64.getMimeDecoder().decode(element.getAttribute("data"));
-
-                            System.out.println("Should not see this is bool check");
                         }
-
                     }
                 }
             }
             serverResponse = true;
             System.out.println(elementOrder);
-
-            //System.out.println(elementOrder.get(1));
         } catch(Exception e) {
             serverResponse = false;
             System.out.println("Connection failed");
-//            System.out.println(e);
-            //return;
         }
     }
 
@@ -128,17 +130,12 @@ public class CreateBillboard {
     // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
     public static void createBillboard() throws IOException, ClassNotFoundException, SQLException, ParserConfigurationException, SAXException {
         serverConnect();
-
-        // Testing frame disposal
-//        ControlPanel.Utility.FrameDispose.disposeFrames();
-
         JFrame frame = new JFrame();
         JPanel topPanel = new JPanel();
         JPanel middlePanel = new JPanel();
         JPanel bottomPanel = new JPanel();
 
         if (!serverResponse) {
-//            JLabel message = new JLabel();
             JTextArea defaultText = new JTextArea(defaultMessage, 1,20);
             defaultText.setLineWrap(true);
             defaultText.setWrapStyleWord(true);
@@ -207,7 +204,6 @@ public class CreateBillboard {
                 bottomPanel.add(bottomElement);
 
                 topPanel.setBorder(new EmptyBorder(120, 10, 10, 10));
-//                middlePanel.setBorder(new EmptyBorder(60, 10, 10, 10));
                 middlePanel.setLayout(new GridBagLayout());
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 100, 10));
             }
@@ -215,12 +211,7 @@ public class CreateBillboard {
             elementOrder.clear();
 
             topPanel.setBackground(background);
-//            topPanel.setBorder(new EmptyBorder(120, 10, 10, 10));
-
             bottomPanel.setBackground(background);
-//            bottomPanel.setBorder(new EmptyBorder(10, 10, 100, 10));
-
-//            middlePanel.setBorder(new EmptyBorder(100, 10, 10, 10));
             middlePanel.setBackground(background);
         }
 
@@ -252,28 +243,13 @@ public class CreateBillboard {
                 e.printStackTrace();
             }
         });
-
-//        serverConnect();
-
     }
 
-//    /**
-//     * Simple method to resize billboard font size based on message length
-//     *
-//     * @param input the message string to be checked
-//     */
-//    public static void resizeText(String input) {
-//        if (input.length() > 35) {
-//            messageSize = 60;
-////            informationSize = 40;
-//        } else {
-//            messageSize = 100;
-////            informationSize = 80;
-//        }
-////        System.out.println(input.length());
-//    }
-
+    /**
+     * Creates a new instance of MouseListener for implementation of viewer closing on click
+     */
     public static MouseListener clickCheck = new MouseListener() {
+        // Simply counts the number of clicks and closes the program when mouse is clicked
         @Override
         public void mouseClicked(MouseEvent e) {
             int clicked = e.getClickCount();
@@ -301,6 +277,10 @@ public class CreateBillboard {
         }
     };
 
+    /**
+     * Creates a new instance of KeyListener, used to listen only for user pressing 'esc'.
+     * If user has pressed said key, the viewer closes.
+     */
     public static KeyListener escListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -319,12 +299,17 @@ public class CreateBillboard {
         }
     };
 
+    /**
+     * Method to resize a BufferedImage based on what scale a user input. Method multiplies the
+     * both width and height ratio by said scale.
+     *
+     * @param image Takes BufferedImage to be scaled up.
+     * @param scale Takes an int that sets what scale the BufferedImage is to be scaled by
+     * @return Returns a new BufferedImage to the new scale of the output
+     */
     public static BufferedImage resizeImage(BufferedImage image, int scale) {
         int width = scale * image.getWidth();
         int height = scale * image.getHeight();
-
-
-
         BufferedImage enlargedImage = new BufferedImage(width, height, image.getType());
 
         for (int i = 0; i < height; i++) {
@@ -332,10 +317,17 @@ public class CreateBillboard {
                 enlargedImage.setRGB(j, i, image.getRGB(j / scale, i / scale));
             }
         }
-
         return enlargedImage;
     }
 
+    /**
+     * Method to check the current dimensions of an input BufferedImage. If both the width
+     * and height of the image is smaller than a third of the user's screen resolution, this
+     * method initialises a resize.
+     *
+     * @param image BufferedImage to be checked and resized
+     * @return Returns the input BufferedImage to the new resolution
+     */
     public static BufferedImage scaleImage(BufferedImage image) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int scale;
@@ -347,10 +339,11 @@ public class CreateBillboard {
         int maxHeight = screenHeight / 3;
         BufferedImage scaledImage;
 
+        // Checking if current dimensions are larger than the allowed 1/3 of the screen
         if (imageWidth > maxWidth || imageHeight > maxHeight) {
             return image;
         } else {
-            int newHeight, newWidth;
+//            int newHeight, newWidth;
             int widthDiff = maxWidth / imageWidth;
             int heightDiff = maxHeight / imageHeight;
 
@@ -359,59 +352,54 @@ public class CreateBillboard {
             }
             else if (widthDiff <= heightDiff) {
                 scale = widthDiff;
-
                 scaledImage = resizeImage(image, scale);
-
-//                newHeight = imageHeight * scale;
-//                newWidth = imageWidth * scale;
             } else {
                 scale = heightDiff;
-
                 scaledImage = resizeImage(image, scale);
-//                newHeight = imageHeight * scale;
-//                newWidth = imageWidth * scale;
             }
-
-
-
             return scaledImage;
         }
-
-
     }
 
-
+    /**
+     * This method takes what data is stored in the message and image variables based on
+     * the user input. Then, depending on the element type, configures them to a JLabel for
+     * the createBillboard method.
+     *
+     * @param element takes which element of the billboard to be packed
+     * @return returns a JLabel containing the passed element
+     * @throws IOException
+     */
     public static JLabel packedElement(String element) throws IOException {
         JLabel output = new JLabel();
 
-        if (element == "message") {
-//            resizeText(messageText);
+        if (element.equals("message")) {
             output = new JLabel(messageText);
             output.setFont(messageFont);
             output.setForeground(messageColour);
-
-        } else if (element.equals("picture")) {
+        }
+        else if (element.equals("picture")) {
             if (!isDataImage) {
                 BufferedImage image = ImageIO.read(url);
                 BufferedImage resizedImg = scaleImage(image);
                 output = new JLabel(new ImageIcon(resizedImg));
-
-                System.out.println("This is where we need to be");
-
-            } else if (isDataImage) {
-
-                System.out.println("Why are we in here?");
-
+            }
+            else if (isDataImage) {
                 BufferedImage dataImage = ImageIO.read(new ByteArrayInputStream(byteImg));
-                BufferedImage resizedImg = scaleImage(dataImage); // CHECK SCALE
+                BufferedImage resizedImg = scaleImage(dataImage);
                 output = new JLabel(new ImageIcon(resizedImg));
             }
         }
-
-
         return output;
     }
 
+    /**
+     * Method to take any data stored in the information variables. This then formats
+     * and packs the text into a JTextArea to allow for word wrap.
+     *
+     * @param element takes information text to be packed
+     * @return returns a JTextArea containing the passed information text
+     */
     public static JTextArea packedInfo(String element) {
         JTextArea information = new JTextArea(informationText, 4, 60);
 
