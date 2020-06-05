@@ -91,10 +91,10 @@ public class loginScreen extends User {
 
             String password2 = "root";
 //            try {
-////                password2 = new String(hashPassword(pass));
-////            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-////                noSuchAlgorithmException.printStackTrace();
-////            }
+//                password2 = new String(hashPassword(pass));
+//            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+//               noSuchAlgorithmException.printStackTrace();
+//           }
             int serverResponse = 0;
 
             if(inputPassHashCheck(pass, password2)){

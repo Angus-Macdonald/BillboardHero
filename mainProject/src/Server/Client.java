@@ -87,7 +87,7 @@ public class Client {
         socket.close();
         return al;
     };
-public void setPasswordS(String password, int userID ) throws IOException {
+public static void setPasswordS(String password, int userID) throws IOException {
     Socket socket = new Socket("localhost",12345);
     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());

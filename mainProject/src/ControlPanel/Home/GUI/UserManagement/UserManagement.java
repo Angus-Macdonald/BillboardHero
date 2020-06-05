@@ -16,6 +16,7 @@ import static ControlPanel.Home.GUI.UserManagement.CreateUser.createUserWindow;
 import static ControlPanel.Home.GUI.UserManagement.EditUser.editUserWindow;
 import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
 import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+import static ControlPanel.Utility.FrameDispose.disposeFrames;
 
 public class UserManagement extends GUI {
 
@@ -40,8 +41,6 @@ public class UserManagement extends GUI {
 
         setWindow("userManagement");
 
-        setEditUsersPermission(true);
-        boolean admin = getEditUsersPermission();
         JFrame frame = new JFrame("Account Management");
         JPanel[] panel = new JPanel[3];
         panelInitialise(panel);
@@ -70,7 +69,7 @@ public class UserManagement extends GUI {
         JButton createUser = new JButton("Create User");
         JButton changePassword = new JButton("Change Password");
 
-        if(admin) {
+        if(getEditUsersPermission()) {
             frame.setLayout(new GridLayout(3, 1));
             panel[1].add(userList);
             panel[2].add(editUser);
@@ -78,7 +77,7 @@ public class UserManagement extends GUI {
             panel[2].add(createUser);
         }
 
-        if(!admin) {
+        if(!getEditUsersPermission()) {
             frame.setPreferredSize(new Dimension(frameManage(frame).width / 4, frameManage(frame).height / 4));
             frame.setLayout(new GridLayout(3, 1));
             panel[1].add(userLabel);
@@ -89,17 +88,18 @@ public class UserManagement extends GUI {
 
         backButton.addActionListener(e -> {
             if(getWindow() == "userManagement"){
-                frame.dispose();
+                disposeFrames();
                 GUI.displayGUI();
             }
         });
 
         //Line Below retrieves selected User from the User List and stores the value within a variable
-        list.addListSelectionListener(e -> setSelectedUser((Integer) list.getSelectedValue()));
+        list.addListSelectionListener(e -> setSelectedUser((int) list.getSelectedValue()));
 
         //Line below is the action listener for the Edit User Button. Is a temp test to show it can retrieve the selected user
         editUser.addActionListener(e -> {
             try {
+                disposeFrames();
                 editUserWindow(getSelectedUser());
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -109,10 +109,14 @@ public class UserManagement extends GUI {
         });
 
         //Line below is the action listener for the Delete User Button. Is a temp test to show it can retrieve the selected user
-        deleteUser.addActionListener(e -> DeleteUserAlert.deleteUserAlert());
+        deleteUser.addActionListener(e -> {
+            disposeFrames();
+            DeleteUserAlert.deleteUserAlert();
+        });
 
         createUser.addActionListener(e -> {
             try {
+                disposeFrames();
                 createUserWindow();
             } catch (NoSuchAlgorithmException ex) {
                 ex.printStackTrace();
@@ -121,13 +125,13 @@ public class UserManagement extends GUI {
 
         //Following Code implements Changing the password
         changePassword.addActionListener(e -> {
-            changePasswordWindow(getSelectedUser().toString());
+            changePasswordWindow(getSelectedUser());
         });
 
         frame.getContentPane().add(panel[0]);
         frame.getContentPane().add(panel[1]);
         frame.getContentPane().add(panel[2]);
-        if(!admin) {
+        if(!getEditUsersPermission()) {
             frame.getContentPane().add(panel[2]);
         }
 
