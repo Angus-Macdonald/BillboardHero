@@ -114,7 +114,7 @@ public class CreateDB {
 //        System.out.println(sch);
 
         ////remove from schedule/////
-        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2020-12-12 3:00:0.0");
+        //java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("+"+year+"-12-12 3:00:0.0");
         //schedule.rmvFromSch("2020",timestamp);
 
         /////current billboard///
@@ -156,17 +156,17 @@ public class CreateDB {
         //client.deleteUserS(2);
 
 //        //list users ////not working////
-        //ArrayList al = client.listUsersS();
-        //System.out.println(al);
+//        ArrayList al = client.listUsersS();
+//        System.out.println(al);
 
         //set password
         //client.setPasswordS("newpass",1);
 
         //login
-        //client.loginS(1,"newpass");
-
-        //logout
-        //client.logoutS(1);
+//        client.loginS(1,"newpass");
+//
+//        //logout
+//        client.logoutS(1);
 
         ////check permissions///// not working/////
 //        ArrayList all = client.ChkPermsS(1);
@@ -204,7 +204,7 @@ public class CreateDB {
         //client.deleteBBS("this");
 
         //get bb info
-        //System.out.println(client.getBBInfoS("the44"));
+        System.out.println(client.getBBInfoS("the49"));
 
         ////list billboards//////
         //ArrayList lBB = client.ListBillboardsS();

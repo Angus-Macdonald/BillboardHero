@@ -3,15 +3,23 @@ import ControlPanel.Home.GUI.GUI;
 
 import ControlPanel.Utility.QuitAlert;
 import ControlPanel.Utility.User;
+import Server.Client;
+import Server.logIO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
 import java.security.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
 import static ControlPanel.Utility.HashPassword.hashPassword;
 import static ControlPanel.Utility.HashPassword.inputPassHashCheck;
+import static ControlPanel.Utility.Menubar.menubar;
+import static Server.Client.loginS;
 
 public class loginScreen extends User {
 
@@ -19,47 +27,17 @@ public class loginScreen extends User {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
-    public static void loginRequest(String user, byte[] pass){
-        //Convert user and pass to data types needed for request
-        //Make the request and receive the id and token
-        //setUserID(id);
-        //setSessionToken(token);
-    }
-
-
-
-    public void getPermissions(String user, String token){
-
-        //This function will add data from server to an array, then place the data within the User object
-
-        //boolean[] permissions = new boolean[4];
-
-        //getCreateBBPermissionFromServer(user, token).add(permission[0]);
-        //getEditBBPermissionFromServer(user, token).add(permission[1]);
-        //getScheduleBBPermissionFromServer(user, token).add(permission[2]);
-        //getEditUsersPermissionFromServer(user, token).add(permission[3]);
-
-        //setCreateBBPermission(permission[0]);
-        //setEditBBPermission(permission[1]);
-        //setScheduleBBPermission(permission[2]);
-        //setEditUsersPermission(permission[3]);
-    }
-
     public static int parseUserID(String user){
-        int foo;
+        int parseUser;
         try{
-            foo = Integer.parseInt(user);
+            parseUser = Integer.parseInt(user);
         }
         catch (NumberFormatException e)
         {
-            foo = 0;
+            parseUser = 0;
         }
-
-        return foo;
+        return parseUser;
     }
-
-
-
     public static void main(String[] args) throws NoSuchAlgorithmException {
         controlPanelLogin();
     }
@@ -72,48 +50,34 @@ public class loginScreen extends User {
         md.update(salt);
 
         JFrame frame = new JFrame("Login Page");
-        JPanel panel1 = new JPanel();
-        JPanel panel2= new JPanel();
-        JPanel panel3 = new JPanel();
-        JPanel panel4 = new JPanel();
+        JPanel[] panel = new JPanel[4];
+        panelInitialise(panel);
 
-        frame.setLayout(new GridLayout(4,2));
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
-        frame.setLocation(dim.width/3, dim.height/3);
-
-
+        frameManage(frame, 4 ,2);
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        JMenuItem item = new JMenuItem("Exit");
-        menuBar.add(menu);
-        menu.add(item);
-        frame.setJMenuBar(menuBar);
+        menubar(frame);
+
         JLabel header = new JLabel("Log In");
         header.setFont(new Font("Helvetica", Font.BOLD, 48));
         header.setBorder(new EmptyBorder(10,10,10,10));
-        panel1.add(header);
+        panel[0].add(header);
         JLabel username = new JLabel("Username: ");
         username.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        panel2.add(username);
+        panel[1].add(username);
         JTextField inputUsername = new JTextField(15);
-        panel2.add(inputUsername);
+        panel[1].add(inputUsername);
         JLabel password = new JLabel("Password: ");
         password.setFont(new Font("Helvetica", Font.PLAIN, 20));
-        panel3.add(password);
+        panel[2].add(password);
         JPasswordField inputPassword = new JPasswordField(15);
-        panel3.add(inputPassword);
+        panel[2].add(inputPassword);
         JButton loginButton = new JButton("Log In");
         loginButton.setPreferredSize(new Dimension(150,50));
-        panel4.add(loginButton);
+        panel[3].add(loginButton);
 
-        frame.getContentPane().add(panel1);
-        frame.getContentPane().add(panel2);
-        frame.getContentPane().add(panel3);
-        frame.getContentPane().add(panel4);
-        item.addActionListener(e -> QuitAlert.alterWindow());
-
+        for (JPanel pan: panel){
+            frame.getContentPane().add(pan);
+        }
         loginButton.addActionListener(e -> {
             String inputUser = inputUsername.getText();
             char[] inputPass = inputPassword.getPassword();
@@ -125,34 +89,43 @@ public class loginScreen extends User {
                 pass += i;
             }
 
-            String password2 = null;
-            try {
-                password2 = new String(hashPassword(pass));
-            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-                noSuchAlgorithmException.printStackTrace();
-            }
+            String password2 = "root";
+//            try {
+////                password2 = new String(hashPassword(pass));
+////            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+////                noSuchAlgorithmException.printStackTrace();
+////            }
             int serverResponse = 0;
+            ArrayList<Boolean> permission = new ArrayList<Boolean>();
             if(inputPassHashCheck(pass, password2)){
                 try {
-                    serverResponse = Server.logIO.login(userID, password2);
-                } catch (SQLException ex) {
+                    serverResponse = loginS(userID, password2 );
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
 
-                frame.dispose();
-                GUI.displayGUI();
-
+                if(serverResponse != 0){
+                    setUserID(userID);
+                    setSessionToken(serverResponse);
+                    try {
+                        permission = Client.ChkPermsS(userID);
+                        setCreateBBPermission(permission.get(1));
+                        setEditBBPermission(permission.get(2));
+                        setScheduleBBPermission(permission.get(3));
+                        setEditUsersPermission(permission.get(4));
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                    frame.dispose();
+                    GUI.displayGUI();
+                }
             }
-
-
-
-
-
-
-
         });
 
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

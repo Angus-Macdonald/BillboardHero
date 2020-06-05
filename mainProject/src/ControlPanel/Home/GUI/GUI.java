@@ -8,6 +8,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+
 
 public class GUI extends User {
 
@@ -31,16 +34,10 @@ public class GUI extends User {
         JFrame frame = new JFrame("Control Panel GUI");
 
         JPanel[] panel = new JPanel[3];
-
-        for(int i = 0; i < panel.length; i++){
-            panel[i] = new JPanel();
-        }
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        panelInitialise(panel);
+        frameManage(frame, 3, 1);
+        Dimension dim = frameManage(frame);
         frame.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
-        frame.setLocation(dim.width/3, dim.height/3);
-        frame.setLayout(new GridLayout(3, 1));
-
         Menubar.menubar(frame);
 
         JLabel controlPanelHead = new JLabel("Billboard Hero Control Panel");
@@ -68,7 +65,7 @@ public class GUI extends User {
         String[] columns = {"Name", "Date", "Author"};
 
         //Fill Data with Billboard Data
-        Object[][] data = {{}};
+        Object[][] data = {{"Test", "This", "Test"}};
 
         JTable billboardList = new JTable(data, columns);
         JScrollPane table = new JScrollPane(billboardList);
@@ -88,6 +85,7 @@ public class GUI extends User {
         }
 
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

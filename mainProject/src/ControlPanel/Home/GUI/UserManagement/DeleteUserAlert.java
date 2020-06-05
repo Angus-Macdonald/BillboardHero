@@ -3,6 +3,9 @@ package ControlPanel.Home.GUI.UserManagement;
 import javax.swing.*;
 import java.awt.*;
 
+import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+
 public class DeleteUserAlert extends UserManagement{
     public DeleteUserAlert(int userID, int sessionToken, boolean createBBPermission, boolean editBBPermission, boolean scheduleBBPermission, boolean editUsersPermission) {
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
@@ -10,20 +13,18 @@ public class DeleteUserAlert extends UserManagement{
 
     static void deleteUserAlert(){
         JFrame frame = new JFrame("Alert");
+        frameManage(frame, 3 ,1);
         JPanel[] panel = new JPanel[3];
-        for(int i = 0; i < panel.length; i++){
-            panel[i] = new JPanel();
-        }
+        panelInitialise(panel);
+
+
         JLabel alert = new JLabel("Are you sure you want to delete UserID:  " + UserManagement.getSelectedUser());
         JLabel passLabel = new JLabel("Enter Your Password To Continue: ");
         JPasswordField passwordField = new JPasswordField(10);
         JButton yes = new JButton("Delete User");
         JButton cancel = new JButton("Cancel");
 
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((dim.width/5)*2, (dim.height/5)*2);
-        frame.setLayout(new GridLayout(3,1));
+
 
         yes.addActionListener(e->
                 frame.dispose()

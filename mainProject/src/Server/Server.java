@@ -18,6 +18,9 @@ public class Server {
         Permission permission = new Permission();
         ServerBillboard billboard = new ServerBillboard();
 
+        CreateDB init = new CreateDB();
+        init.createDB();
+
         for(;;){
             Socket socket = serverSocket.accept();
 

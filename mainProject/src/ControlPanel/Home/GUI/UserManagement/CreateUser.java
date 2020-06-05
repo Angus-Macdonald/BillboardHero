@@ -6,19 +6,21 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+import static ControlPanel.Utility.FrameAndPanelUtility.frameManage;
+import static ControlPanel.Utility.FrameAndPanelUtility.panelInitialise;
+
 public class CreateUser {
+
+    public static void main(String[] args){
+        createUserWindow();
+    }
+
     public static void createUserWindow(){
         JFrame frame = new JFrame("Create User");
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setPreferredSize(new Dimension(dim.width/5, dim.height/2));
-        frame.setLayout(new GridLayout(5, 1));
+        frameManage(frame, 5, 1);
         Menubar.menubar(frame);
-
         JPanel[] panel = new JPanel[5];
-        for(int i = 0; i < panel.length; i++){
-            panel[i] = new JPanel();
-        }
+        panelInitialise(panel);
 
         JLabel header = new JLabel("Create User");
         header.setFont(new Font("Serif", Font.BOLD, 35));
@@ -98,8 +100,9 @@ public class CreateUser {
              ) {frame.getContentPane().add(j);
 
         }
-        frame.setLocationRelativeTo(null);
+
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
 
