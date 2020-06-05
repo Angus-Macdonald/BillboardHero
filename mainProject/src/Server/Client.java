@@ -142,7 +142,7 @@ public void setPasswordS(String password, int userID ) throws IOException {
         oos.close();
         socket.close();
     }
-    public ArrayList<Boolean> ChkPermsS(int userID) throws IOException, ClassNotFoundException {
+    public static ArrayList<Boolean> ChkPermsS(int userID) throws IOException, ClassNotFoundException {
         Socket socket = new Socket("localhost",12345);
         ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
