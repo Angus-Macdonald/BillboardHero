@@ -243,9 +243,10 @@ public class CreateBillboard {
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 100, 10));
             }
 
-            // Need to clear the String list
+            // Clears the String list holding the xml tags for each re-run
             elementOrder.clear();
 
+            // Sets background colour of each panel to match the frame
             topPanel.setBackground(background);
             bottomPanel.setBackground(background);
             middlePanel.setBackground(background);
@@ -254,6 +255,7 @@ public class CreateBillboard {
         frame.addKeyListener(escListener);
         frame.addMouseListener(clickCheck);
 
+        // Makes the GUI fullscreen and removes any window edges
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
 
@@ -335,6 +337,7 @@ public class CreateBillboard {
         }
     };
 
+
     /**
      * Method to resize a BufferedImage based on what scale a user input. Method multiplies the
      * both width and height ratio by said scale.
@@ -356,6 +359,7 @@ public class CreateBillboard {
         return enlargedImage;
     }
 
+
     /**
      * Method to check the current dimensions of an input BufferedImage. If both the width
      * and height of the image is smaller than a third of the user's screen resolution, this
@@ -365,6 +369,8 @@ public class CreateBillboard {
      * @return Returns the input BufferedImage to the new resolution
      */
     public static BufferedImage scaleImage(BufferedImage image) {
+
+        // Returns the current size of the user's screen for later scaling
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int scale;
         int screenWidth = (int)screenSize.getWidth();
@@ -378,8 +384,9 @@ public class CreateBillboard {
         // Checking if current dimensions are larger than the allowed 1/3 of the screen
         if (imageWidth > maxWidth || imageHeight > maxHeight) {
             return image;
-        } else {
-//            int newHeight, newWidth;
+        }
+        // Scales the image based on the larger of the two resolution numbers
+        else {
             int widthDiff = maxWidth / imageWidth;
             int heightDiff = maxHeight / imageHeight;
 
@@ -438,6 +445,9 @@ public class CreateBillboard {
      */
     public static JTextArea packedInfo(String element) {
         int textLength;
+
+        // Checks the length of the input string and sizes the columns of the textBox
+        // accordingly
         if (element.length() < 60) {
             textLength = element.length();
         } else {

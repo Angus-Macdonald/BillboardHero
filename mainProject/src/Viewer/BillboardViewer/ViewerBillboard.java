@@ -57,88 +57,81 @@ public class ViewerBillboard extends JFrame {
 
     /**
      * This method handles interaction with the server and extracts information from xml files returned
-     * from the billboard schedule. If the server is down, or there are currently no billboards
-     * scheduled, this changes the serverResponse boolean.
+     * from the xml String
      *
-     * @throws SQLException
-     * @throws IOException
-     * @throws ClassNotFoundException
-     * @throws ParserConfigurationException
-     * @throws SAXException
+     * @throws SQLException handles any errors from server interaction
+     * @throws IOException handles any failed or interrupted I/O operations
+     * @throws ClassNotFoundException handles any errors if class interaction between packages fails
+     * @throws ParserConfigurationException handles any configuration errors
+     * @throws SAXException handles any errors from the parsing process for xml
      */
     public static void serverConnect(String xml) throws SQLException, IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
-//        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
 
-//        try {
-//            Client connection = new Client();
-//            Object data = connection.currentBBS(timestamp);
-//            String dataString = data.toString();
+        ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
+        Document document = builder.parse(bais);
+        bais.close();
 
-            ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes());
-            Document document = builder.parse(bais);
-            bais.close();
+        Element documentElement = document.getDocumentElement();
+        String attributeValue = documentElement.getAttribute("background");
+        if (attributeValue.isEmpty()) {
+            background = Color.WHITE;
+        } else {
+            background = Color.decode(attributeValue);
+        }
 
-            Element documentElement = document.getDocumentElement();
-            String attributeValue = documentElement.getAttribute("background");
-            if (attributeValue.isEmpty()) {
-                background = Color.WHITE;
-            } else {
-                background = Color.decode(attributeValue);
-            }
+        NodeList xmlTags = documentElement.getChildNodes();
+        for (int i = 0; i < xmlTags.getLength(); i++) {
+            Node node = xmlTags.item(i);
+            if (node instanceof Element) {
+                Element element = (Element) node;
+                String tagName = element.getTagName();
+                System.out.println("Child: " + tagName);
+                elementOrder.add(tagName);
 
-            NodeList xmlTags = documentElement.getChildNodes();
-            for (int i = 0; i < xmlTags.getLength(); i++) {
-                Node node = xmlTags.item(i);
-                if (node instanceof Element) {
-                    Element element = (Element) node;
-                    String tagName = element.getTagName();
-                    System.out.println("Child: " + tagName);
-                    elementOrder.add(tagName);
-
-                    if (tagName == "message") {
-                        System.out.println("Content: " + element.getTextContent());
-                        messageText = element.getTextContent();
-                        if (element.hasAttribute("color")) {
-                            messageColour = Color.decode(element.getAttribute("color"));
-                            System.out.println("Colour: " + element.getAttribute("color"));
-                        }
-                    } else if (tagName == "information") {
-                        if (element.hasAttribute("color")) {
-                            infoColour = Color.decode(element.getAttribute("color"));
-                        }
-                        informationText = element.getTextContent();
+                if (tagName == "message") {
+                    System.out.println("Content: " + element.getTextContent());
+                    messageText = element.getTextContent();
+                    if (element.hasAttribute("color")) {
+                        messageColour = Color.decode(element.getAttribute("color"));
+                        System.out.println("Colour: " + element.getAttribute("color"));
+                    }
+                } else if (tagName == "information") {
+                    if (element.hasAttribute("color")) {
+                        infoColour = Color.decode(element.getAttribute("color"));
+                    }
+                    informationText = element.getTextContent();
 //                        System.out.println("Colour: " + element.getAttribute("color"));
-                    } else if (tagName == "picture") {
-                        if (element.hasAttribute("url")) {
-                            System.out.println(element.getAttribute("url"));
-                            isDataImage = false;
-                            url = new URL(element.getAttribute("url"));
-                        } else {
-                            System.out.println(element.getAttribute("data"));
-                            isDataImage = true;
-                            byteImg = Base64.getMimeDecoder().decode(element.getAttribute("data"));
-                        }
+                } else if (tagName == "picture") {
+                    if (element.hasAttribute("url")) {
+                        System.out.println(element.getAttribute("url"));
+                        isDataImage = false;
+                        url = new URL(element.getAttribute("url"));
+                    } else {
+                        System.out.println(element.getAttribute("data"));
+                        isDataImage = true;
+                        byteImg = Base64.getMimeDecoder().decode(element.getAttribute("data"));
                     }
                 }
             }
-            serverResponse = true;
-            System.out.println(elementOrder);
-            createPreview();
-//        } catch(Exception e) {
-//            serverResponse = false;
-//            System.out.println("Connection failed");
-//        }
+        }
+        serverResponse = true;
+        System.out.println(elementOrder);
+        createPreview();
     }
 
-    // Need to have something to check how many elements are in billboard
-    // 1 uses centre panel, 2 uses top and bottom, 3 uses all three
+    /**
+     * Method to create fullscreen GUI that is the billboard viewer. Takes it's data from variables set up by
+     * serverConnect(). This formats and sets up all the JSwing elements.
+     *
+     * @throws IOException handles any failed or interrupted I/O operations
+     * @throws ClassNotFoundException handles any errors if class interaction between packages fails
+     * @throws SQLException handles any errors from server interaction
+     * @throws ParserConfigurationException handles any configuration errors
+     * @throws SAXException handles any errors from the parsing process for xml
+     */
     public static void createPreview() throws IOException, ClassNotFoundException, SQLException, ParserConfigurationException, SAXException {
-//        serverConnect();
-
-        System.out.println("We're here too?");
-
         JFrame frame = new JFrame();
         JPanel topPanel = new JPanel();
         JPanel middlePanel = new JPanel();
@@ -151,7 +144,6 @@ public class ViewerBillboard extends JFrame {
             defaultText.setOpaque(false);
             defaultText.setEditable(false);
 
-
             defaultText.addMouseListener(clickCheck);
             defaultText.addKeyListener(escListener);
             defaultText.setFont(new Font("Helvetica", Font.BOLD,80));
@@ -161,14 +153,14 @@ public class ViewerBillboard extends JFrame {
         }
         else {
             if (elementOrder.size() == 1) {
-                // Code for single element
                 String billboardElement = elementOrder.get(0);
 
                 if (billboardElement == "information") {
                     JTextArea element = packedInfo(billboardElement);
                     middlePanel.add(element);
                     middlePanel.setBorder(new EmptyBorder(420, 10, 10, 10));
-                } else if (billboardElement == "picture") {
+                }
+                else if (billboardElement == "picture") {
                     JLabel element = packedElement(billboardElement);
                     middlePanel.add(element);
                     middlePanel.setLayout(new GridBagLayout());
@@ -178,9 +170,8 @@ public class ViewerBillboard extends JFrame {
                     middlePanel.add(element);
                     middlePanel.setBorder(new EmptyBorder(420, 10, 10, 10));
                 }
-
-
-            } else if (elementOrder.size() == 2) {
+            }
+            else if (elementOrder.size() == 2) {
                 String firstItem = elementOrder.get(0);
                 String secondItem = elementOrder.get(1);
 
@@ -199,7 +190,8 @@ public class ViewerBillboard extends JFrame {
                 }
                 topPanel.setBorder(new EmptyBorder(160, 10, 10, 10));
                 bottomPanel.setBorder(new EmptyBorder(10, 10, 160, 10));
-            } else {
+            }
+            else {
                 String firstItem = elementOrder.get(0);
                 String secondItem = elementOrder.get(1);
                 String thirdItem = elementOrder.get(2);
