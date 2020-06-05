@@ -25,11 +25,15 @@ public class EditUser extends UserManagement {
         editUserWindow(getSelectedUser());
     }
 
+    /**
+     * Function creates a GUI window that allows a user to edit a users details. If the user they are editing is themselves, they do not have the ability to remove their own edit user permission.
+     * @param user
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static void editUserWindow(int user) throws IOException, ClassNotFoundException {
         ArrayList<Boolean> userPermissions = Client.ChkPermsS(user);
-        System.out.println(userPermissions);
         boolean[] localPermissions = new boolean[4];
-
         localPermissions[0] = userPermissions.get(1);
         localPermissions[1] = userPermissions.get(2);
         localPermissions[2] = userPermissions.get(3);
@@ -79,54 +83,43 @@ public class EditUser extends UserManagement {
         createBB.addActionListener(e -> {
             if(!localPermissions[0]){
                 localPermissions[0] = true;
-                System.out.println(localPermissions[0]);
             }
             else if (localPermissions[0]){
                 localPermissions[0] = false;
-                System.out.println(localPermissions[0]);
             }
         });
 
         editBB.addActionListener(e -> {
             if(!localPermissions[1]){
                 localPermissions[1] = true;
-                System.out.println(localPermissions[1]);
             }
             else if (localPermissions[1]){
                 localPermissions[1] = false;
-                System.out.println(localPermissions[1]);
             }
         });
 
         scheduleBB.addActionListener(e -> {
             if(!localPermissions[2]){
                localPermissions[2] = true;
-                System.out.println(localPermissions[2]);
             }
             else if (localPermissions[2]){
                 localPermissions[2] = false;
-                System.out.println(localPermissions[2]);
             }
         });
 
         editUsers.addActionListener(e -> {
             if (!localPermissions[3]) {
                 localPermissions[3] = true;
-                System.out.println(localPermissions[3]);
             }
             else if (localPermissions[3]) {
                 localPermissions[3] = false;
-                System.out.println(localPermissions[3]);
             }
         });
 
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e ->{
             try {
-                System.out.print(localPermissions[0] + " - ");
-                System.out.print(localPermissions[1] + " - ");
-                System.out.print(localPermissions[2] + " - ");
-                System.out.print(localPermissions[3]);
+
                 Client.setPermissionS(user, false, localPermissions[0], localPermissions[1], localPermissions[2], localPermissions[3]);
                 disposeFrames();
                 userManagementGUI();

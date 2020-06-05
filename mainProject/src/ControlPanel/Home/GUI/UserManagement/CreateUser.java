@@ -23,6 +23,10 @@ public class CreateUser {
         createUserWindow();
     }
 
+    /**
+     * Creates the gui to create a new user. The use inputs a userID and password alongside the new users permissions.
+     * @throws NoSuchAlgorithmException
+     */
     public static void createUserWindow() throws NoSuchAlgorithmException {
         JFrame frame = new JFrame("Create User");
         frameManage(frame, 5, 1);

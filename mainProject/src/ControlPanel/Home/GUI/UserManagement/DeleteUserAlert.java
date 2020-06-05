@@ -17,6 +17,9 @@ public class DeleteUserAlert extends UserManagement{
         super(userID, sessionToken, createBBPermission, editBBPermission, scheduleBBPermission, editUsersPermission);
     }
 
+    /**
+     * Alert Window if the user selects to delete another user. User must confirm they have chosen, otherwise cancels.
+     */
     static void deleteUserAlert(){
         JFrame frame = new JFrame("Alert");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
