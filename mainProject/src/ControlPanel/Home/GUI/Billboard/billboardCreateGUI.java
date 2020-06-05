@@ -7,7 +7,6 @@ package ControlPanel.Home.GUI.Billboard;
 
 import ControlPanel.Utility.billboard;
 import Server.Client;
-import Viewer.BillboardViewer.CreateViewer;
 import Viewer.BillboardViewer.ViewerBillboard;
 import org.xml.sax.SAXException;
 
