@@ -89,12 +89,12 @@ public class loginScreen extends User {
                 pass += i;
             }
 
-            String password2 = null;
-            try {
-                password2 = new String(hashPassword(pass));
-            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-                noSuchAlgorithmException.printStackTrace();
-            }
+            String password2 = "root";
+//            try {
+////                password2 = new String(hashPassword(pass));
+////            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+////                noSuchAlgorithmException.printStackTrace();
+////            }
             int serverResponse = 0;
             ArrayList<Boolean> permission = new ArrayList<Boolean>();
             if(inputPassHashCheck(pass, password2)){
