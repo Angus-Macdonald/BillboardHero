@@ -20,10 +20,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class billboardCreateGUI {
-    public static void main(String[] args) {
-        new billboardCreateGUI();
-    }
-
     /**
      * creates a GUI for the user to create a billboard and save it
      */
