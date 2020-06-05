@@ -45,26 +45,5 @@ public class User {
     public static void setEditUsersPermission(boolean value){editUsersPermission = value;}
     public static boolean getEditUsersPermission(){return editUsersPermission;}
 
-
-    public static class menuBar{
-        public JMenuBar mainMenu(){
-            JMenuBar menuBar = new JMenuBar();
-            JMenu menu = new JMenu("File");
-            JMenuItem quit = new JMenuItem("Quit");
-            JMenuItem logout = new JMenuItem("Log Out");
-            logout.addActionListener(e -> {
-                Logout.logoutAlert();
-
-            });
-            quit.addActionListener(e -> QuitAlert.alterWindow());
-
-            menuBar.add(menu);
-            menu.add(logout);
-            menu.add(quit);
-
-            return menuBar;
-        }
-    }
-
 }
 
